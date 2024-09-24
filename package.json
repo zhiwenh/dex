@@ -1,0 +1,26 @@
+{
+  "name": "dex",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/index.js",
+    "build": "cd client && npm install && npm run build",
+    "watch": "npm-watch"
+  },
+  "author": "Zhiwen Huang",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
+    "ethers": "^6.13.2",
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7",
+    "npm-watch": "^0.13.0"
+  },
+  "watch": {
+    "build": "./client/src"
+  }
+}
