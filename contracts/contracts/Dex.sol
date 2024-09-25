@@ -4,7 +4,7 @@ pragma solidity 0.8.6;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 
-contract Messages {
+contract Dex {
 
   event TradeTokensForTokens (
     address sender,
@@ -73,7 +73,12 @@ contract Messages {
 
     require(tradingErc20.balanceOf(msg.sender) >= tradingTokenAmount);
 
-    tradingErc20.approve(address(this), value);
+    if (tradingErc20.allowance(msg.sender, address(this)) > 0) {
+      uint totalAllowance = tradingErc20.allowance(msg.sender, address(this)) + tradingTokenAmount;
+      tradingErc20.approve(address(this), totalAllowance);
+    } else {
+      tradingErc20.approve(address(this), tradingTokenAmount);
+    }
 
     tradeTokensForTokensArr.push(
       TradeTokensForTokens(
@@ -95,7 +100,12 @@ contract Messages {
 
     require(tradingErc20.balanceOf(msg.sender) >= tradingTokenAmount);
 
-    tradingErc20.approve(address(this), value);
+    if (tradingErc20.allowance(msg.sender, address(this)) > 0) {
+      uint totalAllowance = tradingErc20.allowance(msg.sender, address(this)) + tradingTokenAmount;
+      tradingErc20.approve(address(this), totalAllowance);
+    } else {
+      tradingErc20.approve(address(this), tradingTokenAmount);
+    }
 
     tradeTokensForEthArr.push(
       TradeTokensForEth(
@@ -239,6 +249,18 @@ contract Messages {
     );
   }
 
+  function cancelTradeForTokensWithTokens(uint indexOfTrade) public {
+
+  }
+
+  function cancelTradeForTokensWithEth(uint indexOfTrade) public {
+
+  }
+
+  function cancelTradeForEthWithTokens(uint indexOfTrade) public {
+
+  }
+
   /* event TradeEthForTokens (
     address sender,
     uint tradingEthAmount,
@@ -255,12 +277,45 @@ contract Messages {
     bool alreadyTraded;
   } */
 
-  function getTradesForTokenWithToken() public view returns (Struct[] memory) {
-    Struct[] memory result = new Struct[](structArray.length);
-    uint i = 0;
-    for (uint id in structArray) {
-      result[i] = structArray[id];
-      i++;
+  function getTradesForTokenWithToken() public view returns (TradeTokensForTokens[] memory) {
+    TradeTokensForTokens[] memory tradeTokensForTokensResultArr =
+      new TradeTokensForTokens[](tradeTokensForTokensArr.length);
+
+    for (uint i = 0; i < tradeTokensForTokensArr.length; i++) {
+      tradeTokensForTokensResultArr.push(tradeTokensForTokensArr[i])
+    }
+
+    return tradeTokensForTokensResultArr;
   }
-  return result;
+
+  function getTradesForTokenWithEth() public view returns (TradeTokensForEth[] memory) {
+    TradeTokensForEth[] memory tradeTokensForEthResultArr =
+      new TradeTokensForEth[](tradeTokensForEthArr.length);
+
+    for (uint i = 0; i < tradeTokensForTokensArr.length; i++) {
+      tradeTokensForTokensResultArr.push(tradeTokensForTokensArr[i])
+    }
+
+    return tradeTokensForTokensResultArr;
+  }
+
+  /* struct TradeEthForTokens {
+    address sender;
+    uint tradingEthAmount;
+    uint tradingForTokenAddress;
+    uint tradingForTokenAmount;
+    bool alreadyTraded;
+  } */
+
+  function getTradesForEthWithToken() public view returns (TradeEthForToken[] memory) {
+    TradeEthForToken[] memory tradeEthForTokensResultArr =
+      new TradeEthForToken[](tradeEthForTokensArr.length);
+
+    for (uint i = 0; i < tradeEthForTokensArr.length; i++) {
+      tradeEthForTokensResultArr.push(tradeEthForTokensArr[i])
+    }
+
+    return tradeEthForTokensResultArr;
+  }
+
 }
