@@ -12,21 +12,21 @@ contract Messages {
     uint tradingTokenAmount,
     address tradingForTokenAddress,
     uint tradingForTokenAmount
-  )
+  );
 
   event TradeTokensForEth (
     address sender,
     address tradingTokenAddress,
     uint tradingTokenAmount,
     uint tradingForEthAmount
-  )
+  );
 
   event TradeEthForTokens (
-      address sender,
-      uint tradingEthAmount,
-      uint tradingForTokenAddress,
-      uint tradingForTokenAmount
-  )
+    address sender,
+    uint tradingEthAmount,
+    uint tradingForTokenAddress,
+    uint tradingForTokenAmount
+  );
 
   struct TradeTokensForTokens {
     address sender;
@@ -68,13 +68,18 @@ contract Messages {
     uint tradingTokenAmount,
     address tradingForTokenAddress,
     uint tradingForTokenAmount) public {
-    ERC20 erc20 = ERC20(_erc20Address);
-    erc20.approve(address(this), value);
+
+    ERC20 tradingErc20 = ERC20(tradingTokenAddress);
+
+    require(tradingErc20.balanceOf(msg.sender) >= tradingTokenAmount);
+
+    tradingErc20.approve(address(this), value);
+
     tradeTokensForTokensArr.push(
       TradeTokensForTokens(
         msg.sender,
         tradingTokenAddress,
-        valueToTrade,
+        tradingTokenAmount,
         tradingForTokenAddress,
         tradingForTokenAmount,
         false
@@ -85,8 +90,13 @@ contract Messages {
     address tradingTokenAddress,
     uint tradingTokenAmount,
     uint tradingForEthAmount) public {
-    ERC20 erc20 = ERC20(_erc20Address);
-    erc20.approve(address(this), value);
+
+    ERC20 tradingErc20 = ERC20(tradingTokenAddress);
+
+    require(tradingErc20.balanceOf(msg.sender) >= tradingTokenAmount);
+
+    tradingErc20.approve(address(this), value);
+
     tradeTokensForEthArr.push(
       TradeTokensForEth(
         msg.sender
@@ -100,10 +110,10 @@ contract Messages {
   function addEthToDexForTradeWithToken(
     uint tradingEthAmount,
     address tradingForTokenAddress,
-    uint tradingForTokenAmount) public {
-    ERC20 erc20 = ERC20(_erc20Address);
-    erc20.approve(address(this), value);
-    require(msg.value === ethAmount);
+    uint tradingForTokenAmount) public payable {
+
+    require(msg.value === tradingEthAmount);
+
     tradeEthForTokensArr.push(
       TradeEthForTokens(
         msg.sender,
@@ -138,7 +148,23 @@ contract Messages {
     tradingForErc20.transfer(sender, tradingForTokenAmount);
 
     tradeTokensForTokenArr[indexOfTrade].alreadyTraded = true;
+
+    emit TradeTokensForTokens(
+      sender,
+      tradingTokenAddress,
+      tradingTokenAmount,
+      tradingForTokenAddress,
+      tradingForTokenAmount
+    );
   }
+
+  /* event TradeTokensForTokens (
+    address sender,
+    address tradingTokenAddress,
+    uint tradingTokenAmount,
+    address tradingForTokenAddress,
+    uint tradingForTokenAmount
+  ) */
 
   // TradeTokensForEth
 
@@ -165,7 +191,21 @@ contract Messages {
     require(sent, "Failed to send Ether");
 
     tradeTokensForEthArr[indexOfTrade].alreadyTraded = true;
+
+    emit TradeTokensForEth(
+      sender,
+      tradingTokenAddress,
+      tradingTokenAmount,
+      tradingForEthAmount
+    );
   }
+
+  /* event TradeTokensForEth (
+    address sender,
+    address tradingTokenAddress,
+    uint tradingTokenAmount,
+    uint tradingForEthAmount
+  ); */
 
   // TradeEthForTokens
 
@@ -190,5 +230,37 @@ contract Messages {
     require(sent, "Failed to send Ether");
 
     tradeEthForTokensArr[indexOfTrade].alreadyTraded = true;
+
+    emit TradeEthForTokens(
+      sender,
+      tradingEthAmount,
+      tradingForTokenAddress,
+      tradingForTokenAmount
+    );
   }
+
+  /* event TradeEthForTokens (
+    address sender,
+    uint tradingEthAmount,
+    uint tradingForTokenAddress,
+    uint tradingForTokenAmount
+  ); */
+
+  /* struct TradeTokensForTokens {
+    address sender;
+    uint tradingTokenAddress;
+    uint tradingTokenAmount;
+    uint tradingForTokenAddress;
+    uint tradingForTokenAmount;
+    bool alreadyTraded;
+  } */
+
+  function getTradesForTokenWithToken() public view returns (Struct[] memory) {
+    Struct[] memory result = new Struct[](structArray.length);
+    uint i = 0;
+    for (uint id in structArray) {
+      result[i] = structArray[id];
+      i++;
+  }
+  return result;
 }
