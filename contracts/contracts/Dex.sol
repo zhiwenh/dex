@@ -6,86 +6,86 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract Messages {
   struct TradeTokensForTokens {
     address sender;
-    uint originalTokenAddress;
-    uint originalTokenAmount;
-    uint toTradeTokenAddress;
-    uint toTradeTokenAmount;
+    uint tradingTokenAddress;
+    uint tradingTokenAmount;
+    uint tradingForTokenAddress;
+    uint tradingForTokenAmount;
     bool alreadyTraded;
   }
 
   struct TradeTokensForEth {
     address sender;
-    uint originalTokenAddress;
-    uint originalTokenAmount;
-    uint toTradeEthAmount;
+    uint tradingTokenAddress;
+    uint tradingTokenAmount;
+    uint tradingForEthAmount;
     bool alreadyTraded;
   }
 
   struct TradeEthForTokens {
     address sender;
-    uint originalEthAmount;
-    uint toTradeTokenAddress;
-    uint toTradeTokenAmount;
+    uint tradingEthAmount;
+    uint tradingForTokenAddress;
+    uint tradingForTokenAmount;
     bool alreadyTraded;
   }
 
-  TradeForTokens[] public tradeTokensForTokensArr;
+  TradeTokensForTokens[] public tradeTokensForTokensArr;
   TradeTokensForEth[] public tradeTokensForEthArr;
   TradeEthForTokens[] public tradeEthForTokensArr;
 
   address owner;
 
-  constructor(address _erc20Address) {
+  constructor() {
     owner = msg.sender;
   }
-  
+
   function addTokenToDexForTradeWithAnotherToken(
-    address _erc20Address,
-    uint valueToTrade,
-    address _tokenToTradeForAddress,
-    uint valueToTradeFor) public {
+    address tradingTokenAddress,
+    uint tradingTokenAmount,
+    address tradingForTokenAddress,
+    uint tradingForTokenAmount) public {
     ERC20 erc20 = ERC20(_erc20Address);
     erc20.approve(address(this), value);
     tradeTokensForTokensArr.push(
       TradeTokensForTokens(
         msg.sender,
-        _erc20Address,
+        tradingTokenAddress,
         valueToTrade,
-        _tokenToTradeForAddress,
-        valueToTradeFor,
+        tradingForTokenAddress,
+        tradingForTokenAmount,
         false
     ))
   }
 
   function addTokenToDexForTradeWithEth(
-    address _erc20Address,
-    uint valueToTrade,
-    uint valueToTradeFor) public {
+    address tradingTokenAddress,
+    uint tradingTokenAmount,
+    uint tradingForEthAmount) public {
     ERC20 erc20 = ERC20(_erc20Address);
     erc20.approve(address(this), value);
     tradeTokensForEthArr.push(
       TradeTokensForEth(
         msg.sender
-        _erc20Address,
-        valueToTrade,
-        valueToTradeFor,
+        tradingTokenAddress,
+        tradingTokenAmount,
+        tradingForEthAmount,
         false
     ))
   }
 
   function addEthToDexForTradeWithToken(
-    uint ethAmount,
-    address _erc20Address,
-    uint valueOfTokensToTrade) public {
+    uint tradingEthAmount,
+    address tradingForTokenAddress,
+    uint tradingForTokenAmount) public {
     ERC20 erc20 = ERC20(_erc20Address);
     erc20.approve(address(this), value);
     require(msg.value === ethAmount);
     tradeEthForTokensArr.push(
       TradeEthForTokens(
         msg.sender,
-        ethAmount,
-        _erc20Address,
-        valueOfTokensToTrade,
+        tradingEthAmount,
+        tradingForTokenAddress,
+        tradingForTokenAmount,
         false
     ))
   }
@@ -128,9 +128,10 @@ contract Messages {
     uint originalEthAmount = tradeEthForTokensArr[indexOfTrade].originalEthAmount;
     address toTradeTokenAddress = tradeEthForTokensArr[indexOfTrade].toTradeTokenAddress;
     uint toTradeTokenAmount = tradeEthForTokensArr[indexOfTrade].toTradeTokenAmount;
-    ERC20 mtoTradeForErc20 = ERC20(toTradeTokenAddress);
+    ERC20 toTradeForErc20 = ERC20(toTradeTokenAddress);
     toTradeForErc20.transfer(sender, toTradeTokenAmount);
-    payable(msg.sender).transfer(originalEthAmount);
+    (bool sent, bytes memory data) = _to.call{value: msg.value}("");
+    (bool sent, bytes memory data) = payable(msg.sender).call{value: originalEthAmount}("");
     tradeEthForTokensArr[indexOfTrade].alreadyTraded = true;
   }
 }
