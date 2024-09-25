@@ -3,7 +3,31 @@ pragma solidity 0.8.6;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
+
 contract Messages {
+
+  event TradeTokensForTokens (
+    address sender,
+    address tradingTokenAddress,
+    uint tradingTokenAmount,
+    address tradingForTokenAddress,
+    uint tradingForTokenAmount
+  )
+
+  event TradeTokensForEth (
+    address sender,
+    address tradingTokenAddress,
+    uint tradingTokenAmount,
+    uint tradingForEthAmount
+  )
+
+  event TradeEthForTokens (
+      address sender,
+      uint tradingEthAmount,
+      uint tradingForTokenAddress,
+      uint tradingForTokenAmount
+  )
+
   struct TradeTokensForTokens {
     address sender;
     uint tradingTokenAddress;
@@ -90,48 +114,81 @@ contract Messages {
     ))
   }
 
+  /* struct TradeTokensForTokens {
+    address sender;
+    uint tradingTokenAddress;
+    uint tradingTokenAmount;
+    uint tradingForTokenAddress;
+    uint tradingForTokenAmount;
+    bool alreadyTraded;
+  } */
+
   function buyTokenForAnotherToken(uint indexOfTrade) public {
-    address originalErc20Address = tradeTokensForTokenArr[indexOfTrade].originalTokenAddress;
+    address tradingTokenAddress = tradeTokensForTokenArr[indexOfTrade].tradingTokenAddress;
     address sender = tradeTokensForTokenArr[indexOfTrade].sender;
-    uint originalTokenAmount = tradeTokensForTokenArr[indexOfTrade].originalTokenAmount;
-    ERC20 memory originalErc20 = ERC20(originalErc20Address);
-    originalErc20.transferFrom(sender, msg.sender, originalTokenAmount);
-    address toTradeTokenAddress = tradeTokensForTokenArr[indexOfTrade].toTradeTokenAddress;
-    uint toTradeTokenAmount = tradeTokensForTokenArr[indexOfTrade].toTradeTokenAmount;
-    ERC20 memory tradingErc20 = ERC20(toTradeTokenAddress);
-    tradingErc20.transfer(sender, toTradeTokenAmount);
+    uint tradingTokenAmount = tradeTokensForTokenArr[indexOfTrade].tradingTokenAmount;
+
+    ERC20 memory tradingErc20 = ERC20(tradingTokenAddress);
+    tradingErc20.transferFrom(sender, msg.sender, originalTokenAmount);
+
+    address tradingForTokenAddress = tradeTokensForTokenArr[indexOfTrade].tradingForTokenAddress;
+    uint tradingForTokenAmount = tradeTokensForTokenArr[indexOfTrade].tradingForTokenAmount;
+
+    ERC20 memory tradingForErc20 = ERC20(tradingForTokenAddress);
+    tradingForErc20.transfer(sender, tradingForTokenAmount);
+
     tradeTokensForTokenArr[indexOfTrade].alreadyTraded = true;
   }
 
   // TradeTokensForEth
 
-  function buyTokensForEth(uint indexOfTrade) public {
-    address originalErc20Address = tradeTokensForEthArr[indexOfTrade].originalTokenAddress;
+  /* struct TradeTokensForEth {
+    address sender;
+    uint tradingTokenAddress;
+    uint tradingTokenAmount;
+    uint tradingForEthAmount;
+    bool alreadyTraded;
+  } */
+
+  function buyTokensForEth(uint indexOfTrade) public payable {
     address sender = tradeTokensForEthArr[indexOfTrade].sender;
-    uint originalTokenAmount = tradeTokensForEthArr[indexOfTrade].originalTokenAmount;
-    uint toTradeEthAmount = tradeTokensForEthArr[indexOfTrade].toTradeEthAmount;
-    ERC20 memory originalErc20 = ERC20(originalErc20Address);
-    originalErc20.transferFrom(sender, msg.sender, originalTokenAmount);
-    if (msg.value !== toTradeEthAmount) {
-      revert();
-    }
-    (bool sent, bytes memory data) = sender.call{value: msg.value}("");
+    address tradingTokenAddress = tradeTokensForEthArr[indexOfTrade].tradingTokenAddress;
+    uint tradingTokenAmount = tradeTokensForEthArr[indexOfTrade].tradingTokenAmount;
+    uint tradingForEthAmount = tradeTokensForEthArr[indexOfTrade].tradingForEthAmount;
+
+    ERC20 memory tradingErc20 = ERC20(tradingTokenAddress);
+    tradingErc20.transferFrom(sender, msg.sender, tradingTokenAmount);
+
+    require(msg.value === tradingForEthAmount);
+
+    (bool sent) = sender.call{value: msg.value}("");
     require(sent, "Failed to send Ether");
-    sender.transfer(msg.value);
+
     tradeTokensForEthArr[indexOfTrade].alreadyTraded = true;
   }
 
   // TradeEthForTokens
 
-  function buyEthForTokens(uint indexOfTrade) public {
+  /* struct TradeEthForTokens {
+    address sender;
+    uint tradingEthAmount;
+    uint tradingForTokenAddress;
+    uint tradingForTokenAmount;
+    bool alreadyTraded;
+  } */
+
+  function buyEthForTokens(uint indexOfTrade) public payable {
     address sender = tradeEthForTokensArr[indexOfTrade].sender;
-    uint originalEthAmount = tradeEthForTokensArr[indexOfTrade].originalEthAmount;
-    address toTradeTokenAddress = tradeEthForTokensArr[indexOfTrade].toTradeTokenAddress;
-    uint toTradeTokenAmount = tradeEthForTokensArr[indexOfTrade].toTradeTokenAmount;
-    ERC20 toTradeForErc20 = ERC20(toTradeTokenAddress);
-    toTradeForErc20.transfer(sender, toTradeTokenAmount);
-    (bool sent, bytes memory data) = _to.call{value: msg.value}("");
-    (bool sent, bytes memory data) = payable(msg.sender).call{value: originalEthAmount}("");
+    uint tradingEthAmount = tradeEthForTokensArr[indexOfTrade].tradingEthAmount;
+    address tradingForTokenAddress = tradeEthForTokensArr[indexOfTrade].tradingForTokenAddress;
+    uint tradingForTokenAmount = tradeEthForTokensArr[indexOfTrade].tradingForTokenAmount;
+
+    ERC20 tradingForErc20 = ERC20(toTradeTokenAddress);
+    tradingForErc20.transfer(sender, toTradeTokenAmount);
+
+    (bool sent) = payable(msg.sender).call{value: tradingEthAmount}("");
+    require(sent, "Failed to send Ether");
+
     tradeEthForTokensArr[indexOfTrade].alreadyTraded = true;
   }
 }
