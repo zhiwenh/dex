@@ -430,25 +430,25 @@ contract Dex {
   } */
 
   function getTradesForTokenWithToken() public view returns (TradeTokensForTokens[] memory) {
-    TradeTokensForTokens[] memory tradeTokensForTokensResultArr =
+    /* TradeTokensForTokens[] memory tradeTokensForTokensResultArr =
       new TradeTokensForTokens[](tradeTokensForTokensArr.length);
 
     for (uint i = 0; i < tradeTokensForTokensArr.length; i++) {
       tradeTokensForTokensResultArr[i] = tradeTokensForTokensArr[i];
-    }
+    } */
 
-    return tradeTokensForTokensResultArr;
+    return tradeTokensForTokensArr;
   }
 
   function getTradesForTokensWithEth() public view returns (TradeTokensForEth[] memory) {
-    TradeTokensForEth[] memory tradeTokensForEthResultArr =
+    /* TradeTokensForEth[] memory tradeTokensForEthResultArr =
       new TradeTokensForEth[](tradeTokensForEthArr.length);
 
     for (uint i = 0; i < tradeTokensForEthArr.length; i++) {
       tradeTokensForEthResultArr[i] = tradeTokensForEthArr[i];
-    }
+    } */
 
-    return tradeTokensForEthResultArr;
+    return tradeTokensForEthArr;
   }
 
   /* struct TradeEthForTokens {
@@ -460,14 +460,14 @@ contract Dex {
   } */
 
   function getTradesForEthWithTokens() public view returns (TradeEthForTokens[] memory) {
-    TradeEthForTokens[] memory tradeEthForTokensResultArr =
+    /* TradeEthForTokens[] memory tradeEthForTokensResultArr =
       new TradeEthForTokens[](tradeEthForTokensArr.length);
 
     for (uint i = 0; i < tradeEthForTokensArr.length; i++) {
       tradeEthForTokensResultArr[i] = tradeEthForTokensArr[i];
-    }
+    } */
 
-    return tradeEthForTokensResultArr;
+    return tradeEthForTokensArr;
   }
 
 }
