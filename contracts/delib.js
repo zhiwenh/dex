@@ -38,12 +38,12 @@ module.exports = {
 
   /** solc options. Supported versions: 0.4.1 - 0.8.6 **/
   solc: {
-    version: '0.8.6'
+    version: '0.8.20'
   },
 
   /** Add accounts. The values of the array will be the private keys or
   mnemonics of the accounts you wish to add  **/
   accounts: [
-    
+    'hunt rich cost outside follow damp supreme coffee unveil pull ceiling junk'
   ]
 };
