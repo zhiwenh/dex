@@ -31,8 +31,7 @@ contract("Dex", (accounts) => {
     const testToken1Instance = await TestToken1.deployed();
     const testToken2Instance = await TestToken2.deployed();
 
-
-    await dexInstance.addTokenToDexForTradeWithAnotherToken(
+    await dexInstance.addTokensToDexForTradeWithOtherTokens(
       testToken1Instance.address,
       1000,
       testToken2Instance.address,
@@ -40,19 +39,57 @@ contract("Dex", (accounts) => {
       {from: accounts[1]}
     );
 
-    await dexInstance.addTokenToDexForTradeWithAnotherToken(
+    await dexInstance.addTokensToDexForTradeWithOtherTokens(
       testToken1Instance.address,
-      1000,
+      100,
       testToken2Instance.address,
       11,
       {from: accounts[1]}
     );
 
+    console.log('account 2', accounts[1]);
+    const allowance = await testToken1Instance.allowance(accounts[1], dexInstance.address);
+
+    console.log('allowance of dex contract', allowance.toNumber());
+
     const tradesForTokensWithTokens = await dexInstance.getTradesForTokenWithToken();
 
     console.log('trades for tokens with tokens', tradesForTokensWithTokens);
 
+    const allowance2 = await testToken1Instance.allowance(accounts[1], dexInstance.address);
     assert.equal(tradesForTokensWithTokens[0].sender, accounts[1], "Account 2 placed order");
+    assert.equal(allowance2.toNumber(), 1100, "Dex has to be approved for the right amount of tokens");
+
+  });
+
+  it("should create a trade and then have account 3 make the trade", async () => {
+    const dexInstance = await Dex.deployed();
+    const testToken1Instance = await TestToken1.deployed();
+    const testToken2Instance = await TestToken2.deployed();
+
+    await dexInstance.addTokensToDexForTradeWithOtherTokens(
+      testToken1Instance.address,
+      1000,
+      testToken2Instance.address,
+      10,
+      {from: accounts[1]}
+    );
+
+    const allowance = await testToken1Instance.allowance(accounts[1], dexInstance.address);
+
+    console.log('allowance of dex contract', allowance.toNumber());
+
+    let tradesForTokensWithTokens = await dexInstance.getTradesForTokenWithToken();
+
+    // console.log('trades for tokens with tokens before token trade', tradesForTokensWithTokens);
+
+    await dexInstance.buyTokensFromOtherTokens(2, {from: accounts[2]});
+
+    tradesForTokensWithTokens = await dexInstance.getTradesForTokenWithToken();
+    //
+    // console.log('trades for tokens with tokens', tradesForTokensWithTokens);
+    //
+    // assert.equal(tradesForTokensWithTokens[0].sender, accounts[1], "Account 2 placed order");
   });
 
 });
