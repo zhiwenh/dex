@@ -73,12 +73,8 @@ contract Dex {
 
     require(tradingErc20.balanceOf(msg.sender) >= tradingTokenAmount);
 
-    if (tradingErc20.allowance(msg.sender, address(this)) > 0) {
-      uint totalAllowance = tradingErc20.allowance(msg.sender, address(this)) + tradingTokenAmount;
-      tradingErc20.approve(address(this), totalAllowance);
-    } else {
-      tradingErc20.approve(address(this), tradingTokenAmount);
-    }
+    uint newAllowance = tradingErc20.allowance(msg.sender, address(this)) + tradingTokenAmount;
+    tradingErc20.approve(address(this), newAllowance);
 
     tradeTokensForTokensArr.push(
       TradeTokensForTokens(
@@ -100,12 +96,8 @@ contract Dex {
 
     require(tradingErc20.balanceOf(msg.sender) >= tradingTokenAmount);
 
-    if (tradingErc20.allowance(msg.sender, address(this)) > 0) {
-      uint totalAllowance = tradingErc20.allowance(msg.sender, address(this)) + tradingTokenAmount;
-      tradingErc20.approve(address(this), totalAllowance);
-    } else {
-      tradingErc20.approve(address(this), tradingTokenAmount);
-    }
+    uint newAllowance = tradingErc20.allowance(msg.sender, address(this)) + tradingTokenAmount;
+    tradingErc20.approve(address(this), newAllowance);
 
     tradeTokensForEthArr.push(
       TradeTokensForEth(
@@ -144,6 +136,7 @@ contract Dex {
   } */
 
   function buyTokenForAnotherToken(uint indexOfTrade) public {
+    require(tradeTokensForTokenArr[indexOfTrade].alreadyTraded !== true);
     address tradingTokenAddress = tradeTokensForTokenArr[indexOfTrade].tradingTokenAddress;
     address sender = tradeTokensForTokenArr[indexOfTrade].sender;
     uint tradingTokenAmount = tradeTokensForTokenArr[indexOfTrade].tradingTokenAmount;
@@ -187,6 +180,7 @@ contract Dex {
   } */
 
   function buyTokensForEth(uint indexOfTrade) public payable {
+    require(tradeTokensForEthArr[indexOfTrade].alreadyTraded !== true);
     address sender = tradeTokensForEthArr[indexOfTrade].sender;
     address tradingTokenAddress = tradeTokensForEthArr[indexOfTrade].tradingTokenAddress;
     uint tradingTokenAmount = tradeTokensForEthArr[indexOfTrade].tradingTokenAmount;
@@ -228,6 +222,7 @@ contract Dex {
   } */
 
   function buyEthForTokens(uint indexOfTrade) public payable {
+    require(tradeEthForTokensArr[indexOfTrade].alreadyTraded !== true);
     address sender = tradeEthForTokensArr[indexOfTrade].sender;
     uint tradingEthAmount = tradeEthForTokensArr[indexOfTrade].tradingEthAmount;
     address tradingForTokenAddress = tradeEthForTokensArr[indexOfTrade].tradingForTokenAddress;
@@ -249,8 +244,25 @@ contract Dex {
     );
   }
 
-  function cancelTradeForTokensWithTokens(uint indexOfTrade) public {
+  /* struct TradeTokensForTokens {
+    address sender;
+    uint tradingTokenAddress;
+    uint tradingTokenAmount;
+    uint tradingForTokenAddress;
+    uint tradingForTokenAmount;
+    bool alreadyTraded;
+  } */
 
+  function cancelTradeForTokensWithTokens(uint indexOfTrade) public {
+    tradeTokensForTokenArr[indexOfTrade].alreadyTraded = true;
+
+    address tradingTokenAddress = tradeTokensForTokenArr[indexOfTrade].tradingTokenAddress;
+    uint tradingTokenAmount = tradeTokensForTokenArr[indexOfTrade].tradingTokenAmount;
+
+    ERC20 tradingErc20 = ERC20(tradingTokenAddress);
+
+    uint newTradingAllowance = tradingErc20.allowance(msg.sender, address(this)) - tradingTokenAmount;
+    tradingErc20.approve(address(this), newTradingAllowance);
   }
 
   function cancelTradeForTokensWithEth(uint indexOfTrade) public {
