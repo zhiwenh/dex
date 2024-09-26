@@ -100,9 +100,9 @@ contract Dex {
   TradeTokensForEth[] public tradeTokensForEthArr;
   TradeEthForTokens[] public tradeEthForTokensArr;
 
-  mapping(address => tradeTokensForTokensArr) public tradesOfTokensForTokensOfAnAddress;
-  mapping(address => tradeTokensForEthArr) public tradesOfTokensForEthOfAnAddress;
-  mapping(address => tradeEthForTokensArr) public tradesOfEthForTokensOfAnAddress;
+  mapping(address => TradeTokensForTokens[]) public tradesOfTokensForTokensOfAnAddress;
+  mapping(address => TradeTokensForEth[]) public tradesOfTokensForEthOfAnAddress;
+  mapping(address => TradeEthForTokens[]) public tradesOfEthForTokensOfAnAddress;
 
   address owner;
 
@@ -120,22 +120,22 @@ contract Dex {
 
     require(tradingErc20.balanceOf(msg.sender) >= tradingTokenAmount);
 
-    uint totalAllowanceRequired;
-    TradeTokensForTokens[] tradeTokensForTokensArrForAddress
+    uint totalAllowanceRequired = tradingTokenAmount;
+    TradeTokensForTokens[] memory tradeTokensForTokensArrForAddress
       = tradesOfTokensForTokensOfAnAddress[msg.sender];
 
-    for (uint i = 0; i < tradeTokensForTokensArrForAddress; i++) {
+    for (uint i = 0; i < tradeTokensForTokensArrForAddress.length; i++) {
       if (tradeTokensForTokensArrForAddress[i].tradingTokenAddress == tradingTokenAddress) {
         uint tradingTokenAmountForTrade = tradeTokensForTokensArrForAddress[i].tradingTokenAmount;
         totalAllowanceRequired = tradingTokenAmountForTrade + totalAllowanceRequired;
       }
     }
 
-    require(tradingErc20.allowance(msg.sender, address(this) >= totalAllowanceRequired);
-    
+    require(tradingErc20.allowance(msg.sender, address(this)) >= totalAllowanceRequired);
+
     /* require(tradingErc20.allowance(msg.sender, address(this)) == newAllowance); */
 
-    tradeTokensForTokensArr.push(
+    tradesOfTokensForTokensOfAnAddress[msg.sender].push(
       TradeTokensForTokens(
         msg.sender,
         tradingTokenAddress,
@@ -163,10 +163,20 @@ contract Dex {
 
     require(tradingErc20.balanceOf(msg.sender) >= tradingTokenAmount);
 
-    uint newAllowance = tradingErc20.allowance(msg.sender, address(this)) + tradingTokenAmount;
-    tradingErc20.approve(address(this), newAllowance);
+    uint totalAllowanceRequired = tradingTokenAmount;
+    TradeTokensForEth[] memory tradeTokensForEthArrForAddress
+      = tradesOfTokensForEthOfAnAddress[msg.sender];
 
-    tradeTokensForEthArr.push(
+    for (uint i = 0; i < tradeTokensForEthArrForAddress.length; i++) {
+      if (tradeTokensForEthArrForAddress[i].tradingTokenAddress == tradingTokenAddress) {
+        uint tradingTokenAmountForTrade = tradeTokensForEthArrForAddress[i].tradingTokenAmount;
+        totalAllowanceRequired = tradingTokenAmountForTrade + totalAllowanceRequired;
+      }
+    }
+
+    require(tradingErc20.allowance(msg.sender, address(this)) >= totalAllowanceRequired);
+
+    tradesOfTokensForEthOfAnAddress[msg.sender].push(
       TradeTokensForEth(
         msg.sender,
         tradingTokenAddress,
@@ -190,7 +200,7 @@ contract Dex {
 
     require(msg.value == tradingEthAmount);
 
-    tradeEthForTokensArr.push(
+    tradesOfEthForTokensOfAnAddress[msg.sender].push(
       TradeEthForTokens(
         msg.sender,
         tradingEthAmount,
