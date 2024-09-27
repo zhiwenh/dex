@@ -140,8 +140,7 @@ contract Dex {
 
     for (uint i = 0; i < tradeTokensForTokensArrForAddress.length; i++) {
       if (tradeTokensForTokensArrForAddress[i].tradingTokenAddress == tradingTokenAddress
-          && tradeTokensForTokensArrForAddress[i].alreadyTraded == false)
-        ) {
+          && tradeTokensForTokensArrForAddress[i].alreadyTraded == false) {
         uint tradingTokenAmountForTrade = tradeTokensForTokensArrForAddress[i].tradingTokenAmount;
         totalAllowanceRequired = tradingTokenAmountForTrade + totalAllowanceRequired;
       }
@@ -273,7 +272,7 @@ contract Dex {
     ERC20 tradingForErc20 = ERC20(tradingForTokenAddress);
 
     require(tradingForErc20.balanceOf(msg.sender) >= tradingForTokenAmount);
-    require(tradingForErc20.allowance(msg.sender, address(this)) >= tradingForTokenAmount)
+    require(tradingForErc20.allowance(msg.sender, address(this)) >= tradingForTokenAmount);
 
     tradingForErc20.transferFrom(msg.sender, sender, tradingForTokenAmount);
 
@@ -306,9 +305,8 @@ contract Dex {
     bool alreadyTraded;
   } */
 
-  function buyTokensForEth(uint indexOfTrade) public payable {
+  function buyTokensForEth(address sender, uint indexOfTrade) public payable {
     require(tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].alreadyTraded != true);
-    address sender = tradeTokensForEthArr[indexOfTrade].sender;
     address tradingTokenAddress = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAddress;
     uint tradingTokenAmount = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAmount;
     uint tradingForEthAmount = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingForEthAmount;
@@ -358,10 +356,8 @@ contract Dex {
     require(tradingForErc20.balanceOf(msg.sender) >= tradingForTokenAmount);
     tradingForErc20.transfer(sender, tradingForTokenAmount);
 
-    ERC20 tradingForErc20 = ERC20(tradingForTokenAddress);
-
     require(tradingForErc20.balanceOf(msg.sender) >= tradingForTokenAmount);
-    require(tradingForErc20.allowance(msg.sender, address(this)) >= tradingForTokenAmount)
+    require(tradingForErc20.allowance(msg.sender, address(this)) >= tradingForTokenAmount);
 
     tradingForErc20.transferFrom(msg.sender, sender, tradingForTokenAmount);
 
@@ -389,8 +385,6 @@ contract Dex {
 
   function cancelTradeForTokensWithTokens(address sender, uint indexOfTrade) public {
     tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].alreadyTraded = true;
-
-    address sender = tradeTokensForTokensArr[indexOfTrade].sender;
 
     require(msg.sender == sender);
 
@@ -441,10 +435,8 @@ contract Dex {
     bool alreadyTraded;
   } */
 
-  function cancelTradeForEthWithTokens(uint indexOfTrade) public payable {
+  function cancelTradeForEthWithTokens(address sender, uint indexOfTrade) public payable {
     tradeEthForTokensArr[indexOfTrade].alreadyTraded = true;
-
-    address sender = tradeEthForTokensArr[indexOfTrade].sender;
 
     require(msg.sender == sender);
 
@@ -488,16 +480,16 @@ contract Dex {
     bool alreadyTraded;
   }
 
-  function getTradesForTokenWithToken() public view returns (TradeTokensForTokens[] memory) {
+  function getTradesForTokenWithToken() public view returns (TradeTokensForTokensForCall[] memory) {
+    TradeTokensForTokensForCall[] memory tradeTokensForTokensResultArr;
 
-    TradeTokensForTokensForCall[] memory tradeTokensForTokensResultArr =
-      new TradeTokensForTokensForCall[];
+    uint indexOfResultArr = 0;
 
     for (uint i = 0; i < dexUsersArr.length; i++) {
       if (dexUsersMapping[dexUsersArr[i]].tradeTokensForTokens == true) {
-        for (let j = 0; j < tradesOfTokensForTokensOfAnAddress[dexUsersArr[i]].length; j++) {
-          TradeTokensForTokens tradeTokensForTokens = tradesOfTokensForTokensOfAnAddress[dexUsersArr[i]][j];
-          TradeTokensForTokensForCall tradeTokensForTokensForCall = TradeTokensForTokensForCall (
+        for (uint j = 0; j < tradesOfTokensForTokensOfAnAddress[dexUsersArr[i]].length; j++) {
+          TradeTokensForTokens memory tradeTokensForTokens = tradesOfTokensForTokensOfAnAddress[dexUsersArr[i]][j];
+          TradeTokensForTokensForCall memory tradeTokensForTokensForCall = TradeTokensForTokensForCall (
             dexUsersArr[i],
             tradeTokensForTokens.tradingTokenAddress,
             tradeTokensForTokens.tradingTokenAmount,
@@ -506,7 +498,8 @@ contract Dex {
             tradeTokensForTokens.alreadyTraded
           );
 
-          tradeTokensForTokensResultArr.push(tradeTokensForTokensForCall);
+          tradeTokensForTokensResultArr[indexOfResultArr] = tradeTokensForTokensForCall;
+          indexOfResultArr = indexOfResultArr + 1;
         }
       }
     }
@@ -523,22 +516,24 @@ contract Dex {
   }
 
   function getTradesForTokensWithEth() public view returns (TradeTokensForEth[] memory) {
-    TradeTokensForEthForCall[] memory tradeTokensForEthResultArr =
-      new TradeTokensForEthForCall[];
+    TradeTokensForEthForCall[] memory tradeTokensForEthResultArr;
+
+    uint indexOfResultArr = 0;
 
     for (uint i = 0; i < dexUsersArr.length; i++) {
       if (dexUsersMapping[dexUsersArr[i]].tradeTokensForEth == true) {
-        for (let j = 0; j < tradesOfTokensForEthOfAnAddress[dexUsersArr[i]].length; j++) {
-          TradeTokensForEth tradeTokensForEth = tradesOfTokensForEthOfAnAddress[dexUsersArr[i]][j];
-          TradeTokensForEthForCall tradeTokensForEthForCall = TradeTokensForEthForCall (
+        for (uint j = 0; j < tradesOfTokensForEthOfAnAddress[dexUsersArr[i]].length; j++) {
+          TradeTokensForEth memory tradeTokensForEth = tradesOfTokensForEthOfAnAddress[dexUsersArr[i]][j];
+          TradeTokensForEthForCall memory tradeTokensForEthForCall = TradeTokensForEthForCall (
             dexUsersArr[i],
             tradeTokensForEth.tradingTokenAddress,
             tradeTokensForEth.tradingTokenAmount,
             tradeTokensForEth.tradingForEthAmount,
-            tradeTokensForTokens.alreadyTraded
+            tradeTokensForEth.alreadyTraded
           );
 
-          tradeTokensForEthResultArr.push(tradeTokensForEthForCall);
+          tradeTokensForEthResultArr[indexOfResultArr] = tradeTokensForEthForCall;
+          indexOfResultArr = indexOfResultArr + 1;
         }
       }
     }
@@ -555,6 +550,7 @@ contract Dex {
   } */
 
   struct TradeEthForTokensForCall {
+    address sender;
     uint tradingEthAmount;
     address tradingForTokenAddress;
     uint tradingForTokenAmount;
@@ -562,14 +558,15 @@ contract Dex {
   }
 
   function getTradesForEthWithTokens() public view returns (TradeEthForTokens[] memory) {
-    TradeEthForTokensForCall[] memory tradeEthForTokensResultArr =
-      new TradeEthForTokensForCall[];
+    TradeEthForTokensForCall[] memory tradeEthForTokensResultArr;
+
+    uint indexOfResultArr = 0;
 
     for (uint i = 0; i < dexUsersArr.length; i++) {
       if (dexUsersMapping[dexUsersArr[i]].tradeTokensForEth == true) {
-        for (let j = 0; j < tradesOfEthForTokensOfAnAddress[dexUsersArr[i]].length; j++) {
-          TradeEthForTokens tradeEthForTokens = tradesOfEthForTokensOfAnAddress[dexUsersArr[i]][j];
-          TradeEthForTokensForCall tradeEthForTokensForCall = TradeEthForTokensForCall (
+        for (uint j = 0; j < tradesOfEthForTokensOfAnAddress[dexUsersArr[i]].length; j++) {
+          TradeEthForTokens memory tradeEthForTokens = tradesOfEthForTokensOfAnAddress[dexUsersArr[i]][j];
+          TradeEthForTokensForCall memory tradeEthForTokensForCall = TradeEthForTokensForCall (
             dexUsersArr[i],
             tradeEthForTokens.tradingEthAmount,
             tradeEthForTokens.tradingForTokenAddress,
@@ -577,7 +574,8 @@ contract Dex {
             tradeEthForTokens.alreadyTraded
           );
 
-          tradeEthForTokensResultArr.push(tradeEthForTokensForCall);
+          tradeEthForTokensResultArr[indexOfResultArr] = tradeEthForTokensForCall;
+          indexOfResultArr = indexOfResultArr + 1;
         }
       }
     }
