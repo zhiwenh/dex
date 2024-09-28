@@ -140,8 +140,7 @@ contract Dex {
     for (uint i = 0; i < tradeTokensForTokensArrForAddress.length; i++) {
       if (tradeTokensForTokensArrForAddress[i].tradingTokenAddress == tradingTokenAddress
           && tradeTokensForTokensArrForAddress[i].alreadyTraded == false) {
-        uint tradingTokenAmountForTrade = tradeTokensForTokensArrForAddress[i].tradingTokenAmount;
-        totalAllowanceRequired = tradingTokenAmountForTrade + totalAllowanceRequired;
+        totalAllowanceRequired = tradeTokensForTokensArrForAddress[i].tradingTokenAmount + totalAllowanceRequired;
       }
     }
 
@@ -191,8 +190,7 @@ contract Dex {
 
     for (uint i = 0; i < tradeTokensForEthArrForAddress.length; i++) {
       if (tradeTokensForEthArrForAddress[i].tradingTokenAddress == tradingTokenAddress) {
-        uint tradingTokenAmountForTrade = tradeTokensForEthArrForAddress[i].tradingTokenAmount;
-        totalAllowanceRequired = tradingTokenAmountForTrade + totalAllowanceRequired;
+        totalAllowanceRequired = tradeTokensForEthArrForAddress[i].tradingTokenAmount + totalAllowanceRequired;
       }
     }
 
@@ -257,32 +255,32 @@ contract Dex {
     bool alreadyTraded;
   } */
 
+  /* address tradingTokenAddress = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAddress;
+  uint tradingTokenAmount = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAmount;
+  address tradingForTokenAddress = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress;
+  uint tradingForTokenAmount = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount; */
+
   function buyTokensFromOtherTokens(address sender, uint indexOfTrade) public {
     require(tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].alreadyTraded != true);
-    address tradingTokenAddress = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAddress;
-    uint tradingTokenAmount = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAmount;
 
-    ERC20 tradingErc20 = ERC20(tradingTokenAddress);
-    tradingErc20.transferFrom(sender, msg.sender, tradingTokenAmount);
+    ERC20 tradingErc20 = ERC20(tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAddress);
+    tradingErc20.transferFrom(sender, msg.sender, tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAmount);
 
-    address tradingForTokenAddress = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress;
-    uint tradingForTokenAmount = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount;
+    ERC20 tradingForErc20 = ERC20(tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress);
 
-    ERC20 tradingForErc20 = ERC20(tradingForTokenAddress);
+    require(tradingForErc20.balanceOf(msg.sender) >= tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount);
+    require(tradingForErc20.allowance(msg.sender, address(this)) >= tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount);
 
-    require(tradingForErc20.balanceOf(msg.sender) >= tradingForTokenAmount);
-    require(tradingForErc20.allowance(msg.sender, address(this)) >= tradingForTokenAmount);
-
-    tradingForErc20.transferFrom(msg.sender, sender, tradingForTokenAmount);
+    tradingForErc20.transferFrom(msg.sender, sender, tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount);
 
     tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].alreadyTraded = true;
 
     emit EventTradeTokensForTokens(
       sender,
-      tradingTokenAddress,
-      tradingTokenAmount,
-      tradingForTokenAddress,
-      tradingForTokenAmount
+      tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAddress,
+      tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAmount,
+      tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress,
+      tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount
     );
   }
 
@@ -304,16 +302,17 @@ contract Dex {
     bool alreadyTraded;
   } */
 
+  /* address tradingTokenAddress = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAddress;
+  uint tradingTokenAmount = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAmount;
+  uint tradingForEthAmount = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingForEthAmount; */
+
   function buyTokensForEth(address sender, uint indexOfTrade) public payable {
     require(tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].alreadyTraded != true);
-    address tradingTokenAddress = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAddress;
-    uint tradingTokenAmount = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAmount;
-    uint tradingForEthAmount = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingForEthAmount;
 
-    ERC20 tradingErc20 = ERC20(tradingTokenAddress);
-    tradingErc20.transferFrom(sender, msg.sender, tradingTokenAmount);
+    ERC20 tradingErc20 = ERC20(tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAddress);
+    tradingErc20.transferFrom(sender, msg.sender, tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAmount);
 
-    require(msg.value == tradingForEthAmount);
+    require(msg.value == tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingForEthAmount);
 
     (bool sent,) = sender.call{value: msg.value}("");
     require(sent, "Failed to send Ether");
@@ -322,9 +321,9 @@ contract Dex {
 
     emit EventTradeTokensForEth(
       sender,
-      tradingTokenAddress,
-      tradingTokenAmount,
-      tradingForEthAmount
+      tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAddress,
+      tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAmount,
+      tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingForEthAmount
     );
   }
 
@@ -345,29 +344,30 @@ contract Dex {
     bool alreadyTraded;
   } */
 
+  /* uint tradingEthAmount = tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingEthAmount;
+  address tradingForTokenAddress = tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress;
+  uint tradingForTokenAmount = tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount; */
+
   function buyEthForTokens(address sender, uint indexOfTrade) public payable {
     require(tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].alreadyTraded != true);
-    uint tradingEthAmount = tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingEthAmount;
-    address tradingForTokenAddress = tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress;
-    uint tradingForTokenAmount = tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount;
 
-    ERC20 tradingForErc20 = ERC20(tradingForTokenAddress);
-    require(tradingForErc20.balanceOf(msg.sender) >= tradingForTokenAmount);
+    ERC20 tradingForErc20 = ERC20(tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress);
+    require(tradingForErc20.balanceOf(msg.sender) >= tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount);
 
-    require(tradingForErc20.allowance(msg.sender, address(this)) >= tradingForTokenAmount);
+    require(tradingForErc20.allowance(msg.sender, address(this)) >= tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount);
 
-    tradingForErc20.transferFrom(msg.sender, sender, tradingForTokenAmount);
+    tradingForErc20.transferFrom(msg.sender, sender, tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount);
 
-    (bool sent,) = payable(msg.sender).call{value: tradingEthAmount}("");
+    (bool sent,) = payable(msg.sender).call{value: tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingEthAmount}("");
     require(sent, "Failed to send Ether");
 
     tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].alreadyTraded = true;
 
     emit EventTradeEthForTokens(
       sender,
-      tradingEthAmount,
-      tradingForTokenAddress,
-      tradingForTokenAmount
+      tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingEthAmount,
+      tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress,
+      tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount
     );
   }
 
@@ -380,22 +380,23 @@ contract Dex {
     bool alreadyTraded;
   } */
 
+  /* address tradingTokenAddress = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAddress;
+  uint tradingTokenAmount = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAmount;
+  address tradingForTokenAddress = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress;
+  uint tradingForTokenAmount = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount; */
+
   function cancelTradeForTokensWithTokens(address sender, uint indexOfTrade) public {
-    tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].alreadyTraded = true;
-
     require(msg.sender == sender);
+    require(tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].alreadyTraded == false);
 
-    address tradingTokenAddress = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAddress;
-    uint tradingTokenAmount = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAmount;
-    address tradingForTokenAddress = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress;
-    uint tradingForTokenAmount = tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount;
+    tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].alreadyTraded = true;
 
     emit EventCanceledTradeTokensForTokens(
       sender,
-      tradingTokenAddress,
-      tradingTokenAmount,
-      tradingForTokenAddress,
-      tradingForTokenAmount
+      tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAddress,
+      tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAmount,
+      tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress,
+      tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount
     );
   }
 
@@ -407,20 +408,21 @@ contract Dex {
     bool alreadyTraded;
   } */
 
+  /* address tradingTokenAddress = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAddress;
+  uint tradingTokenAmount = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAmount;
+  uint tradingForEthAmount = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingForEthAmount; */
+
   function cancelTradeForTokensWithEth(address sender, uint indexOfTrade) public {
-    tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].alreadyTraded = true;
-
     require(msg.sender == sender);
+    require(tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].alreadyTraded == false);
 
-    address tradingTokenAddress = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAddress;
-    uint tradingTokenAmount = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAmount;
-    uint tradingForEthAmount = tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingForEthAmount;
+    tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].alreadyTraded = true;
 
     emit EventCanceledTradeTokensForEth(
       sender,
-      tradingTokenAddress,
-      tradingTokenAmount,
-      tradingForEthAmount
+      tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAddress,
+      tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAmount,
+      tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingForEthAmount
     );
   }
 
@@ -432,23 +434,25 @@ contract Dex {
     bool alreadyTraded;
   } */
 
+  /* uint tradingEthAmount = tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingEthAmount;
+  address tradingForTokenAddress = tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress;
+  uint tradingForTokenAmount = tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount;
+   */
+   
   function cancelTradeForEthWithTokens(address sender, uint indexOfTrade) public payable {
+    require(msg.sender == sender);
+    require(tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].alreadyTraded == false);
+
     tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].alreadyTraded = true;
 
-    require(msg.sender == sender);
-
-    uint tradingEthAmount = tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingEthAmount;
-    address tradingForTokenAddress = tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress;
-    uint tradingForTokenAmount = tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount;
-
-    (bool sent,) = payable(msg.sender).call{value: tradingEthAmount}("");
+    (bool sent,) = payable(msg.sender).call{value: tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingEthAmount}("");
     require(sent, "Failed to send Ether");
 
     emit EventCanceledTradeEthForTokens(
       sender,
-      tradingEthAmount,
-      tradingForTokenAddress,
-      tradingForTokenAmount
+      tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingEthAmount,
+      tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress,
+      tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount
     );
   }
 

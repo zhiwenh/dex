@@ -269,6 +269,10 @@ contract("Dex", (accounts) => {
       {from: accounts[1], value: 1000000000000000000}
     );
 
+    const balanceOfDexContract = await web3.eth.getBalance(dexInstance.address);
+
+    console.log('balance of dex contract', balanceOfDexContract);
+
     const tradesForEthWithTokens = await dexInstance.getTradesForEthWithTokens();
 
     const ethBalanceOfAccount2 = await web3.eth.getBalance(accounts[1])
@@ -309,6 +313,10 @@ contract("Dex", (accounts) => {
     console.log('account 2', accounts[1]);
 
     console.log('account 4', accounts[3]);
+
+    const balanceOfDexContract = await web3.eth.getBalance(dexInstance.address);
+
+    console.log('balance of dex contract', balanceOfDexContract);
     // assert.equal(tradesForTokensWithEth[0].sender, accounts[1], "Account 1 placed order");
     // assert.equal(allowance.toNumber(), 2100, "Dex has to be approved for the right amount of tokens");
   });
