@@ -321,4 +321,16 @@ contract("Dex", (accounts) => {
     // assert.equal(allowance.toNumber(), 2100, "Dex has to be approved for the right amount of tokens");
   });
 
+  it("should get all the trades of an address", async () => {
+    const dexInstance = await Dex.deployed();
+    const testToken1Instance = await TestToken1.deployed();
+    const testToken2Instance = await TestToken2.deployed();
+
+    const allTradesOfAccount2 = await dexInstance.getAllTradesOfAccount(accounts[1]);
+
+    console.log('All trades of account 2', allTradesOfAccount2);
+    // assert.equal(tradesForTokensWithEth[0].sender, accounts[1], "Account 1 placed order");
+    // assert.equal(allowance.toNumber(), 2100, "Dex has to be approved for the right amount of tokens");
+  });
+
 });
