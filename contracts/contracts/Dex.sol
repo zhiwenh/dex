@@ -246,6 +246,85 @@ contract Dex {
     );
   }
 
+  function updateTokensToDexForTradeWithOtherTokens(
+    uint indexOfTrade,
+    address tradingTokenAddress,
+    uint tradingTokenAmount,
+    address tradingForTokenAddress,
+    uint tradingForTokenAmount,
+  ) {
+
+    ERC20 tradingErc20 = ERC20(tradingTokenAddress);
+
+    uint totalAllowanceRequired = tradingTokenAmount;
+    TradeTokensForTokens[] memory tradeTokensForTokensArrForAddress
+      = tradesOfTokensForTokensOfAnAddress[msg.sender];
+
+    for (uint i = 0; i < tradeTokensForTokensArrForAddress.length; i++) {
+      if (tradeTokensForTokensArrForAddress[i].tradingTokenAddress == tradingTokenAddress
+          && tradeTokensForTokensArrForAddress[i].alreadyTraded == false
+          && i != indexOfTrade) {
+        totalAllowanceRequired = tradeTokensForTokensArrForAddress[i].tradingTokenAmount + totalAllowanceRequired;
+      }
+    }
+
+    require(tradingErc20.allowance(msg.sender, address(this)) >= totalAllowanceRequired);
+    require(tradingErc20.balanceOf(msg.sender) >= totalAllowanceRequired);
+
+    tradesOfTokensForTokensOfAnAddress[msg.sender][indexOfTrade].tradingTokenAddress = tradingTokenAddress;
+    tradesOfTokensForTokensOfAnAddress[msg.sender][indexOfTrade].tradingTokenAmount = tradingTokenAmount;
+    tradesOfTokensForTokensOfAnAddress[msg.sender][indexOfTrade].tradingForTokenAddress = tradingForTokenAddress;
+    tradesOfTokensForTokensOfAnAddress[msg.sender][indexOfTrade].tradingForTokenAmount = tradingForTokenAmount;
+  }
+
+  function updateTokensToDexForTradeWithEth(
+    uint indexOfTrade,
+    address tradingTokenAddress,
+    uint tradingTokenAmount,
+    uint tradingForEthAmount
+  ) {
+    ERC20 tradingErc20 = ERC20(tradingTokenAddress);
+
+    uint totalAllowanceRequired = tradingTokenAmount;
+
+    TradeTokensForEth[] memory tradeTokensForEthArrForAddress
+      = tradesOfTokensForEthOfAnAddress[msg.sender];
+
+    for (uint i = 0; i < tradeTokensForEthArrForAddress.length; i++) {
+      if (tradeTokensForEthArrForAddress[i].tradingTokenAddress == tradingTokenAddress
+          && tradeTokensForEthArrForAddress[i].alreadyTraded == false
+          && i != indexOfTrade) {
+        totalAllowanceRequired = tradeTokensForEthArrForAddress[i].tradingTokenAmount + totalAllowanceRequired;
+      }
+    }
+
+    require(tradingErc20.allowance(msg.sender, address(this)) >= totalAllowanceRequired);
+    require(tradingErc20.balanceOf(msg.sender) >= totalAllowanceRequired);
+
+    tradesOfTokensForEthOfAnAddress[msg.sender][indexOfTrade].tradingTokenAddress = tradingTokenAddress;
+    tradesOfTokensForEthOfAnAddress[msg.sender][indexOfTrade].tradingTokenAmount = tradingTokenAmount;
+    tradesOfTokensForEthOfAnAddress[msg.sender][indexOfTrade].tradingForEthAmount = tradingForEthAmount;
+  }
+
+  function updateEthToDexForTradeWithTokens(
+    uint indexOfTrade,
+    uint tradingEthAmount,
+    address tradingForTokenAddress,
+    uint tradingForTokenAmount
+  ) {
+
+    if (tradingEthAmount - amountOfEthAlreadyInDex > 0) {
+      require(msg.value == tradingEthAmount - amountOfEthAlreadyInDex);
+    } else if (tradingEthAmount - amountOfEthAlreadyInDex < 0) {
+      (bool sent,) = msg.sender.call{value: amountOfEthAlreadyInDex - tradingEthAmount}("");
+      require(sent, "Failed to send Ether");
+    }
+
+    tradesOfEthForTokensOfAnAddress[msg.sender][indexOfTrade].tradingEthAmount = tradingEthAmount;
+    tradesOfEthForTokensOfAnAddress[msg.sender][indexOfTrade].tradingForTokenAddress = tradingForTokenAddress;
+    tradesOfEthForTokensOfAnAddress[msg.sender][indexOfTrade].tradingForTokenAmount = tradingForTokenAmount;
+  }
+
   /* struct TradeTokensForTokens {
     address sender;
     uint tradingTokenAddress;
@@ -605,7 +684,6 @@ contract Dex {
   }
 
   function getAllTradesOfAccount(address sender) public view returns(AllTrades memory) {
-
     AllTrades memory allTrades;
 
     allTrades.tradeTokensForTokensForCall = new TradeTokensForTokensForCall[](tradesOfTokensForTokensOfAnAddress[sender].length);
