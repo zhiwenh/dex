@@ -67,7 +67,7 @@ contract("Dex", (accounts) => {
     console.log('trades for tokens with tokens', tradesForTokensWithTokens);
 
     const allowance2 = await testToken1Instance.allowance(accounts[1], dexInstance.address);
-    assert.equal(tradesForTokensWithTokens[0].sender, accounts[1], "Account 2 placed order");
+    assert.equal(tradesForTokensWithTokens.tradeTokensForTokensForCall[0].sender, accounts[1], "Account 2 placed order");
     assert.equal(allowance2.toNumber(), 1100, "Dex has to be approved for the right amount of tokens");
   });
 
@@ -136,7 +136,7 @@ contract("Dex", (accounts) => {
     console.log('trades of tokens', tradesForTokensWithTokens2);
 
     console.log('balance of 3 of token 1', balanceOfAccount3.toNumber());
-    // assert.equal(tradesForTokensWithTokens[0].sender, accounts[1], "Account 2 placed order");
+    assert.equal(balanceOfAccount3, 1000, "Account 3 has 1000 tokens");
   });
 
   it("should have the 4th user place a token for token order on dex", async () => {
@@ -167,7 +167,8 @@ contract("Dex", (accounts) => {
     console.log('trades for tokens with tokens', tradesForTokensWithTokens);
 
     const allowance2 = await testToken1Instance.allowance(accounts[3], dexInstance.address);
-    // assert.equal(tradesForTokensWithTokens[3].sender, accounts[3], "Account 2 placed order");
+
+    assert.equal(tradesForTokensWithTokens.tradeTokensForTokensForCall[3].sender, accounts[3], "Account 2 placed order");
     assert.equal(allowance2.toNumber(), 2100, "Dex has to be approved for the right amount of tokens");
   });
 
@@ -224,7 +225,7 @@ contract("Dex", (accounts) => {
 
     console.log('trades for tokens with eth', tradesForTokensWithEth);
 
-    assert.equal(tradesForTokensWithEth[0].sender, accounts[1], "Account 1 placed order");
+    assert.equal(tradesForTokensWithEth.tradeTokensForEthForCall[0].sender, accounts[1], "Account 1 placed order");
     assert.equal(allowance.toNumber(), 2100, "Dex has to be approved for the right amount of tokens");
   });
 
@@ -253,7 +254,7 @@ contract("Dex", (accounts) => {
 
     console.log('trades for tokens with eth', tradesForTokensWithEth);
 
-    // assert.equal(tradesForTokensWithEth[0].sender, accounts[1], "Account 1 placed order");
+    assert.equal(balanceOf3rdAccount, 2000, "Token balance of account 3 is 2000");
     // assert.equal(allowance.toNumber(), 2100, "Dex has to be approved for the right amount of tokens");
   });
 
@@ -273,7 +274,7 @@ contract("Dex", (accounts) => {
 
     console.log('balance of dex contract', balanceOfDexContract);
 
-    const tradesForEthWithTokens = await dexInstance.getAllTrades();
+    const allTrades = await dexInstance.getAllTrades();
 
     const ethBalanceOfAccount2 = await web3.eth.getBalance(accounts[1])
     console.log('eth balance of 2nd account', ethBalanceOfAccount2);
@@ -281,9 +282,9 @@ contract("Dex", (accounts) => {
     const ethBalanceOfAccount3 = await web3.eth.getBalance(accounts[2])
     console.log('eth balance of 3nd account', ethBalanceOfAccount3);
 
-    console.log('trades for eth with tokens', tradesForEthWithTokens);
+    console.log('trades for eth with tokens', allTrades);
 
-    // assert.equal(tradesForTokensWithEth[0].sender, accounts[1], "Account 1 placed order");
+    assert.equal(allTrades.tradeEthForTokensForCall[0].sender, accounts[1], "Account 1 placed order");
     // assert.equal(allowance.toNumber(), 2100, "Dex has to be approved for the right amount of tokens");
   });
 
@@ -317,7 +318,10 @@ contract("Dex", (accounts) => {
     const balanceOfDexContract = await web3.eth.getBalance(dexInstance.address);
 
     console.log('balance of dex contract', balanceOfDexContract);
-    // assert.equal(tradesForTokensWithEth[0].sender, accounts[1], "Account 1 placed order");
+
+    const account2Token2Amount = await testToken2Instance.balanceOf(accounts[1]);
+
+    assert.equal(account2Token2Amount.toNumber(), 110, "Account 2 should have a token 2 balance of 100");
     // assert.equal(allowance.toNumber(), 2100, "Dex has to be approved for the right amount of tokens");
   });
 
@@ -329,7 +333,8 @@ contract("Dex", (accounts) => {
     const allTradesOfAccount2 = await dexInstance.getAllTradesOfAccount(accounts[1]);
 
     console.log('All trades of account 2', allTradesOfAccount2);
-    // assert.equal(tradesForTokensWithEth[0].sender, accounts[1], "Account 1 placed order");
+
+    assert.equal(allTradesOfAccount2.tradeTokensForTokensForCall[0].sender, accounts[1], "Account 2 should be the sender");
     // assert.equal(allowance.toNumber(), 2100, "Dex has to be approved for the right amount of tokens");
   });
 
@@ -340,9 +345,52 @@ contract("Dex", (accounts) => {
 
     const allTrades = await dexInstance.getAllTrades();
 
-    console.log('All tradess', allTrades);
-    // assert.equal(tradesForTokensWithEth[0].sender, accounts[1], "Account 1 placed order");
+    console.log('All trades', allTrades);
+
+    assert.equal(allTrades.tradeTokensForTokensForCall[0].sender, accounts[1], "Account 2 should be the sender");
     // assert.equal(allowance.toNumber(), 2100, "Dex has to be approved for the right amount of tokens");
   });
 
+  it("should cancel trades", async () => {
+    const dexInstance = await Dex.deployed();
+    const testToken1Instance = await TestToken1.deployed();
+    const testToken2Instance = await TestToken2.deployed();
+
+    await dexInstance.cancelTradeForTokensWithTokens(accounts[1], 1, {from: accounts[1]});
+
+    await testToken1Instance.approve(dexInstance.address, 2000, {from: accounts[1]});
+
+    await dexInstance.addTokensToDexForTradeWithEth(
+      testToken1Instance.address,
+      1000,
+      BigInt(1000000000000000000),
+      {from: accounts[1]}
+    );
+
+    await dexInstance.cancelTradeForTokensWithEth(accounts[1], 1, {from: accounts[1]});
+
+    await dexInstance.addEthToDexForTradeWithTokens(
+      BigInt(1000000000000000000),
+      testToken2Instance.address,
+      100,
+      {from: accounts[1], value: 1000000000000000000}
+    );
+
+    const balanceBeforeCancelOfAccount2 = await web3.eth.getBalance(accounts[1]);
+
+    console.log('balance of account 2 before cancel', balanceBeforeCancelOfAccount2);
+
+    await dexInstance.cancelTradeForEthWithTokens(accounts[1], 1, {from: accounts[1]});
+
+    const balanceAfterCancelOfAccount2 = await web3.eth.getBalance(accounts[1]);
+
+    console.log('balance of account 2 after cancel', balanceAfterCancelOfAccount2);
+
+    const allTrades = await dexInstance.getAllTrades();
+
+    console.log('All trades', allTrades);
+
+    assert.equal(allTrades.tradeTokensForTokensForCall[0].sender, accounts[1], "Account 2 should be the sender");
+    // assert.equal(allowance.toNumber(), 2100, "Dex has to be approved for the right amount of tokens");
+  });
 });

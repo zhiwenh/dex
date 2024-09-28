@@ -121,26 +121,30 @@ contract Dex {
     address tradingForTokenAddress,
     uint tradingForTokenAmount) public {
 
-    if (dexUsersMapping[msg.sender].tradeTokensForTokens == false &&
-        dexUsersMapping[msg.sender].tradeTokensForEth == false &&
-        dexUsersMapping[msg.sender].tradeEthForTokens == false) {
-          dexUsersArr.push(msg.sender);
-          dexUsersMapping[msg.sender].tradeTokensForTokens = true;
-
-    } else if (dexUsersMapping[msg.sender].tradeTokensForTokens == false) {
-      dexUsersMapping[msg.sender].tradeTokensForTokens = true;
-    }
-
     ERC20 tradingErc20 = ERC20(tradingTokenAddress);
 
     uint totalAllowanceRequired = tradingTokenAmount;
     TradeTokensForTokens[] memory tradeTokensForTokensArrForAddress
       = tradesOfTokensForTokensOfAnAddress[msg.sender];
 
-    for (uint i = 0; i < tradeTokensForTokensArrForAddress.length; i++) {
-      if (tradeTokensForTokensArrForAddress[i].tradingTokenAddress == tradingTokenAddress
-          && tradeTokensForTokensArrForAddress[i].alreadyTraded == false) {
-        totalAllowanceRequired = tradeTokensForTokensArrForAddress[i].tradingTokenAmount + totalAllowanceRequired;
+    TradeTokensForEth[] memory tradeTokensForEthArrForAddress
+      = tradesOfTokensForEthOfAnAddress[msg.sender];
+
+    if (dexUsersMapping[msg.sender].tradeTokensForTokens == true) {
+      for (uint i = 0; i < tradeTokensForTokensArrForAddress.length; i++) {
+        if (tradeTokensForTokensArrForAddress[i].tradingTokenAddress == tradingTokenAddress
+            && tradeTokensForTokensArrForAddress[i].alreadyTraded == false) {
+          totalAllowanceRequired = tradeTokensForTokensArrForAddress[i].tradingTokenAmount + totalAllowanceRequired;
+        }
+      }
+    }
+
+    if (dexUsersMapping[msg.sender].tradeTokensForEth == true) {
+      for (uint i = 0; i < tradeTokensForEthArrForAddress.length; i++) {
+        if (tradeTokensForEthArrForAddress[i].tradingTokenAddress == tradingTokenAddress
+            && tradeTokensForEthArrForAddress[i].alreadyTraded == false) {
+          totalAllowanceRequired = tradeTokensForEthArrForAddress[i].tradingTokenAmount + totalAllowanceRequired;
+        }
       }
     }
 
@@ -165,6 +169,16 @@ contract Dex {
       tradingForTokenAddress,
       tradingForTokenAmount
     );
+
+    if (dexUsersMapping[msg.sender].tradeTokensForTokens == false &&
+        dexUsersMapping[msg.sender].tradeTokensForEth == false &&
+        dexUsersMapping[msg.sender].tradeEthForTokens == false) {
+          dexUsersArr.push(msg.sender);
+          dexUsersMapping[msg.sender].tradeTokensForTokens = true;
+
+    } else if (dexUsersMapping[msg.sender].tradeTokensForTokens == false) {
+      dexUsersMapping[msg.sender].tradeTokensForTokens = true;
+    }
   }
 
   function addTokensToDexForTradeWithEth(
@@ -172,27 +186,39 @@ contract Dex {
     uint tradingTokenAmount,
     uint tradingForEthAmount) public {
 
-    if (dexUsersMapping[msg.sender].tradeTokensForTokens == false &&
-        dexUsersMapping[msg.sender].tradeTokensForEth == false &&
-        dexUsersMapping[msg.sender].tradeEthForTokens == false) {
-          dexUsersArr.push(msg.sender);
-          dexUsersMapping[msg.sender].tradeTokensForEth = true;
-
-    } else if (dexUsersMapping[msg.sender].tradeTokensForEth == false) {
-      dexUsersMapping[msg.sender].tradeTokensForEth = true;
-    }
-
     ERC20 tradingErc20 = ERC20(tradingTokenAddress);
 
     uint totalAllowanceRequired = tradingTokenAmount;
+
+    TradeTokensForTokens[] memory tradeTokensForTokensArrForAddress
+      = tradesOfTokensForTokensOfAnAddress[msg.sender];
+
     TradeTokensForEth[] memory tradeTokensForEthArrForAddress
       = tradesOfTokensForEthOfAnAddress[msg.sender];
 
-    for (uint i = 0; i < tradeTokensForEthArrForAddress.length; i++) {
+    if (dexUsersMapping[msg.sender].tradeTokensForTokens == true) {
+      for (uint i = 0; i < tradeTokensForTokensArrForAddress.length; i++) {
+        if (tradeTokensForTokensArrForAddress[i].tradingTokenAddress == tradingTokenAddress
+            && tradeTokensForTokensArrForAddress[i].alreadyTraded == false) {
+          totalAllowanceRequired = tradeTokensForTokensArrForAddress[i].tradingTokenAmount + totalAllowanceRequired;
+        }
+      }
+    }
+
+    if (dexUsersMapping[msg.sender].tradeTokensForEth == true) {
+      for (uint i = 0; i < tradeTokensForEthArrForAddress.length; i++) {
+        if (tradeTokensForEthArrForAddress[i].tradingTokenAddress == tradingTokenAddress
+            && tradeTokensForEthArrForAddress[i].alreadyTraded == false) {
+          totalAllowanceRequired = tradeTokensForEthArrForAddress[i].tradingTokenAmount + totalAllowanceRequired;
+        }
+      }
+    }
+
+    /* for (uint i = 0; i < tradeTokensForEthArrForAddress.length; i++) {
       if (tradeTokensForEthArrForAddress[i].tradingTokenAddress == tradingTokenAddress) {
         totalAllowanceRequired = tradeTokensForEthArrForAddress[i].tradingTokenAmount + totalAllowanceRequired;
       }
-    }
+    } */
 
     require(tradingErc20.allowance(msg.sender, address(this)) >= totalAllowanceRequired);
     require(tradingErc20.balanceOf(msg.sender) >= totalAllowanceRequired);
@@ -211,6 +237,16 @@ contract Dex {
       tradingTokenAmount,
       tradingForEthAmount
     );
+
+    if (dexUsersMapping[msg.sender].tradeTokensForTokens == false &&
+        dexUsersMapping[msg.sender].tradeTokensForEth == false &&
+        dexUsersMapping[msg.sender].tradeEthForTokens == false) {
+          dexUsersArr.push(msg.sender);
+          dexUsersMapping[msg.sender].tradeTokensForEth = true;
+
+    } else if (dexUsersMapping[msg.sender].tradeTokensForEth == false) {
+      dexUsersMapping[msg.sender].tradeTokensForEth = true;
+    }
   }
 
   function addEthToDexForTradeWithTokens(
