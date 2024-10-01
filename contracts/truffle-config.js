@@ -46,6 +46,9 @@
 
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 
+const HDWalletProvider = require("@truffle/hdwallet-provider")
+const mnemonic = 'cruel expire jelly adult estate wine syrup maple install tissue juice crunch';
+
 module.exports = {
   /**
    * Networks define how you connect to your ethereum client and let you set the
@@ -64,11 +67,13 @@ module.exports = {
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
-    // development: {
-    //  host: "127.0.0.1",     // Localhost (default: none)
-    //  port: 8545,            // Standard Ethereum port (default: none)
-    //  network_id: "*",       // Any network (default: none)
-    // },
+    development: {
+     host: "127.0.0.1",     // Localhost (default: none)
+     port: 8545,            // Standard Ethereum port (default: none)
+     network_id: "*",       // Any network (default: none)
+     provider: () =>
+        new HDWalletProvider(mnemonic, "http://127.0.0.1:8545"),
+    },
     //
     // An additional network, but with some advanced options…
     // advanced: {

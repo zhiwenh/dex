@@ -36,3 +36,61 @@
     transform: rotate(360deg);
   }
 }
+
+.button-1 {
+  height: 30px;
+  width: 100px;
+}
+
+
+.App {
+  text-align: center;
+}
+
+.orderList{
+  display: flex;
+  flex-direction: row;
+}
+
+.trades-wrap {
+
+}
+
+.trades {
+  display: flex;
+  flex-direction: row;
+}
+
+.trade-inner-wrap {
+  margin-bottom: 5px;
+}
+
+.trades-of-tokens-for-tokens {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.trade-of-tokens-for-tokens {
+  border: 1px solid black;
+  margin-bottom: 15px;
+}
+
+.trades-of-tokens-for-eth {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.trade-of-tokens-for-eth {
+  border: 1px solid black;
+  margin-bottom: 15px;
+}
+
+.trades-of-eth-for-tokens {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.trade-of-eth-for-tokens {
+  border: 1px solid black;
+  margin-bottom: 15px;
+}

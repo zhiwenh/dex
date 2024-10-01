@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.20;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
@@ -254,16 +254,6 @@ contract Dex {
     address tradingForTokenAddress,
     uint tradingForTokenAmount) public payable {
 
-    if (dexUsersMapping[msg.sender].tradeTokensForTokens == false &&
-        dexUsersMapping[msg.sender].tradeTokensForEth == false &&
-        dexUsersMapping[msg.sender].tradeEthForTokens == false) {
-          dexUsersArr.push(msg.sender);
-          dexUsersMapping[msg.sender].tradeEthForTokens = true;
-
-    } else if (dexUsersMapping[msg.sender].tradeEthForTokens == false) {
-      dexUsersMapping[msg.sender].tradeEthForTokens = true;
-    }
-
     require(msg.value == tradingEthAmount);
 
     tradesOfEthForTokensOfAnAddress[msg.sender].push(
@@ -280,6 +270,16 @@ contract Dex {
       tradingForTokenAddress,
       tradingForTokenAmount
     );
+
+    if (dexUsersMapping[msg.sender].tradeTokensForTokens == false &&
+        dexUsersMapping[msg.sender].tradeTokensForEth == false &&
+        dexUsersMapping[msg.sender].tradeEthForTokens == false) {
+          dexUsersArr.push(msg.sender);
+          dexUsersMapping[msg.sender].tradeEthForTokens = true;
+
+    } else if (dexUsersMapping[msg.sender].tradeEthForTokens == false) {
+      dexUsersMapping[msg.sender].tradeEthForTokens = true;
+    }
   }
 
   /* function updateTokensToDexForTradeWithOtherTokens(
