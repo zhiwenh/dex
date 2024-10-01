@@ -117,6 +117,8 @@ function App() {
 
 
     getTrades();
+
+    setSearchedForTokenNameTrading('TestToken1');
   }, []);
 
 
@@ -241,9 +243,9 @@ function App() {
   // let tradesOfTokensToEth;
   // let tradesOfEthToTokens;
 
-  let tradesOfTokensToTokensJsx;
-  let tradesOfTokensToEthJsx;
-  let tradesOfEthToTokensJsx;
+  // let tradesOfTokensToTokensJsx;
+  // let tradesOfTokensToEthJsx;
+  // let tradesOfEthToTokensJsx;
 
   let tradesTokenNames = [];
   let tradesTokenSymbols = [];
@@ -257,9 +259,9 @@ function App() {
 
   console.log('tradesOfTokensToTokens', tradesOfTokensToTokens);
 
-  function getTokensForTokensTrades() {
-    if (tradesOfTokensToTokens) {
-      tradesOfTokensToTokensJsx = tradesOfTokensToTokens.map((trade, index) => {
+  function getTokensForTokensTradesJsx(tradesOfTokensToTokensArg) {
+    if (tradesOfTokensToTokensArg) {
+      const tradesOfTokensToTokensJsxIn = tradesOfTokensToTokensArg.map((trade, index) => {
           // trade.tradingTokenAddress
 
           console.log('trade in jsx maker already traded', trade.alreadyTraded);
@@ -387,12 +389,15 @@ function App() {
             </div>
           )
       });
+
+      return tradesOfTokensToTokensJsxIn;
     }
+
   }
 
-  function getTokensForEthTrades() {
-    if (tradesOfTokensToEth) {
-      tradesOfTokensToEthJsx = tradesOfTokensToEth.map((trade, index) => {
+  function getTokensForEthTradesJsx(tradesOfTokensToEthArg) {
+    if (tradesOfTokensToEthArg) {
+      const tradesOfTokensToEthJsxIn = tradesOfTokensToEthArg.map((trade, index) => {
 
         if (trade.alreadyTraded === true) {
           return;
@@ -472,12 +477,14 @@ function App() {
           </div>
         )
       });
+
+      return tradesOfTokensToEthJsxIn;
     }
   }
 
-  function getEthForTokensTrades() {
-    if (tradesOfEthToTokens) {
-      tradesOfEthToTokensJsx = tradesOfEthToTokens.map((trade, index) => {
+  function getEthForTokensTradesJsx(tradesOfEthToTokensArg) {
+    if (tradesOfEthToTokensArg) {
+      const tradesOfEthToTokensJsxIn = tradesOfEthToTokensArg.map((trade, index) => {
 
         if (trade.alreadyTraded === true) {
           return;
@@ -556,12 +563,48 @@ function App() {
           </div>
         )
       });
+
+      return tradesOfEthToTokensJsxIn;
     }
   }
 
-  getTokensForTokensTrades();
-  getTokensForEthTrades();
-  getEthForTokensTrades();
+  // let tradesOfTokensToTokensFiltered;
+  let tradesOfTokensToTokensJsx;
+  if (tradesOfTokensToTokens) {
+    console.log('here');
+    const tradesOfTokensToTokensFiltered = tradesOfTokensToTokens.filter((trade) => {
+      console.log('here2');
+      console.log('trade.tradingTokenName', trade.tradingTokenName);
+      console.log('searchedForTokenNameTrading', searchedForTokenNameTrading);
+
+      return trade.tradingTokenName === searchedForTokenNameTrading;
+    });
+
+    console.log('tradesOfTokensToTokensFiltered', tradesOfTokensToTokensFiltered);
+
+    tradesOfTokensToTokensJsx = getTokensForTokensTradesJsx(tradesOfTokensToTokensFiltered);
+  }
+
+  // let tradesOfTokensToEthFiltered;
+  let tradesOfTokensToEthJsx;
+  if (tradesOfTokensToEth) {
+    const tradesOfTokensToEthFiltered = tradesOfTokensToEth.filter((trade) => {
+      return trade.tradingTokenName === searchedForTokenNameTrading;
+    });
+
+    tradesOfTokensToEthJsx = getTokensForEthTradesJsx(tradesOfTokensToEthFiltered);
+
+  }
+
+  // let tradesOfEthToTokensFiltered;
+  let tradesOfEthToTokensJsx;
+  if (tradesOfEthToTokens) {
+    const tradesOfEthToTokensFiltered = tradesOfEthToTokens.filter((trade) => {
+      return trade.tradingTokenName === searchedForTokenNameTrading;
+    });
+
+    tradesOfEthToTokensJsx = getEthForTokensTradesJsx(tradesOfEthToTokensFiltered);
+  }
 
   console.log('tradesOfTokensToTokensJsx', tradesOfTokensToTokensJsx);
   // async function getTokenAddressesTokensForTokensTrades() {
@@ -755,7 +798,25 @@ function App() {
           <div>
             Trade For This Token
           </div>
-
+          <form action={formSubmitForTrades}>
+            <select>
+              <option defaultValue>Select</option>
+              // {tradesTokenNames}
+            </select>
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+        <div>
+          <div>
+            Trade This Token For Something Else
+          </div>
+          <form>
+            <select>
+              <option defaultValue>Select</option>
+              // {tradesForTokenNames}
+            </select>
+            <input type="submit" value="Submit" />
+          </form>
         </div>
       </div>
       <div className="trades-wrap">
@@ -793,24 +854,6 @@ function App() {
   );
 }
 
-// <form action={formSubmitForTrades}>
-//   <select>
-//     <option defaultValue>Select</option>
-//     // {tradesTokenNames}
-//   </select>
-//   <button type="submit">Submit</button>
-// </form>
-// </div>
-// <div>
-// <div>
-//   Trade This Token For Something Else
-// </div>
-// <form>
-//   <select>
-//     <option defaultValue>Select</option>
-//     // {tradesForTokenNames}
-//   </select>
-//   <input type="submit" value="Submit" />
-// </form>
+
 
 export default App;
