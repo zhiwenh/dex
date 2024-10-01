@@ -1,0 +1,208 @@
+async function getTrades() {
+  let tradesOfTokensToTokensPromise = dexInstance.getTradesForTokensWithTokens();
+  let tradesOfTokensToEthPromise = dexInstance.getTradesForTokensWithEth();
+  let tradesOfEthToTokensPromise = dexInstance.getTradesForEthWithTokens();
+
+  const tradesOfAllArr = await Promise.all([
+    tradesOfTokensToTokensPromise,
+    tradesOfTokensToEthPromise,
+    tradesOfEthToTokensPromise
+  ]);
+
+  let tradesOfTokensToTokens2 = tradesOfAllArr[0];
+  let tradesOfTokensToEth2 = tradesOfAllArr[1];
+  let tradesOfEthToTokens2 = tradesOfAllArr[2];
+
+  let tradesOfTokensToTokens2Promise = Promise.all(tradesOfTokensToTokens2.map(async(trade) => {
+    const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
+    const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
+
+    const tradingErc20Name = await tradingErc20Instance.name();
+    const tradingErc20Symbol = await tradingErc20Instance.symbol();
+
+    const tradingForErc20Name = await tradingForErc20Instance.name();
+    const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
+
+    const newTrade = {};
+
+    newTrade.sender = trade.sender;
+    newTrade.indexOfTradeOfAddress = trade.indexOfTradeOfAddress;
+    newTrade.tradingTokenAddress = trade.tradingTokenAddress;
+    newTrade.tradingTokenAmount = trade.tradingTokenAmount;
+    newTrade.tradingForTokenAddress = trade.tradingForTokenAddress;
+    newTrade.tradingForTokenAmount = trade.tradingForTokenAmount;
+    newTrade.alreadyTraded = trade.alreadyTraded;
+
+    console.log('new trade in map', newTrade);
+
+    newTrade.tradingTokenName = tradingErc20Name;
+    newTrade.tradingTokenSymbol = tradingErc20Symbol;
+
+    newTrade.tradingForTokenName = tradingForErc20Name;
+    newTrade.tradingForTokenSymbol = tradingForErc20Symbol;
+
+    return newTrade;
+  }));
+
+  let tradesOfTokensToEth2Promise = Promise.all(tradesOfTokensToEth2.map(async(trade) => {
+    const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
+
+    const tradingErc20Name = await tradingErc20Instance.name();
+    const tradingErc20Symbol = await tradingErc20Instance.symbol();
+
+    const newTrade = {};
+
+    newTrade.sender = trade.sender;
+    newTrade.indexOfTradeOfAddress = trade.indexOfTradeOfAddress;
+    newTrade.tradingTokenAddress = trade.tradingTokenAddress;
+    newTrade.tradingTokenAmount = trade.tradingTokenAmount;
+    newTrade.tradingForEthAmount = trade.tradingForEthAmount;
+    newTrade.alreadyTraded = trade.alreadyTraded;
+
+    newTrade.tradingTokenName = tradingErc20Name;
+    newTrade.tradingTokenSymbol = tradingErc20Symbol;
+
+    return newTrade;
+  }));
+
+  let tradesOfEthToTokens2Promise = Promise.all(tradesOfEthToTokens2.map(async(trade) => {
+    const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
+
+    const tradingForErc20Name = await tradingForErc20Instance.name();
+    const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
+
+    const newTrade = {};
+
+    newTrade.sender = trade.sender;
+    newTrade.indexOfTradeOfAddress = trade.indexOfTradeOfAddress;
+    newTrade.tradingEthAmount = trade.tradingEthAmount;
+    newTrade.tradingForTokenAddress = trade.tradingForTokenAddress;
+    newTrade.tradingForTokenAmount = trade.tradingForTokenAmount;
+    newTrade.alreadyTraded = trade.alreadyTraded;
+
+    newTrade.tradingForTokenName = tradingForErc20Name;
+    newTrade.tradingForTokenSymbol = tradingForErc20Symbol;
+
+    return newTrade;
+  }));
+
+  const allTradesMappedArr = await Promise.all([
+    tradesOfTokensToTokens2Promise,
+    tradesOfTokensToEth2Promise,
+    tradesOfEthToTokens2Promise
+  ]);
+
+  let tradesOfTokensToTokens3 = allTradesMappedArr[0];
+  let tradesOfTokensToEth3 = allTradesMappedArr[1];
+  let tradesOfEthToTokens3 = allTradesMappedArr[2];
+
+  setTradesOfTokensToTokens(tradesOfTokensToTokens3);
+  setTradesOfTokensToEth(tradesOfTokensToEth3);
+  setTradesOfEthToTokens(tradesOfEthToTokens3);
+}
+
+getTrades();
+
+
+
+
+
+useEffect(() => {
+  async function getTrades() {
+    let tradesOfTokensToTokensPromise = dexInstance.getTradesForTokensWithTokens();
+    let tradesOfTokensToEthPromise = dexInstance.getTradesForTokensWithEth();
+    let tradesOfEthToTokensPromise = dexInstance.getTradesForEthWithTokens();
+
+    const tradesOfAllArr = await Promise.all([
+      tradesOfTokensToTokensPromise,
+      tradesOfTokensToEthPromise,
+      tradesOfEthToTokensPromise
+    ]);
+
+    let tradesOfTokensToTokens2 = tradesOfAllArr[0];
+    let tradesOfTokensToEth2 = tradesOfAllArr[1];
+    let tradesOfEthToTokens2 = tradesOfAllArr[2];
+
+    let tradesOfTokensToTokens3 = await Promise.all(tradesOfTokensToTokens2.map(async(trade) => {
+      const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
+      const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
+
+      const tradingErc20Name = await tradingErc20Instance.name();
+      const tradingErc20Symbol = await tradingErc20Instance.symbol();
+
+      const tradingForErc20Name = await tradingForErc20Instance.name();
+      const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
+
+      const newTrade = {};
+
+      newTrade.sender = trade.sender;
+      newTrade.indexOfTradeOfAddress = trade.indexOfTradeOfAddress;
+      newTrade.tradingTokenAddress = trade.tradingTokenAddress;
+      newTrade.tradingTokenAmount = trade.tradingTokenAmount;
+      newTrade.tradingForTokenAddress = trade.tradingForTokenAddress;
+      newTrade.tradingForTokenAmount = trade.tradingForTokenAmount;
+      newTrade.alreadyTraded = trade.alreadyTraded;
+
+      console.log('new trade in map', newTrade);
+
+      newTrade.tradingTokenName = tradingErc20Name;
+      newTrade.tradingTokenSymbol = tradingErc20Symbol;
+
+      newTrade.tradingForTokenName = tradingForErc20Name;
+      newTrade.tradingForTokenSymbol = tradingForErc20Symbol;
+
+      return newTrade;
+    }));
+
+    let tradesOfTokensToEth3 = await Promise.all(tradesOfTokensToEth2.map(async(trade) => {
+      const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
+
+      const tradingErc20Name = await tradingErc20Instance.name();
+      const tradingErc20Symbol = await tradingErc20Instance.symbol();
+
+      const newTrade = {};
+
+      newTrade.sender = trade.sender;
+      newTrade.indexOfTradeOfAddress = trade.indexOfTradeOfAddress;
+      newTrade.tradingTokenAddress = trade.tradingTokenAddress;
+      newTrade.tradingTokenAmount = trade.tradingTokenAmount;
+      newTrade.tradingForEthAmount = trade.tradingForEthAmount;
+      newTrade.alreadyTraded = trade.alreadyTraded;
+
+      newTrade.tradingTokenName = tradingErc20Name;
+      newTrade.tradingTokenSymbol = tradingErc20Symbol;
+
+      return newTrade;
+    }));
+
+    let tradesOfEthToTokens3 = await Promise.all(tradesOfEthToTokens2.map(async(trade) => {
+      const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
+
+      const tradingForErc20Name = await tradingForErc20Instance.name();
+      const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
+
+      const newTrade = {};
+
+      newTrade.sender = trade.sender;
+      newTrade.indexOfTradeOfAddress = trade.indexOfTradeOfAddress;
+      newTrade.tradingEthAmount = trade.tradingEthAmount;
+      newTrade.tradingForTokenAddress = trade.tradingForTokenAddress;
+      newTrade.tradingForTokenAmount = trade.tradingForTokenAmount;
+      newTrade.alreadyTraded = trade.alreadyTraded;
+
+      newTrade.tradingForTokenName = tradingForErc20Name;
+      newTrade.tradingForTokenSymbol = tradingForErc20Symbol;
+
+      return newTrade;
+    }));
+
+    setTradesOfTokensToTokens(tradesOfTokensToTokens3);
+    setTradesOfTokensToEth(tradesOfTokensToEth3);
+    setTradesOfEthToTokens(tradesOfEthToTokens3);
+  }
+
+
+  getTrades();
+
+  setSearchedForTokenNameTrading('TestToken1');
+}, []);

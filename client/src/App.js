@@ -8,10 +8,17 @@ import config from './config.json';
 // const PRIVATE_KEY = '0x588d7e9c0ea609304dd765d10810eb2b002639131e78364400ab585ee61fb5b0';
 
 function App() {
-  console.log('here');
   const [tradesOfTokensToTokens, setTradesOfTokensToTokens] = useState();
   const [tradesOfTokensToEth, setTradesOfTokensToEth] = useState();
   const [tradesOfEthToTokens, setTradesOfEthToTokens] = useState();
+
+  const [tradesTokenNames, setTradesTokenNames] = useState();
+  const [tradesTokenSymbols, setTradesTokenSymbols] = useState();
+  const [tradesTokenAddresses, setTradesTokenAddresses] = useState();
+
+  const [tradesForTokenNames, setTradesForTokenNames] = useState();
+  const [tradesForTokenSymbols, setTradesForTokenSymbols] = useState();
+  const [tradesForTokenAddresses, setTradesForTokenAddresses] = useState();
 
   const [searchedForTokenNameTrading, setSearchedForTokenNameTrading] = useState();
   const [searchedForTokenNameForTrading, setSearchedForTokenNameForTrading] = useState();
@@ -31,8 +38,12 @@ function App() {
   const erc20Json = require('./ERC20.json');
   const erc20Abi = erc20Json.abi;
 
+  const provider = new ethers.JsonRpcProvider('http://localhost:8545');
+  const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
+
   useEffect(() => {
     async function getTrades() {
+      console.log('here 8');
       let tradesOfTokensToTokens2 = await dexInstance.getTradesForTokensWithTokens();
       let tradesOfTokensToEth2 = await dexInstance.getTradesForTokensWithEth();
       let tradesOfEthToTokens2 = await dexInstance.getTradesForEthWithTokens();
@@ -115,11 +126,106 @@ function App() {
       setTradesOfEthToTokens(tradesOfEthToTokens2);
     }
 
-
     getTrades();
 
-    setSearchedForTokenNameTrading('TestToken1');
-  }, []);
+    function getTokenAddressNamesForSelect() {
+      console.log('here 9');
+      let alreadyInTradesTokenAddresses = {};
+      let tradesTokenNamesIn = [];
+      let tradesTokenSymbolsIn = [];
+      let tradesTokenAddressesIn = [];
+
+      let alreadyInTradesForTokenAddresses = {};
+      let tradesForTokenNamesIn = [];
+      let tradesForTokenSymbolsIn = [];
+      let tradesForTokenAddressesIn = [];
+
+      function getTokenAddressesTokensForTokensTrades() {
+        console.log('here 7');
+        if (tradesOfTokensToTokens) {
+          console.log('here 10');
+          for (let i = 0; i < tradesOfTokensToTokens.length; i++) {
+            if (alreadyInTradesTokenAddresses[tradesOfTokensToTokens[i].tradingTokenAddress] === undefined) {
+              console.log('here 6 tokensForTokensTrades', tokensForTokensTrades);
+
+              const name = tradesOfTokensToTokens[i].tradingTokenName;
+              const symbol = tradesOfTokensToTokens[i].tradingTokenSymbol;
+
+              tradesTokenNamesIn.push(name);
+              tradesTokenSymbolsIn.push(symbol);
+              tradesTokenAddressesIn.push(tradesOfTokensToTokens[i].tradingTokenAddress);
+
+              console.log('here 12 tradesTokenNamesIn', tradesTokenNamesIn);
+              alreadyInTradesTokenAddresses[tradesOfTokensToTokens[i].tradingTokenAddress] = true;
+            }
+
+            if (alreadyInTradesForTokenAddresses[tradesOfTokensToTokens[i].tradingForTokenAddress] === undefined) {
+              const name = tradesOfTokensToTokens[i].tradingForTokenName;
+              const symbol = tradesOfTokensToTokens[i].tradingForTokenSymbol;
+
+              tradesForTokenNamesIn.push(name);
+              tradesForTokenSymbolsIn.push(symbol);
+              tradesForTokenAddressesIn.push(tradesOfTokensToTokens[i].tradingTokenAddress);
+
+              alreadyInTradesForTokenAddresses[tradesOfTokensToTokens[i].tradingForTokenAddress] = true;
+            }
+          }
+        }
+      }
+
+      function getTokenAddressesTokensForEthTrades() {
+        if (tradesOfTokensToEth){
+          for (let i = 0; i < tradesOfTokensToEth.length; i++) {
+            if (alreadyInTradesTokenAddresses[tradesOfTokensToEth[i].tradingTokenAddress] === undefined) {
+
+              const name = tradesOfTokensToEth[i].tradingTokenName;
+              const symbol = tradesOfTokensToEth[i].tradingTokenSymbol;
+
+              tradesTokenNamesIn.push(name);
+              tradesTokenSymbolsIn.push(symbol);
+              tradesTokenAddressesIn.push(tradesOfTokensToEth[i].tradingTokenAddress);
+
+              alreadyInTradesTokenAddresses[tradesOfTokensToEth[i].tradingTokenAddress] = true;
+            }
+          }
+        }
+      }
+
+      function getTokenAddressesEthForTokensTrades() {
+        if (tradesOfEthToTokens) {
+          for (let i = 0; i < tradesOfEthToTokens.length; i++) {
+            if (alreadyInTradesForTokenAddresses[tradesOfEthToTokens[i].tradingForTokenAddress] === undefined) {
+              const name = tradesOfEthToTokens[i].tradingForTokenName;
+              const symbol = tradesOfEthToTokens[i].tradingForTokenSymbol;
+
+              tradesForTokenNamesIn.push(name);
+              tradesForTokenSymbolsIn.push(symbol);
+              tradesForTokenAddressesIn.push(tradesOfEthToTokens[i].tradingForTokenAddress);
+
+              alreadyInTradesForTokenAddresses[tradesOfEthToTokens[i].tradingForTokenAddress] = true;
+            }
+          }
+        }
+      }
+
+      getTokenAddressesTokensForTokensTrades();
+      getTokenAddressesTokensForEthTrades();
+      getTokenAddressesEthForTokensTrades();
+
+      console.log('tradesTokenNamesIn', tradesTokenNamesIn);
+      setTradesTokenNames(tradesTokenNamesIn);
+      setTradesTokenSymbols(tradesTokenSymbolsIn);
+      setTradesTokenAddresses(tradesTokenAddressesIn);
+
+      setTradesForTokenNames(tradesForTokenNamesIn);
+      setTradesForTokenSymbols(tradesForTokenSymbolsIn);
+      setTradesForTokenAddresses(tradesForTokenAddressesIn);
+    }
+
+    getTokenAddressNamesForSelect();
+
+    // setSearchedForTokenNameTrading('TestToken1');
+  }, [tradesOfTokensToTokens, tradesOfTokensToEth, tradesOfEthToTokens]);
 
 
   // console.log('dex abi', dexAbi);
@@ -132,9 +238,6 @@ function App() {
   // useEffect(async () => {
   //   console.log('trades of tokens to tokens', tradesOfTokensToTokens);
   // },[tradesOfTokensToTokens]);
-
-  const provider = new ethers.JsonRpcProvider('http://localhost:8545');
-  const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
   // const fetchDexTrades = () => {
     // const tokenForTokensTradesDexReturn =
@@ -247,15 +350,15 @@ function App() {
   // let tradesOfTokensToEthJsx;
   // let tradesOfEthToTokensJsx;
 
-  let tradesTokenNames = [];
-  let tradesTokenSymbols = [];
-  let tradesTokenAddresses = [];
-  let alreadyInTradesTokenAddresses = {};
+  // let tradesTokenNames = [];
+  // let tradesTokenSymbols = [];
+  // let tradesTokenAddresses = [];
+  // let alreadyInTradesTokenAddresses = {};
 
-  let tradesForTokenNames = [];
-  let tradesForTokenSymbols = [];
-  let tradesForTokenAddresses = [];
-  let alreadyInTradesForTokenAddresses = {};
+  // let tradesForTokenNames = [];
+  // let tradesForTokenSymbols = [];
+  // let tradesForTokenAddresses = [];
+  // let alreadyInTradesForTokenAddresses = {};
 
   console.log('tradesOfTokensToTokens', tradesOfTokensToTokens);
 
@@ -593,7 +696,6 @@ function App() {
     });
 
     tradesOfTokensToEthJsx = getTokensForEthTradesJsx(tradesOfTokensToEthFiltered);
-
   }
 
   // let tradesOfEthToTokensFiltered;
@@ -606,78 +708,9 @@ function App() {
     tradesOfEthToTokensJsx = getEthForTokensTradesJsx(tradesOfEthToTokensFiltered);
   }
 
-  console.log('tradesOfTokensToTokensJsx', tradesOfTokensToTokensJsx);
-  // async function getTokenAddressesTokensForTokensTrades() {
-  //   if (tokensForTokensTrades) {
-  //     for (let i = 0; i < tokensForTokensTrades.length; i++) {
-  //       if (alreadyInTradesTokenAddresses[tokensForTokensTrades[i].tradingTokenAddress] === undefined) {
-  //         const tradingErc20Instance = new ethers.Contract(tokensForTokensTrades[i].tradingTokenAddress, erc20Abi, provider);
-  //         const name = await tradingErc20Instance.name();
-  //         const symbol = await tradingErc20Instance.symbol();
-  //
-  //         alreadyInTradesTokenAddresses[tokensForTokensTrades[i].tradingTokenAddress] = true;
-  //         tradesTokenNames.push(name);
-  //         tradesTokenSymbols.push(symbol);
-  //         tradesTokenAddresses.push(tokensForTokensTrades[i].tradingTokenAddress);
-  //       }
-  //
-  //       if (alreadyInTradesForTokenAddresses[tokensForTokensTrades[i].tradingForTokenAddress] === undefined) {
-  //         const tradingForErc20Instance = new ethers.Contract(tokensForTokensTrades[i].tradingForTokenAddress, erc20Abi, provider);
-  //         const name = await tradingForErc20Instance.name();
-  //         const symbol = await tradingForErc20Instance.symbol();
-  //
-  //         tradesForTokenNames.push(name);
-  //         tradesForTokenSymbols.push(symbol);
-  //         tradesForTokenAddresses.push(tokensForTokensTrades[i].tradingTokenAddress);
-  //
-  //         alreadyInTradesForTokenAddresses[tokensForTokensTrades[i].tradingForTokenAddress] = true;
-  //       }
-  //     }
+  // console.log('tradesOfTokensToTokensJsx', tradesOfTokensToTokensJsx);
 
-      // console.log('tokensForTokensTrades', tokensForTokensTrades);
 
-      // console.log('trades of tokens for tokens', trades.tradeTokensForTokensForCall);
-
-  //   }
-  // }
-
-  // async function getTokenAddressesTokensForEthTrades() {
-  //   if (tokensForEthTrades){
-  //     for (let i = 0; i < tokensForEthTrades.length; i++) {
-  //       if (alreadyInTradesTokenAddresses[tokensForEthTrades[i].tradingTokenAddress] === undefined) {
-  //         alreadyInTradesTokenAddresses[tokensForEthTrades[i].tradingTokenAddress] = true;
-  //
-  //         const tradingErc20Instance = new ethers.Contract(tokensForEthTrades[i].tradingTokenAddress, erc20Abi, provider);
-  //         const name = await tradingErc20Instance.name();
-  //         const symbol = await tradingErc20Instance.symbol();
-  //
-  //         tradesTokenNames.push(name);
-  //         tradesTokenSymbols.push(symbol);
-  //         tradesTokenAddresses.push(tokensForEthTrades[i].tradingTokenAddress);
-  //       }
-  //     }
-  //   }
-  // }
-
-  // async function getTokenAddressesEthForTokensTrades() {
-
-  // if (ethForTokensTrades) {
-  //   for (let i = 0; i < ethForTokensTrades.length; i++) {
-  //     if (alreadyInTradesForTokenAddresses[ethForTokensTrades[i].tradingForTokenAddress] === undefined) {
-  //       const tradingForErc20Instance = new ethers.Contract(ethForTokensTrades.tradingForTokenAddress, erc20Abi, provider);
-  //       const name = await tradingForErc20Instance.name();
-  //       const symbol = await tradingForErc20Instance.symbol();
-  //
-  //       tradesForTokenNames.push(name);
-  //       tradesForTokenSymbols.push(symbol);
-  //       tradesForTokenAddresses.push(ethForTokensTrades[i].tradingForTokenAddress);
-  //
-  //       alreadyInTradesForTokenAddresses[ethForTokensTrades[i].tradingForTokenAddress] = true;
-  //     }
-  //   }
-  // }
-
-  // }
 
   // await getTokenAddressesTokensForTokensTrades();
   // await getTokenAddressesTokensForEthTrades();
@@ -727,25 +760,36 @@ function App() {
   // console.log('trades token symbols', tradesForTokenSymbols);
   // console.log('already in trades for token addresses', alreadyInTradesForTokenAddresses);
 
-  tradesTokenNames = tradesTokenNames.map((trade, index) => {
-    // console.log('trade', trade);
+  let tradesTokenNamesJsx;
 
-    return (
-      <option key={index.toString()}>
-        {trade}
-      </option>
-    );
-  });
+  if (tradesTokenNames) {
+    console.log('here 3 and tradesTokenNames', tradesTokenNames);
+    tradesTokenNamesJsx = tradesTokenNames.map((trade, index) => {
+      console.log('trade', trade);
 
-  tradesForTokenNames = tradesForTokenNames.map((trade, index) => {
-    // console.log('trade', trade);
+      return (
+        <option key={index.toString()}>
+          {trade}
+        </option>
+      );
+    });
+  }
 
-    return (
-      <option key={index.toString()}>
-        {trade}
-      </option>
-    );
-  });
+  console.log('tradesTokenNamesJsx', tradesTokenNamesJsx);
+  let tradesForTokenNamesJsx;
+
+  if (tradesForTokenNames) {
+    console.log('here2');
+    tradesForTokenNamesJsx = tradesForTokenNames.map((trade, index) => {
+      // console.log('trade', trade);
+
+      return (
+        <option key={index.toString()}>
+          {trade}
+        </option>
+      );
+    });
+  }
 
   let tradingByTokenName;
   let tradingByForTokenName;
@@ -801,7 +845,7 @@ function App() {
           <form action={formSubmitForTrades}>
             <select>
               <option defaultValue>Select</option>
-              // {tradesTokenNames}
+              {tradesTokenNamesJsx}
             </select>
             <button type="submit">Submit</button>
           </form>
@@ -813,7 +857,7 @@ function App() {
           <form>
             <select>
               <option defaultValue>Select</option>
-              // {tradesForTokenNames}
+              {tradesForTokenNamesJsx}
             </select>
             <input type="submit" value="Submit" />
           </form>
