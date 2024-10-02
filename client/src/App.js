@@ -23,6 +23,9 @@ function App() {
   const [searchedForTokenNameTrading, setSearchedForTokenNameTrading] = useState();
   const [searchedForTokenNameForTrading, setSearchedForTokenNameForTrading] = useState();
 
+  const [searchedForTokenAddressTrading, setSearchedForTokenAddressTrading] = useState();
+  const [searchedForTokenAddressForTrading, setSearchedForTokenAddressForTrading] = useState();
+
   // const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   // let searchedForTokenNameTrading = 'TestToken1';
@@ -681,8 +684,10 @@ function App() {
       console.log('searchedForTokenNameTrading', searchedForTokenNameTrading);
 
       return (
-        trade.tradingTokenName === searchedForTokenNameTrading
+        (trade.tradingTokenName === searchedForTokenNameTrading
         || trade.tradingForTokenName === searchedForTokenNameForTrading
+        || trade.tradingTokenAddress === searchedForTokenAddressTrading
+        || trade.tradingForTokenAddress === searchedForTokenAddressForTrading)
         && trade.tradingTokenName !== undefined
         && trade.tradingForTokenName !== undefined
       );
@@ -699,7 +704,8 @@ function App() {
   if (tradesOfTokensToEth) {
     const tradesOfTokensToEthFiltered = tradesOfTokensToEth.filter((trade) => {
       return (
-        trade.tradingTokenName === searchedForTokenNameTrading
+        (trade.tradingTokenName === searchedForTokenNameTrading
+        || trade.tradingTokenAddress === searchedForTokenAddressTrading)
         && trade.tradingTokenName !== undefined
       );
     });
@@ -712,7 +718,8 @@ function App() {
   if (tradesOfEthToTokens) {
     const tradesOfEthToTokensFiltered = tradesOfEthToTokens.filter((trade) => {
       return (
-        trade.tradingForTokenName === searchedForTokenNameForTrading
+        (trade.tradingForTokenName === searchedForTokenNameForTrading
+        || trade.tradingForTokenAddress === searchedForTokenAddressForTrading)
         && trade.tradingForTokenName !== undefined
       );
     });
@@ -803,6 +810,36 @@ function App() {
     });
   }
 
+  let tradesTokenAddressesJsx;
+
+  if (tradesTokenAddresses) {
+    console.log('here2');
+    tradesTokenAddressesJsx = tradesTokenAddresses.map((address, index) => {
+      // console.log('trade', trade);
+
+      return (
+        <option key={index.toString()}>
+          {address}
+        </option>
+      );
+    });
+  }
+
+  let tradesForTokenAddressesJsx;
+
+  if (tradesForTokenAddresses) {
+    console.log('here2');
+    tradesForTokenAddressesJsx = tradesForTokenAddresses.map((address, index) => {
+      // console.log('trade', trade);
+
+      return (
+        <option key={index.toString()}>
+          {address}
+        </option>
+      );
+    });
+  }
+
   let tradingByTokenName;
   let tradingByForTokenName;
 
@@ -881,6 +918,75 @@ function App() {
     setSearchedForTokenNameForTrading(undefined);
   }
 
+  function formSubmitForTradesAddress(e) {
+    e.preventDefault();
+
+    const selectedValue = document.getElementById('select-for-trades-addresses').value;
+
+    setSearchedForTokenAddressTrading(selectedValue);
+
+    console.log('selectedValue', selectedValue);
+    // searchedForTokenNameTrading = 'TestToken1';
+
+    console.log('here5 in form submit');
+
+    // console.log('searched for token name trading in form submit', searchedForTokenNameTrading);
+
+    // await getAllTrades();
+
+    // forceUpdate();
+    // forceUpdate();
+    // tokensForTokensTrades = tokensForTokensTrades.filter(trade => {
+    //   const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
+    //   const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
+    //
+    //   const tradingErc20Name = await tradingErc20Instance.name();
+    //   const tradingErc20Symbol = await tradingErc20Instance.symbol();
+    //
+    //   const tradingForErc20Name = await tradingForErc20Instance.name();
+    //   const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
+    // });
+  }
+
+  function cancelFormSubmitForTradesAddress() {
+    console.log('here 20 cancel form submit');
+    setSearchedForTokenAddressTrading(undefined);
+  }
+
+  function formSubmitForTradesForAddress(e) {
+    e.preventDefault();
+
+    const selectedValue = document.getElementById('select-for-trades-for-addresses').value;
+
+    setSearchedForTokenAddressForTrading(selectedValue);
+
+    console.log('selectedValue', selectedValue);
+    // searchedForTokenNameTrading = 'TestToken1';
+
+    console.log('here 11 in form submit for address');
+
+    // console.log('searched for token name trading in form submit', searchedForTokenNameTrading);
+
+    // await getAllTrades();
+
+    // forceUpdate();
+    // forceUpdate();
+    // tokensForTokensTrades = tokensForTokensTrades.filter(trade => {
+    //   const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
+    //   const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
+    //
+    //   const tradingErc20Name = await tradingErc20Instance.name();
+    //   const tradingErc20Symbol = await tradingErc20Instance.symbol();
+    //
+    //   const tradingForErc20Name = await tradingForErc20Instance.name();
+    //   const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
+    // });
+  }
+
+  function cancelFormSubmitForTradesForAddress() {
+    console.log('here 20 cancel form submit');
+    setSearchedForTokenAddressForTrading(undefined);
+  }
   // await getTokensForTokensTrades();
   // await getTokensForEthTrades();
   // await getEthForTokensTrades();
@@ -893,38 +999,78 @@ function App() {
         Dex
       </div>
       <div className="description">
-        A decentralized exchange that trades on the Ethereum blockchain.
+        A decentralized exchange that trades for ERC20 tokens on the Ethereum blockchain.
       </div>
       <div>
         <div>
-          <div>
+          <div className="trade-token-title">
             Trade For This Token
           </div>
-          <form onSubmit={formSubmitForTrades}>
-            <select id="select-for-trades">
-              <option defaultValue>Select</option>
-              {tradesTokenNamesJsx}
-            </select>
-            <button type="submit">Submit</button>
-          </form>
-          <button onClick={cancelFormSubmitForTrades}>
-            Cancel
-          </button>
+          <div>
+            Search By Name
+          </div>
+          <div className="search-for-token-by-name-wrap">
+            <form onSubmit={formSubmitForTrades}>
+              <select id="select-for-trades">
+                <option defaultValue>Select</option>
+                {tradesTokenNamesJsx}
+              </select>
+              <button type="submit">Submit</button>
+            </form>
+            <button onClick={cancelFormSubmitForTrades}>
+              Cancel
+            </button>
+          </div>
+          <div>
+            Search By Address
+          </div>
+          <div className="search-for-token-by-address-wrap">
+            <form onSubmit={formSubmitForTradesAddress}>
+              <select id="select-for-trades-addresses">
+                <option defaultValue>Select</option>
+                {tradesTokenAddressesJsx}
+              </select>
+              <button type="submit">Submit</button>
+            </form>
+            <button onClick={cancelFormSubmitForTradesAddress}>
+              Cancel
+            </button>
+          </div>
         </div>
         <div>
-          <div>
+          <div className="trade-for-token-title">
             Trade This Token For Something Else
           </div>
-          <form onSubmit={formSubmitForTradesFor}>
-            <select id="select-for-trades-for">
-              <option defaultValue>Select</option>
-              {tradesForTokenNamesJsx}
-            </select>
-            <input type="submit" value="Submit" />
-          </form>
-          <button onClick={cancelFormSubmitForTradesFor}>
-            Cancel
-          </button>
+          <div>
+            Search By Name
+          </div>
+          <div className="search-for-trading-for-token-by-name">
+            <form onSubmit={formSubmitForTradesFor}>
+              <select id="select-for-trades-for">
+                <option defaultValue>Select</option>
+                {tradesForTokenNamesJsx}
+              </select>
+              <input type="submit" value="Submit" />
+            </form>
+            <button onClick={cancelFormSubmitForTradesFor}>
+              Cancel
+            </button>
+          </div>
+          <div>
+            Search By Address
+          </div>
+          <div className="search-for-trading-for-token-by-address">
+            <form onSubmit={formSubmitForTradesForAddress}>
+              <select id="select-for-trades-for-addresses">
+                <option defaultValue>Select</option>
+                {tradesForTokenAddressesJsx}
+              </select>
+              <button type="submit">Submit</button>
+            </form>
+            <button onClick={cancelFormSubmitForTradesForAddress}>
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
       <div className="trades-wrap">

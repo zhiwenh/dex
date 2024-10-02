@@ -47,9 +47,49 @@
   text-align: center;
 }
 
+.title {
+  margin-bottom: 10px;
+}
+
+.description {
+  margin-bottom: 10px;
+}
+
 .orderList{
   display: flex;
   flex-direction: row;
+}
+
+.trade-token-title {
+  margin-bottom: 10px;
+}
+
+.trade-for-token-title {
+  margin-bottom: 10px;
+}
+
+.search-for-token-by-name-wrap {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-for-token-by-address-wrap {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-for-trading-for-token-by-name {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-for-trading-for-token-by-address {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
 }
 
 .trades-wrap {
