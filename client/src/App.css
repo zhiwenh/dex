@@ -65,6 +65,18 @@
   margin-bottom: 5px;
 }
 
+.trades-of-tokens-for-tokens-wrap {
+  width: 500px;
+}
+
+.trades-of-tokens-for-eth-wrap {
+  width: 500px;
+}
+
+.trades-of-eth-for-tokens-wrap  {
+  width: 500px;
+}
+
 .trades-of-tokens-for-tokens {
   margin-left: 10px;
   margin-right: 10px;
