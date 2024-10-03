@@ -5,8 +5,6 @@ import React, { useState, useEffect } from "react";
 import { ethers } from 'ethers';
 import config from './config.json';
 
-// const PRIVATE_KEY = '0x588d7e9c0ea609304dd765d10810eb2b002639131e78364400ab585ee61fb5b0';
-
 function App() {
   const [tradesOfTokensToTokens, setTradesOfTokensToTokens] = useState();
   const [tradesOfTokensToEth, setTradesOfTokensToEth] = useState();
@@ -26,10 +24,8 @@ function App() {
   const [searchedForTokenAddressTrading, setSearchedForTokenAddressTrading] = useState();
   const [searchedForTokenAddressForTrading, setSearchedForTokenAddressForTrading] = useState();
 
-  // const [, forceUpdate] = useReducer(x => x + 1, 0);
-
-  // let searchedForTokenNameTrading = 'TestToken1';
-  // let searchedForTokenNameForTrading;
+  const [setTokenTrades, setSetTokenTrades] = useState(true);
+  const [setTokenNameAndAddresses, setSetTokenNameAndAddresses] = useState(true);
 
   let tokensForTokensTrades;
   let tokensForEthTrades;
@@ -47,9 +43,13 @@ function App() {
   useEffect(() => {
     async function getTrades() {
       console.log('here 8');
-      let tradesOfTokensToTokens2 = await dexInstance.getTradesForTokensWithTokens();
-      let tradesOfTokensToEth2 = await dexInstance.getTradesForTokensWithEth();
-      let tradesOfEthToTokens2 = await dexInstance.getTradesForEthWithTokens();
+
+      const trades = await dexInstance.getAllTrades();
+
+      console.log('trades tradeTokensForTokensForCall', trades.tradeTokensForTokensForCall);
+      let tradesOfTokensToTokens2 = trades.tradeTokensForTokensForCall;
+      let tradesOfTokensToEth2 = trades.tradeTokensForEthForCall;
+      let tradesOfEthToTokens2 = trades.tradeEthForTokensForCall;
 
       tradesOfTokensToTokens2 = await Promise.all(tradesOfTokensToTokens2.map(async(trade) => {
         const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
@@ -129,7 +129,10 @@ function App() {
       setTradesOfEthToTokens(tradesOfEthToTokens2);
     }
 
-    getTrades();
+    if (setTokenTrades === true) {
+      setSetTokenTrades(false);
+      getTrades();
+    }
 
     function getTokenAddressNamesForSelect() {
       console.log('here 9');
@@ -225,143 +228,26 @@ function App() {
       setTradesForTokenAddresses(tradesForTokenAddressesIn);
     }
 
-    getTokenAddressNamesForSelect();
+    if (tradesOfTokensToTokens && tradesOfTokensToEth && tradesOfEthToTokens) {
+      if (setTokenNameAndAddresses === true) {
+        setSetTokenNameAndAddresses(false);
+        getTokenAddressNamesForSelect();
+      }
+    }
 
     // setSearchedForTokenNameTrading('TestToken1');
-  }, [tradesOfTokensToTokens, tradesOfTokensToEth, tradesOfEthToTokens]);
+  }, [
+    tradesOfTokensToTokens,
+    tradesOfTokensToEth,
+    tradesOfEthToTokens,
+    tradesTokenNames,
+    tradesTokenSymbols,
+    tradesTokenAddresses,
+    tradesForTokenNames,
+    tradesForTokenSymbols,
+    tradesForTokenAddresses
+  ]);
 
-
-  // console.log('dex abi', dexAbi);
-  //
-  // console.log('config', config);
-  // console.log('config dex address', config.dexAddress);
-
-  // console.log('here');
-
-  // useEffect(async () => {
-  //   console.log('trades of tokens to tokens', tradesOfTokensToTokens);
-  // },[tradesOfTokensToTokens]);
-
-  // const fetchDexTrades = () => {
-    // const tokenForTokensTradesDexReturn =
-
-      // .then(trade => {
-      //   console.log('trade', trade);
-      //   console.log('trade.tradingTokenAddress', trade.tradingTokenAddress);
-      //   const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
-      //   const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
-      //
-      //   const tradingErc20NamePromise = tradingErc20Instance.name();
-      //   const tradingErc20SymbolPromise = tradingErc20Instance.symbol();
-      //
-      //   const tradingForErc20NamePromise = tradingForErc20Instance.name();
-      //   const tradingForErc20SymbolPromise = tradingForErc20Instance.symbol();
-      //
-      //   Promise.all([
-      //     tradingErc20NamePromise,
-      //     tradingErc20SymbolPromise,
-      //     tradingForErc20NamePromise,
-      //     tradingForErc20SymbolPromise
-      //   ])
-      //     .then(res => {
-      //       console.log('res', res);
-      //       trade.tradingTokenName = res[0];
-      //       trade.tradingTokenSymbol = res[1];
-      //       trade.tradingForTokenName = res[2];
-      //       trade.tradingForTokenSymbol = res[3];
-      //     })
-      //     .catch(err => {
-      //       console.log(err);
-      //     })
-      //
-      //   setTradesOfTokensToTokens(trade);
-      // })
-      // .catch(err => {
-      //   console.log(err);
-      // })
-
-    // const tokenForEthTradesDexReturn =
-
-      // .then(trade => {
-      //   const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
-      //
-      //   const tradingErc20NamePromise = tradingErc20Instance.name();
-      //   const tradingErc20SymbolPromise = tradingErc20Instance.symbol();
-      //
-      //   Promise.all([
-      //     tradingErc20NamePromise,
-      //     tradingErc20SymbolPromise
-      //   ])
-      //     .then(res => {
-      //       trade.tradingTokenName = res[0];
-      //       trade.tradingTokenSymbol = res[1];
-      //     })
-      //     .catch(err => {
-      //       console.log(err);
-      //     })
-      //
-      //
-      //   setTradesOfTokensToEth(trade);
-      // })
-      // .catch(err => {
-      //   console.log(err);
-      // })
-    // const ethForTokensTradesDexReturn
-
-
-
-      // .then(trade => {
-      //   const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
-      //
-      //   const tradingForErc20NamePromise = tradingForErc20Instance.name();
-      //   const tradingForErc20SymbolPromise = tradingForErc20Instance.symbol();
-      //
-      //   Promise.all([
-      //     tradingForErc20NamePromise,
-      //     tradingForErc20SymbolPromise
-      //   ])
-      //     .then(res => {
-      //       trade.tradingForTokenName = res[0];
-      //       trade.tradingForTokenSymbol = res[1];
-      //     })
-      //     .catch(err => {
-      //       console.log(err);
-      //     })
-      //
-      //   setTradesOfEthToTokens(trade);
-      // })
-      // .catch(err => {
-      //   console.log(err);
-      // })
-
-    // console.log('token for tokens trades dex return', tokenForTokensTradesDexReturn);
-    // console.log('token for eth trades dex return', tokenForEthTradesDexReturn);
-    // console.log('eth for tokens trades dex return', ethForTokensTradesDexReturn);
-
-    // console.log('trades of eth to tokens 2', tradesOfEthToTokens);
-  // }
-
-  // fetchDexTrades();
-
-
-
-  // let tradesOfTokensToTokens;
-  // let tradesOfTokensToEth;
-  // let tradesOfEthToTokens;
-
-  // let tradesOfTokensToTokensJsx;
-  // let tradesOfTokensToEthJsx;
-  // let tradesOfEthToTokensJsx;
-
-  // let tradesTokenNames = [];
-  // let tradesTokenSymbols = [];
-  // let tradesTokenAddresses = [];
-  // let alreadyInTradesTokenAddresses = {};
-
-  // let tradesForTokenNames = [];
-  // let tradesForTokenSymbols = [];
-  // let tradesForTokenAddresses = [];
-  // let alreadyInTradesForTokenAddresses = {};
 
   console.log('tradesOfTokensToTokens', tradesOfTokensToTokens);
 
@@ -375,32 +261,6 @@ function App() {
           if (trade.alreadyTraded === true) {
             return;
           }
-
-          // const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
-          // const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
-
-          // const tradingErc20Name = await tradingErc20Instance.name();
-          // const tradingErc20Symbol = await tradingErc20Instance.symbol();
-          //
-          // const tradingForErc20Name = await tradingForErc20Instance.name();
-          // const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
-
-          // console.log('trading erc20 name', tradingErc20Name);
-          // console.log('searched for token name trading', searchedForTokenNameTrading);
-
-          // if (tradingErc20Name !== searchedForTokenNameTrading) {
-          //   console.log('here3');
-          //   return;
-          // }
-
-          // if (!searchedForTokenNameTrading) {
-          //   if (tradingForErc20Name !== searchedForTokenNameForTrading) {
-          //     return;
-          //   }
-          // }
-
-          // console.log('here2');
-
 
           return (
             <div className="trade-of-tokens-for-tokens" key={index.toString()}>
@@ -503,16 +363,14 @@ function App() {
 
   function getTokensForEthTradesJsx(tradesOfTokensToEthArg) {
     if (tradesOfTokensToEthArg) {
+
+      console.log('here 21');
+      console.log('tradesOfTokensToEthArg', tradesOfTokensToEthArg);
       const tradesOfTokensToEthJsxIn = tradesOfTokensToEthArg.map((trade, index) => {
 
         if (trade.alreadyTraded === true) {
           return;
         }
-
-        // const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
-        //
-        // const tradingErc20Name = await tradingErc20Instance.name();
-        // const tradingErc20Symbol = await tradingErc20Instance.symbol();
 
         return (
           <div className="trade-of-tokens-for-eth" key={index.toString()}>
@@ -584,21 +442,21 @@ function App() {
         )
       });
 
+      console.log('tradesOfTokensToEthJsxIn', tradesOfTokensToEthJsxIn);
       return tradesOfTokensToEthJsxIn;
     }
   }
 
   function getEthForTokensTradesJsx(tradesOfEthToTokensArg) {
     if (tradesOfEthToTokensArg) {
+
+      console.log('here 22');
+
       const tradesOfEthToTokensJsxIn = tradesOfEthToTokensArg.map((trade, index) => {
 
         if (trade.alreadyTraded === true) {
           return;
         }
-
-        // const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
-        // const tradingForErc20Name = await tradingForErc20Instance.name();
-        // const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
 
         return (
           <div className="trade-of-eth-for-tokens" key={index.toString()}>
@@ -670,6 +528,7 @@ function App() {
         )
       });
 
+      console.log('tradesOfEthToTokensJsxIn', tradesOfEthToTokensJsxIn);
       return tradesOfEthToTokensJsxIn;
     }
   }
@@ -688,8 +547,6 @@ function App() {
         || trade.tradingForTokenName === searchedForTokenNameForTrading
         || trade.tradingTokenAddress === searchedForTokenAddressTrading
         || trade.tradingForTokenAddress === searchedForTokenAddressForTrading)
-        && trade.tradingTokenName !== undefined
-        && trade.tradingForTokenName !== undefined
       );
 
     });
@@ -706,9 +563,10 @@ function App() {
       return (
         (trade.tradingTokenName === searchedForTokenNameTrading
         || trade.tradingTokenAddress === searchedForTokenAddressTrading)
-        && trade.tradingTokenName !== undefined
       );
     });
+
+    console.log('tradesOfTokensToEthFiltered', tradesOfTokensToEthFiltered);
 
     tradesOfTokensToEthJsx = getTokensForEthTradesJsx(tradesOfTokensToEthFiltered);
   }
@@ -720,64 +578,13 @@ function App() {
       return (
         (trade.tradingForTokenName === searchedForTokenNameForTrading
         || trade.tradingForTokenAddress === searchedForTokenAddressForTrading)
-        && trade.tradingForTokenName !== undefined
       );
     });
 
+    console.log('tradesOfEthToTokensFiltered', tradesOfEthToTokensFiltered);
+
     tradesOfEthToTokensJsx = getEthForTokensTradesJsx(tradesOfEthToTokensFiltered);
   }
-
-  // console.log('tradesOfTokensToTokensJsx', tradesOfTokensToTokensJsx);
-
-
-
-  // await getTokenAddressesTokensForTokensTrades();
-  // await getTokenAddressesTokensForEthTrades();
-  // await getTokenAddressesEthForTokensTrades();
-  //
-  // async function getAllTrades() {
-  //   console.log('here');
-  //
-  //   await getTokensForTokensTrades();
-  //   await getTokensForEthTrades();
-  //   await getEthForTokensTrades();
-  //
-  //   const trades = await Promise.all([
-  //     tradesOfTokensToTokensPromise,
-  //     tradesOfTokensToEthPromise,
-  //     tradesOfEthToTokensPromise
-  //   ]);
-  //
-  //   tradesOfTokensToTokens = trades[0];
-  //   tradesOfTokensToEth = trades[1];
-  //   tradesOfEthToTokens = trades[2];
-  // }
-
-  // await getAllTrades();
-  /*
-    {
-      tradeTokensForTokensForCall: [],
-      tradeTokensForEthForCall: [],
-      tradeEthForTokensForCall []
-    }
-
-  */
-
-  // let tradesTokenNames = [];
-  // let alreadyInTradesTokenNames = {};
-  //
-  // let tradesForTokenNames = [];
-  // let alreadyInTradesForTokenNames = {};
-
-  // console.log('here');
-  //
-  // console.log('trades token names', tradesTokenNames);
-  // console.log('trades token symbols', tradesTokenSymbols);
-  // console.log('already in trades token addresses', alreadyInTradesTokenAddresses);
-  //
-  // console.log('trades for token names', tradesForTokenNames);
-  // console.log('trades token symbols', tradesForTokenSymbols);
-  // console.log('already in trades for token addresses', alreadyInTradesForTokenAddresses);
 
   let tradesTokenNamesJsx;
 
@@ -860,23 +667,6 @@ function App() {
     // searchedForTokenNameTrading = 'TestToken1';
 
     console.log('here5 in form submit');
-
-    // console.log('searched for token name trading in form submit', searchedForTokenNameTrading);
-
-    // await getAllTrades();
-
-    // forceUpdate();
-    // forceUpdate();
-    // tokensForTokensTrades = tokensForTokensTrades.filter(trade => {
-    //   const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
-    //   const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
-    //
-    //   const tradingErc20Name = await tradingErc20Instance.name();
-    //   const tradingErc20Symbol = await tradingErc20Instance.symbol();
-    //
-    //   const tradingForErc20Name = await tradingForErc20Instance.name();
-    //   const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
-    // });
   }
 
   function cancelFormSubmitForTrades() {
@@ -896,22 +686,7 @@ function App() {
 
     console.log('here5 in form submit');
 
-    // console.log('searched for token name trading in form submit', searchedForTokenNameTrading);
 
-    // await getAllTrades();
-
-    // forceUpdate();
-    // forceUpdate();
-    // tokensForTokensTrades = tokensForTokensTrades.filter(trade => {
-    //   const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
-    //   const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
-    //
-    //   const tradingErc20Name = await tradingErc20Instance.name();
-    //   const tradingErc20Symbol = await tradingErc20Instance.symbol();
-    //
-    //   const tradingForErc20Name = await tradingForErc20Instance.name();
-    //   const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
-    // });
   }
 
   function cancelFormSubmitForTradesFor() {
@@ -930,22 +705,7 @@ function App() {
 
     console.log('here5 in form submit');
 
-    // console.log('searched for token name trading in form submit', searchedForTokenNameTrading);
 
-    // await getAllTrades();
-
-    // forceUpdate();
-    // forceUpdate();
-    // tokensForTokensTrades = tokensForTokensTrades.filter(trade => {
-    //   const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
-    //   const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
-    //
-    //   const tradingErc20Name = await tradingErc20Instance.name();
-    //   const tradingErc20Symbol = await tradingErc20Instance.symbol();
-    //
-    //   const tradingForErc20Name = await tradingForErc20Instance.name();
-    //   const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
-    // });
   }
 
   function cancelFormSubmitForTradesAddress() {
@@ -965,22 +725,7 @@ function App() {
 
     console.log('here 11 in form submit for address');
 
-    // console.log('searched for token name trading in form submit', searchedForTokenNameTrading);
 
-    // await getAllTrades();
-
-    // forceUpdate();
-    // forceUpdate();
-    // tokensForTokensTrades = tokensForTokensTrades.filter(trade => {
-    //   const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
-    //   const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
-    //
-    //   const tradingErc20Name = await tradingErc20Instance.name();
-    //   const tradingErc20Symbol = await tradingErc20Instance.symbol();
-    //
-    //   const tradingForErc20Name = await tradingForErc20Instance.name();
-    //   const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
-    // });
   }
 
   function cancelFormSubmitForTradesForAddress() {
@@ -1012,7 +757,6 @@ function App() {
           <div className="search-for-token-by-name-wrap">
             <form onSubmit={formSubmitForTrades}>
               <select id="select-for-trades">
-                <option defaultValue>Select</option>
                 {tradesTokenNamesJsx}
               </select>
               <button type="submit">Submit</button>
@@ -1027,7 +771,6 @@ function App() {
           <div className="search-for-token-by-address-wrap">
             <form onSubmit={formSubmitForTradesAddress}>
               <select id="select-for-trades-addresses">
-                <option defaultValue>Select</option>
                 {tradesTokenAddressesJsx}
               </select>
               <button type="submit">Submit</button>
@@ -1047,7 +790,6 @@ function App() {
           <div className="search-for-trading-for-token-by-name">
             <form onSubmit={formSubmitForTradesFor}>
               <select id="select-for-trades-for">
-                <option defaultValue>Select</option>
                 {tradesForTokenNamesJsx}
               </select>
               <input type="submit" value="Submit" />
@@ -1060,14 +802,13 @@ function App() {
             Search By Address
           </div>
           <div className="search-for-trading-for-token-by-address">
-            <form onSubmit={formSubmitForTradesForAddress}>
+            <form onSubmit={() => formSubmitForTradesForAddress()}>
               <select id="select-for-trades-for-addresses">
-                <option defaultValue>Select</option>
                 {tradesForTokenAddressesJsx}
               </select>
               <button type="submit">Submit</button>
             </form>
-            <button onClick={cancelFormSubmitForTradesForAddress}>
+            <button onClick={() => cancelFormSubmitForTradesForAddress()}>
               Cancel
             </button>
           </div>

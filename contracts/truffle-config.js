@@ -47,7 +47,7 @@
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 const HDWalletProvider = require("@truffle/hdwallet-provider")
-const mnemonic = 'artefact jump leopard glimpse double rent blossom exhibit crop suspect kidney giggle';
+const mnemonic = 'memory very work unhappy forum napkin plug century warfare tiny miss property';
 
 module.exports = {
   /**
