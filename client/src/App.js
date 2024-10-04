@@ -5,6 +5,15 @@ import React, { useState, useEffect } from "react";
 import { ethers } from 'ethers';
 import config from './config.json';
 
+const dexJson = require('./Dex.json');
+const dexAbi = dexJson.abi;
+
+const erc20Json = require('./ERC20.json');
+const erc20Abi = erc20Json.abi;
+
+const provider = new ethers.JsonRpcProvider('http://localhost:8545');
+const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
+
 function App() {
   const [tradesOfTokensToTokens, setTradesOfTokensToTokens] = useState();
   const [tradesOfTokensToEth, setTradesOfTokensToEth] = useState();
@@ -30,15 +39,6 @@ function App() {
   let tokensForTokensTrades;
   let tokensForEthTrades;
   let ethForTokensTrades;
-
-  const dexJson = require('./Dex.json');
-  const dexAbi = dexJson.abi;
-
-  const erc20Json = require('./ERC20.json');
-  const erc20Abi = erc20Json.abi;
-
-  const provider = new ethers.JsonRpcProvider('http://localhost:8545');
-  const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
   useEffect(() => {
     async function getTrades() {
