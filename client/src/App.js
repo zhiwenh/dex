@@ -14,10 +14,10 @@ import {
   useDisconnect
 } from 'wagmi';
 
-import { Account } from './components/account.tsx'
-import { WalletOptions } from './components/wallet-options.tsx'
-import { ConnectKitButton } from 'connectkit';
-import { AddTokensForTokensTrade } from './components/add-tokens-for-tokens-trade';
+import { AddTokensForTokensTrade } from './Components/AddTokensForTokensTrade.js';
+import { AddTokensForEthTrade } from './Components/AddTokensForEthTrade.js';
+import { AddEthForTokensTrade } from './Components/AddEthToTokensTrade.js';
+import { ConnectWallet } from './Components/ConnectWallet.js'
 
 const dexJson = require('./Dex.json');
 const dexAbi = dexJson.abi;
@@ -68,12 +68,6 @@ function App() {
     if (status === 'error')
       return <div>Error fetching ENS name: {error.message}</div>
     return <div>ENS name: {data}</div>
-  }
-
-  function ConnectWallet() {
-    const { isConnected } = useAccount()
-    if (isConnected) return <Account />
-    return <WalletOptions />
   }
 
   useEffect(() => {
@@ -782,9 +776,17 @@ function App() {
       <div className="description">
         A decentralized exchange that trades for ERC20 tokens on the Ethereum blockchain.
       </div>
-      <div className="connect-kit-button-wrap">
-      <ConnectKitButton />
-      <AddTokensForTokensTrade />
+      <div>
+        <ConnectWallet />
+      </div>
+      <div>
+        <AddTokensForTokensTrade />
+      </div>
+      <div>
+        <AddTokensForEthTrade />
+      </div>
+      <div>
+        <AddEthForTokensTrade />
       </div>
       <div>
         <div>

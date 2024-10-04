@@ -44,9 +44,7 @@ root.render(
   <React.StrictMode>
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <ConnectKitProvider>
-          <App />
-        </ConnectKitProvider>
+        <App />
       </QueryClientProvider>
     </WagmiProvider>
   </React.StrictMode>

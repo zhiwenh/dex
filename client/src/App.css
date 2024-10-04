@@ -55,8 +55,27 @@
   margin-bottom: 10px;
 }
 
+
 .connect-kit-button-wrap {
   display: flex;
+  justify-content: center;
+}
+
+.add-tokens-for-tokens-trade-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.add-tokens-for-eth-trade-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.add-eth-for-tokens-trade-wrap {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
 }
 
