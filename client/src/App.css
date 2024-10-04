@@ -55,6 +55,11 @@
   margin-bottom: 10px;
 }
 
+.connect-kit-button-wrap {
+  display: flex;
+  justify-content: center;
+}
+
 .orderList{
   display: flex;
   flex-direction: row;

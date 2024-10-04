@@ -148,8 +148,9 @@ contract Dex {
       }
     }
 
-    require(tradingErc20.allowance(msg.sender, address(this)) >= totalAllowanceRequired);
-    require(tradingErc20.balanceOf(msg.sender) >= totalAllowanceRequired);
+    require(tradingErc20.allowance(msg.sender, address(this)) >= totalAllowanceRequired, 'here1');
+
+    require(tradingErc20.balanceOf(msg.sender) >= totalAllowanceRequired, 'here 2');
 
     /* require(tradingErc20.allowance(msg.sender, address(this)) == newAllowance); */
 
@@ -823,7 +824,7 @@ contract Dex {
     TradeEthForTokensForCall[] tradeEthForTokensForCall;
   }
 
-  function getAllTradesOfAccount(address sender) public view returns(AllTradesOfAccount memory) {
+  /* function getAllTradesOfAccount(address sender) public view returns(AllTradesOfAccount memory) {
     AllTradesOfAccount memory allTradesOfAccount;
 
     allTradesOfAccount.tradeTokensForTokensForCall = new TradeTokensForTokensForCall[](tradesOfTokensForTokensOfAnAddress[sender].length);
@@ -867,7 +868,7 @@ contract Dex {
 
     /* TradeEthForTokensForCall[] memory tradeEthForTokensResultArr = new TradeEthForTokensForCall[](tradesOfEthForTokensOfAnAddress[sender].length); */
 
-    allTradesOfAccount.tradeEthForTokensForCall = new TradeEthForTokensForCall[](tradesOfEthForTokensOfAnAddress[sender].length);
+    /* allTradesOfAccount.tradeEthForTokensForCall = new TradeEthForTokensForCall[](tradesOfEthForTokensOfAnAddress[sender].length);
 
     indexOfResultArr = 0;
 
@@ -886,6 +887,6 @@ contract Dex {
       indexOfResultArr = indexOfResultArr + 1;
     }
 
-    return allTradesOfAccount;
-  }
+    return allTradesOfAccount; */
+  /* }  */
 }

@@ -391,7 +391,6 @@ contract("Dex", (accounts) => {
 
     // assert.equal(allTrades.tradeTokensForTokensForCall[1].alreadyTraded, true, "Already traded for trade should be true");
 
-    console.log('dex instance address', dexInstance.address);
     // assert.equal(allowance.toNumber(), 2100, "Dex has to be approved for the right amount of tokens");
   });
 
@@ -473,6 +472,10 @@ contract("Dex", (accounts) => {
       100,
       {from: accounts[4], value: 1000000000000000000}
     );
+
+    console.log('dex instance address', dexInstance.address);
+    console.log('test token 1 address', testToken1Instance.address);
+    console.log('test token 2 address', testToken2Instance.address);
 
     // const allTrades = await dexInstance.getAllTrades();
 

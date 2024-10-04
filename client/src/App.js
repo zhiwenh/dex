@@ -5,6 +5,20 @@ import React, { useState, useEffect } from "react";
 import { ethers } from 'ethers';
 import config from './config.json';
 
+import {
+  useAccount,
+  useEnsName,
+  useEnsAvatar,
+  Connector,
+  useConnect,
+  useDisconnect
+} from 'wagmi';
+
+import { Account } from './components/account.tsx'
+import { WalletOptions } from './components/wallet-options.tsx'
+import { ConnectKitButton } from 'connectkit';
+import { AddTokensForTokensTrade } from './components/add-tokens-for-tokens-trade';
+
 const dexJson = require('./Dex.json');
 const dexAbi = dexJson.abi;
 
@@ -39,6 +53,28 @@ function App() {
   let tokensForTokensTrades;
   let tokensForEthTrades;
   let ethForTokensTrades;
+
+  const MyComponent = () => {
+    const { address, isConnecting, isDisconnected } = useAccount();
+    if (isConnecting) return <div>Connecting...</div>;
+    if (isDisconnected) return <div>Disconnected</div>;
+      return <div>Connected Wallet: {address}</div>;
+  };
+
+  function Profile() {
+    const { address } = useAccount()
+    const { data, error, status } = useEnsName({ address })
+    if (status === 'pending') return <div>Loading ENS name</div>
+    if (status === 'error')
+      return <div>Error fetching ENS name: {error.message}</div>
+    return <div>ENS name: {data}</div>
+  }
+
+  function ConnectWallet() {
+    const { isConnected } = useAccount()
+    if (isConnected) return <Account />
+    return <WalletOptions />
+  }
 
   useEffect(() => {
     async function getTrades() {
@@ -728,7 +764,7 @@ function App() {
 
   }
 
-  function cancelFormSubmitForTradesForAddress() {
+  function cancelFormSubmitForTradesForAddress(e) {
     console.log('here 20 cancel form submit');
     setSearchedForTokenAddressForTrading(undefined);
   }
@@ -746,6 +782,10 @@ function App() {
       <div className="description">
         A decentralized exchange that trades for ERC20 tokens on the Ethereum blockchain.
       </div>
+      <div className="connect-kit-button-wrap">
+      <ConnectKitButton />
+      <AddTokensForTokensTrade />
+      </div>
       <div>
         <div>
           <div className="trade-token-title">
@@ -755,12 +795,10 @@ function App() {
             Search By Name
           </div>
           <div className="search-for-token-by-name-wrap">
-            <form onSubmit={formSubmitForTrades}>
-              <select id="select-for-trades">
-                {tradesTokenNamesJsx}
-              </select>
-              <button type="submit">Submit</button>
-            </form>
+            <select id="select-for-trades">
+              {tradesTokenNamesJsx}
+            </select>
+            <button onClick={formSubmitForTrades}>Submit</button>
             <button onClick={cancelFormSubmitForTrades}>
               Cancel
             </button>
@@ -769,12 +807,10 @@ function App() {
             Search By Address
           </div>
           <div className="search-for-token-by-address-wrap">
-            <form onSubmit={formSubmitForTradesAddress}>
-              <select id="select-for-trades-addresses">
-                {tradesTokenAddressesJsx}
-              </select>
-              <button type="submit">Submit</button>
-            </form>
+            <select id="select-for-trades-addresses">
+              {tradesTokenAddressesJsx}
+            </select>
+            <button onClick={formSubmitForTradesAddress}>Submit</button>
             <button onClick={cancelFormSubmitForTradesAddress}>
               Cancel
             </button>
@@ -788,12 +824,10 @@ function App() {
             Search By Name
           </div>
           <div className="search-for-trading-for-token-by-name">
-            <form onSubmit={formSubmitForTradesFor}>
-              <select id="select-for-trades-for">
-                {tradesForTokenNamesJsx}
-              </select>
-              <input type="submit" value="Submit" />
-            </form>
+            <select id="select-for-trades-for">
+              {tradesForTokenNamesJsx}
+            </select>
+            <button onClick={formSubmitForTradesFor}>Submit</button>
             <button onClick={cancelFormSubmitForTradesFor}>
               Cancel
             </button>
@@ -802,13 +836,11 @@ function App() {
             Search By Address
           </div>
           <div className="search-for-trading-for-token-by-address">
-            <form onSubmit={() => formSubmitForTradesForAddress()}>
-              <select id="select-for-trades-for-addresses">
-                {tradesForTokenAddressesJsx}
-              </select>
-              <button type="submit">Submit</button>
-            </form>
-            <button onClick={() => cancelFormSubmitForTradesForAddress()}>
+            <select id="select-for-trades-for-addresses">
+              {tradesForTokenAddressesJsx}
+            </select>
+            <button onClick={formSubmitForTradesForAddress}>Submit</button>
+            <button onClick={cancelFormSubmitForTradesForAddress}>
               Cancel
             </button>
           </div>
