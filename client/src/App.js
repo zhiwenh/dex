@@ -49,11 +49,12 @@ function App() {
 
   const [setTokenTrades, setSetTokenTrades] = useState(true);
   const [setTokenNameAndAddresses, setSetTokenNameAndAddresses] = useState(true);
-  const [setTokenJsx, setSetTokenJsx] = useState(true);
 
-  const [tradesOfTokensToTokensJsx, setTradesOfTokensToTokensJsx] = useState();
-  const [tradesOfTokensToEthJsx, setTradesOfTokensToEthJsx] = useState();
-  const [tradesOfEthToTokensJsx, setTradesOfEthToTokensJsx] = useState();
+  const [tradesOfTokensToTokensJsx, setTradesOfTokensToTokensJsx] = useState(true);
+  const [tradesOfTokensToEthJsx, setTradesOfTokensToEthJsx] = useState(true);
+  const [tradesOfEthToTokensJsx, setTradesOfEthToTokensJsx] = useState(true);
+
+  // tradesOfTokensToTokensJsx
 
   let tokensForTokensTrades;
   let tokensForEthTrades;
@@ -385,8 +386,8 @@ function App() {
   }
 
   function getTokensForEthTradesJsx(tradesOfTokensToEthArg) {
-    let tradesOfTokensToEthJsxIn;
     if (tradesOfTokensToEthArg) {
+
       console.log('here 21');
       console.log('tradesOfTokensToEthArg', tradesOfTokensToEthArg);
       const tradesOfTokensToEthJsxIn = tradesOfTokensToEthArg.map((trade, index) => {
@@ -471,12 +472,11 @@ function App() {
   }
 
   function getEthForTokensTradesJsx(tradesOfEthToTokensArg) {
-    let tradesOfEthToTokensJsxIn;
     if (tradesOfEthToTokensArg) {
 
       console.log('here 22');
 
-      let tradesOfEthToTokensJsxIn = tradesOfEthToTokensArg.map((trade, index) => {
+      const tradesOfEthToTokensJsxIn = tradesOfEthToTokensArg.map((trade, index) => {
 
         if (trade.alreadyTraded === true) {
           return;
@@ -559,14 +559,13 @@ function App() {
 
   // let tradesOfTokensToTokensFiltered;
 
-  function getTradesOfTokensToTokensFiltered(tradesOfTokensToTokensIn) {
-    let tradesOfTokensToTokensFiltered;
-    console.log('searchedForTokenNameTrading', searchedForTokenNameTrading);
-    if (tradesOfTokensToTokensIn) {
-      console.log('tradesOfTokensToTokensIn', tradesOfTokensToTokensIn);
-      tradesOfTokensToTokensFiltered = tradesOfTokensToTokensIn.filter((trade) => {
-        // console.log('here2');
-        // console.log('trade.tradingTokenName', trade.tradingTokenName);
+  function filterTradesOfTokensToTokensAndCreateJsx() {
+    if (tradesOfTokensToTokens) {
+      console.log('here');
+      const tradesOfTokensToTokensFiltered = tradesOfTokensToTokens.filter((trade) => {
+        console.log('here2');
+        console.log('trade.tradingTokenName', trade.tradingTokenName);
+        console.log('searchedForTokenNameTrading', searchedForTokenNameTrading);
 
         return (
           (trade.tradingTokenName === searchedForTokenNameTrading
@@ -579,18 +578,17 @@ function App() {
 
       console.log('tradesOfTokensToTokensFiltered', tradesOfTokensToTokensFiltered);
 
+      const tradesOfTokensToTokensJsxIn = getTokensForTokensTradesJsx(tradesOfTokensToTokensFiltered);
+      setTradesOfTokensToTokensJsx(tradesOfTokensToTokensJsxIn);
     }
-
-    return tradesOfTokensToTokensFiltered;
   }
+
 
   // let tradesOfTokensToEthFiltered;
 
-  function getTradesOfTokensToEthFiltered(tradesOfTokensToEthIn) {
-    let tradesOfTokensToEthFiltered;
-    if (tradesOfTokensToEthIn) {
-      console.log('tradesOfTokensToEth', tradesOfTokensToEthIn);
-      tradesOfTokensToEthFiltered = tradesOfTokensToEthIn.filter((trade) => {
+  function filterTradesOfTokensToEthAndCreateJsx() {
+    if (tradesOfTokensToEth) {
+      const tradesOfTokensToEthFiltered = tradesOfTokensToEth.filter((trade) => {
         return (
           (trade.tradingTokenName === searchedForTokenNameTrading
           || trade.tradingTokenAddress === searchedForTokenAddressTrading)
@@ -598,48 +596,36 @@ function App() {
       });
 
       console.log('tradesOfTokensToEthFiltered', tradesOfTokensToEthFiltered);
-    }
 
-    return tradesOfTokensToEthFiltered;
+      const tradesOfTokensToEthJsxIn = getTokensForEthTradesJsx(tradesOfTokensToEthFiltered);
+      setTradesOfTokensToEthJsx(tradesOfTokensToEthJsxIn);
+    }
   }
 
-  // let tradesOfEthToTokensFiltered;
-
-  function getTradesOfEthToTokensFiltered(tradesOfEthToTokensIn) {
-    let tradesOfEthToTokensFilteredIn;
-    if (tradesOfEthToTokensIn) {
-      console.log('tradesOfEthToTokensIn', tradesOfEthToTokensIn);
-      tradesOfEthToTokensFilteredIn = tradesOfEthToTokensIn.filter((trade) => {
+  function filterTradesOfEthToTokensAndCreateJsx() {
+    if (tradesOfEthToTokens) {
+      const tradesOfEthToTokensFiltered = tradesOfEthToTokens.filter((trade) => {
         return (
           (trade.tradingForTokenName === searchedForTokenNameForTrading
           || trade.tradingForTokenAddress === searchedForTokenAddressForTrading)
         );
       });
 
+      console.log('tradesOfEthToTokensFiltered', tradesOfEthToTokensFiltered);
+
+      const tradesOfEthToTokensJsxIn = getEthForTokensTradesJsx(tradesOfEthToTokensFiltered);
+      setTradesOfEthToTokensJsx(tradesOfEthToTokensJsxIn);
     }
-    return tradesOfEthToTokensFilteredIn;
   }
 
-  function getAllTradesJsxFiltered() {
-    const tradesOfTokensToTokensFiltered = getTradesOfTokensToTokensFiltered(tradesOfTokensToTokens);
-    console.log('tradesOfTokensToTokensFiltered', tradesOfTokensToTokensFiltered);
-    const tradesOfTokensToTokensJsxIn = getTokensForTokensTradesJsx(tradesOfTokensToTokensFiltered);
-
-    const tradesOfTokensToEthFiltered = getTradesOfTokensToEthFiltered(tradesOfTokensToEth);
-    console.log('tradesOfTokensToEthFiltered', tradesOfTokensToEthFiltered);
-    const tradesOfTokensToEthJsxIn = getTokensForEthTradesJsx(tradesOfTokensToEthFiltered);
-
-    const tradesOfEthToTokensFiltered = getTradesOfEthToTokensFiltered(tradesOfEthToTokens);
-    console.log('tradesOfEthToTokensFiltered', tradesOfEthToTokensFiltered);
-    const tradesOfEthToTokensJsxIn = getEthForTokensTradesJsx(tradesOfEthToTokensFiltered);
-
-    console.log('tradesOfTokensToTokensJsxIn', tradesOfTokensToTokensJsxIn);
-
-    setTradesOfTokensToTokensJsx(tradesOfTokensToTokensJsxIn);
-    setTradesOfTokensToEthJsx(tradesOfTokensToEthJsxIn);
-    setTradesOfEthToTokensJsx(tradesOfEthToTokensJsxIn);
-    setSetTokenJsx(false);
+  function createTradesJsx() {
+    filterTradesOfTokensToTokensAndCreateJsx();
+    filterTradesOfTokensToEthAndCreateJsx();
+    filterTradesOfEthToTokensAndCreateJsx();
   }
+
+  // let tradesOfEthToTokensFiltered;
+
 
   let tradesTokenNamesJsx;
 
@@ -711,17 +697,13 @@ function App() {
   // let tokensForEthTrades;
   // let ethForTokensTrades;
 
-  function formSubmitForTrades(e) {
+  async function formSubmitForTrades(e) {
     e.preventDefault();
 
     const selectedValue = document.getElementById('select-for-trades').value;
-    console.log('selectedValue', selectedValue);
-    setSearchedForTokenNameTrading(selectedValue);
-    console.log('searchedForTokenNameTrading', searchedForTokenNameTrading);
-    setSetTokenJsx(true);
-    console.log('searchedForTokenNameTrading', searchedForTokenNameTrading);
 
-    getAllTradesJsxFiltered();
+    await setSearchedForTokenNameTrading(selectedValue);
+
     console.log('searchedForTokenNameTrading', searchedForTokenNameTrading);
 
     console.log('selectedValue', selectedValue);
@@ -732,10 +714,7 @@ function App() {
 
   function cancelFormSubmitForTrades() {
     console.log('here 20 cancel form submit');
-
     setSearchedForTokenNameTrading(undefined);
-    setSetTokenJsx(true);
-    getAllTradesJsxFiltered();
   }
 
   function formSubmitForTradesFor(e) {
@@ -744,8 +723,8 @@ function App() {
     const selectedValue = document.getElementById('select-for-trades-for').value;
 
     setSearchedForTokenNameForTrading(selectedValue);
-    setSetTokenJsx(true);
-    getAllTradesJsxFiltered();
+    createTradesJsx();
+
     console.log('selectedValue', selectedValue);
     // searchedForTokenNameTrading = 'TestToken1';
 
@@ -755,8 +734,6 @@ function App() {
   }
 
   function cancelFormSubmitForTradesFor() {
-    setSetTokenJsx(true);
-
     setSearchedForTokenNameForTrading(undefined);
   }
 
@@ -766,8 +743,7 @@ function App() {
     const selectedValue = document.getElementById('select-for-trades-addresses').value;
 
     setSearchedForTokenAddressTrading(selectedValue);
-    setSetTokenJsx(true);
-    getAllTradesJsxFiltered();
+
     console.log('selectedValue', selectedValue);
     // searchedForTokenNameTrading = 'TestToken1';
 
@@ -778,10 +754,7 @@ function App() {
 
   function cancelFormSubmitForTradesAddress() {
     console.log('here 20 cancel form submit');
-
     setSearchedForTokenAddressTrading(undefined);
-    setSetTokenJsx(true);
-    getAllTradesJsxFiltered();
   }
 
   function formSubmitForTradesForAddress(e) {
@@ -790,8 +763,7 @@ function App() {
     const selectedValue = document.getElementById('select-for-trades-for-addresses').value;
 
     setSearchedForTokenAddressForTrading(selectedValue);
-    setSetTokenJsx(true);
-    getAllTradesJsxFiltered();
+
     console.log('selectedValue', selectedValue);
     // searchedForTokenNameTrading = 'TestToken1';
 
@@ -802,10 +774,7 @@ function App() {
 
   function cancelFormSubmitForTradesForAddress(e) {
     console.log('here 20 cancel form submit');
-
     setSearchedForTokenAddressForTrading(undefined);
-    setSetTokenJsx(true);
-    getAllTradesJsxFiltered();
   }
   // await getTokensForTokensTrades();
   // await getTokensForEthTrades();
@@ -825,12 +794,7 @@ function App() {
         <ConnectWallet />
       </div>
       <div>
-        <AddTokensForTokensTrade
-          // getTrades={getTrades}
-          // getTokenAddressNamesForSelect={getTokenAddressNamesForSelect}
-          // setTokenTrades={setTokenTrades}
-          // setSetTokenTrades={setSetTokenTrades}
-        />
+        <AddTokensForTokensTrade />
       </div>
       <div>
         <AddTokensForEthTrade />
