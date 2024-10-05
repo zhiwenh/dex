@@ -19,14 +19,14 @@ const erc20Abi = erc20Json.abi;
 const provider = new ethers.JsonRpcProvider('http://localhost:8545');
 const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
-export function AddTokensForTokensTrade({setTokenTrades, setSetTokenTrades}) {
+export function AddTokensForTokensTrade() {
   const { hash, isPending, writeContract, error } = useWriteContract();
 
   async function submit(e) {
     e.preventDefault()
 
-    console.log('setSetTokenTrades', setSetTokenTrades);
-    console.log('e', e);
+    // console.log('setSetTokenTrades', setSetTokenTrades);
+    // console.log('e', e);
 
     const tradingTokenAddress = document.getElementById('trading-token-address-1').value;
     const tradingTokenAmount = document.getElementById('trading-token-amount-1').value;
@@ -87,7 +87,7 @@ export function AddTokensForTokensTrade({setTokenTrades, setSetTokenTrades}) {
         args: [tradingTokenAddress, tradingTokenAmount, tradingForTokenAddress, tradingForTokenAmount]
       })
 
-    setSetTokenTrades(true);
+    // setSetTokenTrades(true);
   }
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =

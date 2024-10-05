@@ -559,14 +559,14 @@ function App() {
 
   // let tradesOfTokensToTokensFiltered;
 
-  function getTradesOfTokensToTokensFiltered() {
+  function getTradesOfTokensToTokensFiltered(tradesOfTokensToTokensIn) {
     let tradesOfTokensToTokensFiltered;
-    if (tradesOfTokensToTokens) {
-      console.log('tradesOfTokensToTokens', tradesOfTokensToTokens);
-      tradesOfTokensToTokensFiltered = tradesOfTokensToTokens.filter((trade) => {
-        console.log('here2');
-        console.log('trade.tradingTokenName', trade.tradingTokenName);
-        console.log('searchedForTokenNameTrading', searchedForTokenNameTrading);
+    console.log('searchedForTokenNameTrading', searchedForTokenNameTrading);
+    if (tradesOfTokensToTokensIn) {
+      console.log('tradesOfTokensToTokensIn', tradesOfTokensToTokensIn);
+      tradesOfTokensToTokensFiltered = tradesOfTokensToTokensIn.filter((trade) => {
+        // console.log('here2');
+        // console.log('trade.tradingTokenName', trade.tradingTokenName);
 
         return (
           (trade.tradingTokenName === searchedForTokenNameTrading
@@ -586,11 +586,11 @@ function App() {
 
   // let tradesOfTokensToEthFiltered;
 
-  function getTradesOfTokensToEthFiltered() {
+  function getTradesOfTokensToEthFiltered(tradesOfTokensToEthIn) {
     let tradesOfTokensToEthFiltered;
-    if (tradesOfTokensToEth) {
-      console.log('tradesOfTokensToEth', tradesOfTokensToEth);
-      tradesOfTokensToEthFiltered = tradesOfTokensToEth.filter((trade) => {
+    if (tradesOfTokensToEthIn) {
+      console.log('tradesOfTokensToEth', tradesOfTokensToEthIn);
+      tradesOfTokensToEthFiltered = tradesOfTokensToEthIn.filter((trade) => {
         return (
           (trade.tradingTokenName === searchedForTokenNameTrading
           || trade.tradingTokenAddress === searchedForTokenAddressTrading)
@@ -605,11 +605,11 @@ function App() {
 
   // let tradesOfEthToTokensFiltered;
 
-  function getTradesOfEthToTokensFiltered() {
+  function getTradesOfEthToTokensFiltered(tradesOfEthToTokensIn) {
     let tradesOfEthToTokensFilteredIn;
-    if (tradesOfEthToTokens) {
-      console.log('tradesOfEthToTokens', tradesOfEthToTokens);
-      tradesOfEthToTokensFilteredIn = tradesOfEthToTokens.filter((trade) => {
+    if (tradesOfEthToTokensIn) {
+      console.log('tradesOfEthToTokensIn', tradesOfEthToTokensIn);
+      tradesOfEthToTokensFilteredIn = tradesOfEthToTokensIn.filter((trade) => {
         return (
           (trade.tradingForTokenName === searchedForTokenNameForTrading
           || trade.tradingForTokenAddress === searchedForTokenAddressForTrading)
@@ -621,24 +621,24 @@ function App() {
   }
 
   function getAllTradesJsxFiltered() {
-    const tradesOfTokensToTokensFiltered = getTradesOfTokensToTokensFiltered();
+    const tradesOfTokensToTokensFiltered = getTradesOfTokensToTokensFiltered(tradesOfTokensToTokens);
     console.log('tradesOfTokensToTokensFiltered', tradesOfTokensToTokensFiltered);
     const tradesOfTokensToTokensJsxIn = getTokensForTokensTradesJsx(tradesOfTokensToTokensFiltered);
 
-    const tradesOfTokensToEthFiltered = getTradesOfTokensToEthFiltered();
+    const tradesOfTokensToEthFiltered = getTradesOfTokensToEthFiltered(tradesOfTokensToEth);
     console.log('tradesOfTokensToEthFiltered', tradesOfTokensToEthFiltered);
     const tradesOfTokensToEthJsxIn = getTokensForEthTradesJsx(tradesOfTokensToEthFiltered);
 
-    const tradesOfEthToTokensFiltered = getTradesOfEthToTokensFiltered();
+    const tradesOfEthToTokensFiltered = getTradesOfEthToTokensFiltered(tradesOfEthToTokens);
     console.log('tradesOfEthToTokensFiltered', tradesOfEthToTokensFiltered);
     const tradesOfEthToTokensJsxIn = getEthForTokensTradesJsx(tradesOfEthToTokensFiltered);
 
-    if (setTokenJsx) {
-      setTradesOfTokensToTokensJsx(tradesOfTokensToTokensJsxIn);
-      setTradesOfTokensToEthJsx(tradesOfTokensToEthJsxIn);
-      setTradesOfEthToTokensJsx(tradesOfEthToTokensJsxIn);
-      setSetTokenJsx(false);
-    }
+    console.log('tradesOfTokensToTokensJsxIn', tradesOfTokensToTokensJsxIn);
+
+    setTradesOfTokensToTokensJsx(tradesOfTokensToTokensJsxIn);
+    setTradesOfTokensToEthJsx(tradesOfTokensToEthJsxIn);
+    setTradesOfEthToTokensJsx(tradesOfEthToTokensJsxIn);
+    setSetTokenJsx(false);
   }
 
   let tradesTokenNamesJsx;
@@ -715,10 +715,14 @@ function App() {
     e.preventDefault();
 
     const selectedValue = document.getElementById('select-for-trades').value;
-
+    console.log('selectedValue', selectedValue);
     setSearchedForTokenNameTrading(selectedValue);
+    console.log('searchedForTokenNameTrading', searchedForTokenNameTrading);
     setSetTokenJsx(true);
+    console.log('searchedForTokenNameTrading', searchedForTokenNameTrading);
+
     getAllTradesJsxFiltered();
+    console.log('searchedForTokenNameTrading', searchedForTokenNameTrading);
 
     console.log('selectedValue', selectedValue);
     // searchedForTokenNameTrading = 'TestToken1';
@@ -822,10 +826,10 @@ function App() {
       </div>
       <div>
         <AddTokensForTokensTrade
-          getTrades={getTrades}
-          getTokenAddressNamesForSelect={getTokenAddressNamesForSelect}
-          setTokenTrades={setTokenTrades}
-          setSetTokenTrades={setSetTokenTrades}
+          // getTrades={getTrades}
+          // getTokenAddressNamesForSelect={getTokenAddressNamesForSelect}
+          // setTokenTrades={setTokenTrades}
+          // setSetTokenTrades={setSetTokenTrades}
         />
       </div>
       <div>
