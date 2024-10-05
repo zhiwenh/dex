@@ -6,6 +6,9 @@ import {
   from 'wagmi';
 import { ethers } from 'ethers';
 import config from './../config.json';
+import { getAccount } from '@wagmi/core';
+import { wagmiConfig } from './../wagmiConfig.js';
+import { useState } from "react";
 
 const dexJson = require('./../Dex.json');
 const dexAbi = dexJson.abi;
@@ -16,12 +19,13 @@ const erc20Abi = erc20Json.abi;
 const provider = new ethers.JsonRpcProvider('http://localhost:8545');
 const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
-export function AddTokensForTokensTrade() {
+export function AddTokensForTokensTrade({setTokenTrades, setSetTokenTrades}) {
   const { hash, isPending, writeContract, error } = useWriteContract();
 
   async function submit(e) {
     e.preventDefault()
 
+    console.log('setSetTokenTrades', setSetTokenTrades);
     console.log('e', e);
 
     const tradingTokenAddress = document.getElementById('trading-token-address-1').value;
@@ -29,24 +33,67 @@ export function AddTokensForTokensTrade() {
     const tradingForTokenAddress = document.getElementById('trading-for-token-address-1').value;
     const tradingForTokenAmount = document.getElementById('trading-for-token-amount-1').value;
 
+    const account = getAccount(wagmiConfig);
+
+    console.log('account', account);
+
+    const erc20Instance = new ethers.Contract(tradingTokenAddress, erc20Abi, provider);
+
+    console.log('here3');
+
+    const allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
+
+    const allTrades = await dexInstance.getAllTrades();
+
+    const tokensForTokensTrades = allTrades.tradeTokensForTokensForCall;
+    const tokensForEthTrades = allTrades.tradeTokensForEthForCall;
+
+    let totalAllowanceRequired = tradingTokenAmount;
+
+    for (let i = 0; i < tokensForTokensTrades.length; i++) {
+      if (tokensForTokensTrades[i].tradingTokenAddress === tradingTokenAddress) {
+        totalAllowanceRequired = totalAllowanceRequired + tokensForTokensTrades[i].tradingTokenAmount;
+      }
+    }
+
+    for (let i = 0; i < tokensForEthTrades.length; i++) {
+      if (tokensForEthTrades[i].tradingTokenAddress === tradingTokenAddress) {
+        totalAllowanceRequired = totalAllowanceRequired + tokensForEthTrades[i].tradingTokenAmount;
+      }
+    }
+    console.log('allowanceForDex', allowanceForDex);
+    console.log('totalAllowanceRequired', totalAllowanceRequired);
+    if (allowanceForDex < totalAllowanceRequired) {
+      await writeContract({
+          address: tradingTokenAddress,
+          abi: erc20Abi,
+          functionName: 'approve',
+          args: [config.dexAddress, totalAllowanceRequired]
+        })
+    }
+
+    console.log('allowanceForDex', allowanceForDex);
+
     console.log('tradingTokenAddress', tradingTokenAddress);
     console.log('tradingTokenAmount', tradingTokenAmount);
     console.log('tradingForTokenAddress', tradingForTokenAddress);
     console.log('tradingForTokenAmount', tradingForTokenAmount);
 
     console.log('dexAbi', dexAbi);
-    writeContract({
+    await writeContract({
         address: config.dexAddress,
         abi: dexAbi,
         functionName: 'addTokensToDexForTradeWithOtherTokens',
         args: [tradingTokenAddress, tradingTokenAmount, tradingForTokenAddress, tradingForTokenAmount]
       })
+
+    setSetTokenTrades(true);
   }
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
       hash,
-    })
+    });
 
   console.log('error', error);
   return (

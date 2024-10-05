@@ -7,6 +7,10 @@ import {
 import { ethers } from 'ethers';
 import config from './../config.json';
 
+import { getAccount } from '@wagmi/core';
+
+import { wagmiConfig } from './../wagmiConfig.js';
+
 const dexJson = require('./../Dex.json');
 const dexAbi = dexJson.abi;
 
@@ -24,18 +28,56 @@ export function AddTokensForEthTrade() {
 
     console.log('e', e);
 
+    const account = getAccount(wagmiConfig);
+
+    console.log('account', account);
+
+    console.log('here3');
+
     const tradingTokenAddress = document.getElementById('trading-token-address-2').value;
     const tradingTokenAmount = document.getElementById('trading-token-amount-2').value;
     let tradingForEthAmount = document.getElementById('trading-for-eth-amount-2').value;
 
     tradingForEthAmount = ethers.parseUnits(tradingForEthAmount, 'ether');
 
+    const erc20Instance = new ethers.Contract(tradingTokenAddress, erc20Abi, provider);
+
+    const allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
+
+    const allTrades = await dexInstance.getAllTrades();
+
+    const tokensForTokensTrades = allTrades.tradeTokensForTokensForCall;
+    const tokensForEthTrades = allTrades.tradeTokensForEthForCall;
+
+    let totalAllowanceRequired = tradingTokenAmount;
+
+    for (let i = 0; i < tokensForTokensTrades.length; i++) {
+      if (tokensForTokensTrades[i].tradingTokenAddress === tradingTokenAddress) {
+        totalAllowanceRequired = totalAllowanceRequired + tokensForTokensTrades[i].tradingTokenAmount;
+      }
+    }
+
+    for (let i = 0; i < tokensForEthTrades.length; i++) {
+      if (tokensForEthTrades[i].tradingTokenAddress === tradingTokenAddress) {
+        totalAllowanceRequired = totalAllowanceRequired + tokensForEthTrades[i].tradingTokenAmount;
+      }
+    }
+
+    if (allowanceForDex < totalAllowanceRequired) {
+      await writeContract({
+          address: tradingTokenAddress,
+          abi: erc20Abi,
+          functionName: 'approve',
+          args: [config.dexAddress, totalAllowanceRequired]
+        })
+    }
+
     console.log('tradingTokenAddress', tradingTokenAddress);
     console.log('tradingTokenAmount', tradingTokenAmount);
     console.log('tradingForEthAmount', tradingForEthAmount);
 
     console.log('dexAbi', dexAbi);
-    writeContract({
+    await writeContract({
         address: config.dexAddress,
         abi: dexAbi,
         functionName: 'addTokensToDexForTradeWithEth',
