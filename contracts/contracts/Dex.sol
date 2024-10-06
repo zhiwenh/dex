@@ -386,8 +386,8 @@ contract Dex {
 
     ERC20 tradingForErc20 = ERC20(tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress);
 
-    require(tradingForErc20.balanceOf(msg.sender) >= tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount);
-    require(tradingForErc20.allowance(msg.sender, address(this)) >= tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount);
+    require(tradingForErc20.balanceOf(msg.sender) >= tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount, 'here1');
+    require(tradingForErc20.allowance(msg.sender, address(this)) >= tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount, 'here2');
 
     tradingForErc20.transferFrom(msg.sender, sender, tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount);
 
