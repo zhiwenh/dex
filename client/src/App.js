@@ -299,6 +299,11 @@ function App() {
                   {Number(trade.indexOfTradeOfAddress)}
                 </div>
               </div>
+              <div>
+                <div className="what-they-will-be-trading-inner-header">
+                  This Is What They Will Be Trading
+                </div>
+              </div>
               <div className="trade-inner-wrap">
                 <div>
                   Trading Token Name
@@ -331,9 +336,14 @@ function App() {
                   {Number(trade.tradingTokenAmount)}
                 </div>
               </div>
+              <div>
+                <div class="what-you-will-be-trading-inner-header">
+                  This Is What You Will Be Trading
+                </div>
+              </div>
               <div className="trade-inner-wrap">
                 <div>
-                  Trading For Token Name
+                  Trading Token Name
                 </div>
                 <div>
                   {trade.tradingForTokenName}
@@ -341,7 +351,7 @@ function App() {
               </div>
               <div className="trade-inner-wrap">
                 <div>
-                  Trading For Token Symbol
+                  Trading Token Symbol
                 </div>
                 <div>
                   {trade.tradingForTokenSymbol}
@@ -349,7 +359,7 @@ function App() {
               </div>
               <div className="trade-of-tokens-for-tokens-trading-for-token-address-wrap" className="trade-inner-wrap">
                 <div>
-                  Trading For Token Address
+                  Trading Token Address
                 </div>
                 <div>
                   {trade.tradingForTokenAddress}
@@ -357,7 +367,7 @@ function App() {
               </div>
               <div className="trade-of-tokens-for-tokens-trading-for-token-amount-wrap" className="trade-inner-wrap">
                 <div>
-                  Trading For Token Amount
+                  Trading Token Amount
                 </div>
                 <div>
                   {Number(trade.tradingForTokenAmount)}
@@ -417,6 +427,11 @@ function App() {
                 {Number(trade.indexOfTradeOfAddress)}
               </div>
             </div>
+            <div>
+              <div className="what-they-will-be-trading-inner-header">
+                This Is What They Will Be Trading
+              </div>
+            </div>
             <div className="trade-inner-wrap">
               <div>
                 Trading Token Name
@@ -443,15 +458,20 @@ function App() {
             </div>
             <div className="trade-of-tokens-for-eth-trading-token-amount-wrap" className="trade-inner-wrap">
               <div>
-                Trading Token Amount
+                What They Will Be Trading Token Amount
               </div>
               <div>
                 {Number(trade.tradingTokenAmount)}
               </div>
             </div>
+            <div>
+              <div class="what-you-will-be-trading-inner-header">
+                This Is What You Will Be Trading
+              </div>
+            </div>
             <div className="trade-of-tokens-for-eth-trading-for-eth-amount-wrap" className="trade-inner-wrap">
               <div>
-                Trading For Eth Amount
+                Trading Eth Amount
               </div>
               <div>
                 {ethers.formatUnits(trade.tradingForEthAmount)}
@@ -510,6 +530,11 @@ function App() {
                 {Number(trade.indexOfTradeOfAddress)}
               </div>
             </div>
+            <div>
+              <div className="what-they-will-be-trading-inner-header">
+                This Is What They Will Be Trading
+              </div>
+            </div>
             <div className="trade-of-eth-for-tokens-trading-eth-amount-wrap" className="trade-inner-wrap">
               <div>
                 Trading Eth Amount
@@ -518,9 +543,14 @@ function App() {
                 {ethers.formatUnits(trade.tradingEthAmount)}
               </div>
             </div>
+            <div>
+              <div class="what-you-will-be-trading-inner-header">
+                This Is What You Will Be Trading
+              </div>
+            </div>
             <div className="trade-inner-wrap">
               <div>
-                Trading For Token Name
+                Trading Token Name
               </div>
               <div>
                 {trade.tradingForTokenName}
@@ -528,7 +558,7 @@ function App() {
             </div>
             <div className="trade-inner-wrap">
               <div>
-                Trading For Token Symbol
+                Trading Token Symbol
               </div>
               <div>
                 {trade.tradingForTokenSymbol}
@@ -536,7 +566,7 @@ function App() {
             </div>
             <div className="trade-of-eth-for-tokens-trading-for-token-addressx-wrap" className="trade-inner-wrap">
               <div>
-                Trading For Token Address
+                Trading Token Address
               </div>
               <div>
                 {trade.tradingForTokenAddress}
@@ -544,7 +574,7 @@ function App() {
             </div>
             <div className="trade-of-eth-for-tokens-trading-for-amount-wrap" className="trade-inner-wrap">
               <div>
-                Trading For Token Amount
+                Trading Token Amount
               </div>
               <div>
                 {Number(trade.tradingForTokenAmount)}
@@ -788,25 +818,32 @@ function App() {
         <ConnectWallet />
       </div>
       <div>
-        <AddTokensForTokensTrade
-          getTrades={getTrades}
-          setSetTokenTrades={setSetTokenTrades}
-          setRerender={setRerender}
-        />
+        <div>
+          Make Trade Offers
+        </div>
       </div>
-      <div>
-        <AddTokensForEthTrade />
-      </div>
-      <div>
-        <AddEthForTokensTrade />
+      <div class="add-trade-wrap">
+        <div>
+          <AddTokensForTokensTrade
+            getTrades={getTrades}
+            setSetTokenTrades={setSetTokenTrades}
+            setRerender={setRerender}
+          />
+        </div>
+        <div>
+          <AddTokensForEthTrade />
+        </div>
+        <div>
+          <AddEthForTokensTrade />
+        </div>
       </div>
       <div>
         <div>
           <div className="trade-token-title">
-            Trade For This Token
+            Search For Trades
           </div>
           <div>
-            Search By Name
+            Search By What They Will Be Trading
           </div>
           <div className="search-for-token-by-name-wrap">
             <select id="select-for-trades">
@@ -832,7 +869,7 @@ function App() {
         </div>
         <div>
           <div className="trade-for-token-title">
-            Trade This Token For Something Else
+            Search By What You Will Be Trading
           </div>
           <div>
             Search By Name

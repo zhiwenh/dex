@@ -53,31 +53,31 @@ export function AddEthForTokensTrade() {
 
   return (
     <div className="add-eth-for-tokens-trade-wrap">
-    <div>
-      Make a Eth For Token Trade Offer
-    </div>
-      <form onSubmit={submit}>
       <div>
-        <div>
-          Trading Eth Amount
-        </div>
-        <input name="trading-token-amount" id="trading-eth-amount-3" required/>
-        <div>
-          Trading For Token Address
-        </div><input name="trading-for-token-address" id="trading-for-token-address-3" required/>
-        <div>
-          Trading For Token Amount
-        </div>
-        <input name="trading-for-token-amount" id="trading-for-token-amount-3" required/>
+        Make a Eth For Token Trade Offer
       </div>
-        <button type="submit">{isPending ? 'Confirming...' : 'Add Trade'} </button>
-      </form>
-      {hash && <div>Transaction Hash: {hash}</div>}
-      {isConfirming && <div>Waiting for confirmation...</div>}
-      {isConfirmed && <div>Transaction confirmed.</div>}
-      {error && (
-        <div>Error: {(error).shortMessage || error.message}</div>
-      )}
+        <form onSubmit={submit}>
+        <div>
+          <div>
+            Trading Eth Amount
+          </div>
+          <input name="trading-token-amount" id="trading-eth-amount-3" required/>
+          <div>
+            Trading For Token Address
+          </div><input name="trading-for-token-address" id="trading-for-token-address-3" required/>
+          <div>
+            Trading For Token Amount
+          </div>
+          <input name="trading-for-token-amount" id="trading-for-token-amount-3" required/>
+        </div>
+          <button type="submit">{isPending ? 'Confirming...' : 'Add Trade'} </button>
+        </form>
+        {hash && <div>Transaction Hash: {hash}</div>}
+        {isConfirming && <div>Waiting for confirmation...</div>}
+        {isConfirmed && <div>Transaction confirmed.</div>}
+        {error && (
+          <div>Error: {(error).shortMessage || error.message}</div>
+        )}
     </div>
   )
 }

@@ -167,7 +167,7 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
           </div>
           <button type="submit">{isPending ? 'Confirming...' : 'Add Trade'} </button>
         </form>
-        <div className="test">
+        <div>
         <div>
           {hash && <div>Transaction Hash: {hash}</div>}
           {isConfirming && <div>Waiting for confirmation...</div>}
