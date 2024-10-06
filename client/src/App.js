@@ -17,8 +17,11 @@ import {
 import { AddTokensForTokensTrade } from './Components/AddTokensForTokensTrade.js';
 import { AddTokensForEthTrade } from './Components/AddTokensForEthTrade.js';
 import { AddEthForTokensTrade } from './Components/AddEthToTokensTrade.js';
-import { ConnectWallet } from './Components/ConnectWallet.js'
-import { MakeTokenToTokenTrade } from './Components/MakeTokenToTokenTrade.js'
+import { ConnectWallet } from './Components/ConnectWallet.js';
+import { MakeTokenToTokenTrade } from './Components/MakeTokenToTokenTrade.js';
+import { MakeTokenToEthTrade } from './Components/MakeTokenToEthTrade.js';
+import { MakeEthToTokenTrade } from './Components/MakeEthToTokenTrade.js'
+
 const dexJson = require('./Dex.json');
 const dexAbi = dexJson.abi;
 
@@ -461,6 +464,13 @@ function App() {
               <div>
                 {trade.alreadyTraded.toString()}
               </div>
+              <div>
+                <MakeEthToTokenTrade
+                  sender={trade.sender}
+                  indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
+                  tradingForEthAmount={trade.tradingForEthAmount}
+                />
+              </div>
             </div>
           </div>
         )
@@ -546,6 +556,14 @@ function App() {
               </div>
               <div>
                 {trade.alreadyTraded.toString()}
+              </div>
+              <div>
+                <MakeTokenToEthTrade
+                  sender={trade.sender}
+                  indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
+                  tradingForTokenAddress={trade.tradingForTokenAddress}
+                  tradingForTokenAmount={trade.tradingForTokenAmount}
+                />
               </div>
             </div>
           </div>
