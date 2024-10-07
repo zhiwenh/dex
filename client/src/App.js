@@ -20,7 +20,8 @@ import { AddEthForTokensTrade } from './Components/AddEthToTokensTrade.js';
 import { ConnectWallet } from './Components/ConnectWallet.js';
 import { MakeTokenToTokenTrade } from './Components/MakeTokenToTokenTrade.js';
 import { MakeTokenToEthTrade } from './Components/MakeTokenToEthTrade.js';
-import { MakeEthToTokenTrade } from './Components/MakeEthToTokenTrade.js'
+import { MakeEthToTokenTrade } from './Components/MakeEthToTokenTrade.js';
+import { DisplayUserTrades } from './Components/DisplayUserTrades.js';
 
 const dexJson = require('./Dex.json');
 const dexAbi = dexJson.abi;
@@ -32,6 +33,7 @@ const provider = new ethers.JsonRpcProvider('http://localhost:8545');
 const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
 function App() {
+  const [trades, setTrades] = useState();
   const [tradesOfTokensToTokens, setTradesOfTokensToTokens] = useState();
   const [tradesOfTokensToEth, setTradesOfTokensToEth] = useState();
   const [tradesOfEthToTokens, setTradesOfEthToTokens] = useState();
@@ -81,6 +83,8 @@ function App() {
     console.log('called getTrades');
 
     const trades = await dexInstance.getAllTrades();
+
+    setTrades(trades);
 
     let tradesOfTokensToTokens2 = trades.tradeTokensForTokensForCall;
     let tradesOfTokensToEth2 = trades.tradeTokensForEthForCall;
@@ -182,7 +186,8 @@ function App() {
     function getTokenAddressesTokensForTokensTrades() {
       console.log('here 7');
       if (tradesOfTokensToTokens) {
-        console.log('here 10');
+        console.log('getTokenAddressesTokensForTokensTrades here 10');
+        console.log('tradesOfTokensToTokens', tradesOfTokensToTokens);
         for (let i = 0; i < tradesOfTokensToTokens.length; i++) {
           if (alreadyInTradesTokenAddresses[tradesOfTokensToTokens[i].tradingTokenAddress] === undefined) {
 
@@ -306,7 +311,7 @@ function App() {
               </div>
               <div className="trade-inner-wrap">
                 <div>
-                  Trading Token Name
+                  Token Name
                 </div>
                 <div>
                   {trade.tradingTokenName}
@@ -314,7 +319,7 @@ function App() {
               </div>
               <div className="trade-inner-wrap">
                 <div>
-                  Trading Token Symbol
+                  Token Symbol
                 </div>
                 <div>
                   {trade.tradingTokenSymbol}
@@ -322,7 +327,7 @@ function App() {
               </div>
               <div className="trade-of-tokens-for-tokens-trading-token-address-wrap" className="trade-inner-wrap">
                 <div>
-                  Trading Token Address
+                  Token Address
                 </div>
                 <div className="trade-address-overflow" className="trade-of-tokens-for-tokens-trading-token-address"mclassName="trade-inner-wrap">
                   {trade.tradingTokenAddress}
@@ -330,7 +335,7 @@ function App() {
               </div>
               <div className="trade-of-tokens-for-tokens-trading-token-amount-wrap" className="trade-inner-wrap">
                 <div>
-                  Trading Token Amount
+                  Token Amount
                 </div>
                 <div>
                   {Number(trade.tradingTokenAmount)}
@@ -343,7 +348,7 @@ function App() {
               </div>
               <div className="trade-inner-wrap">
                 <div>
-                  Trading Token Name
+                  Token Name
                 </div>
                 <div>
                   {trade.tradingForTokenName}
@@ -351,7 +356,7 @@ function App() {
               </div>
               <div className="trade-inner-wrap">
                 <div>
-                  Trading Token Symbol
+                  Token Symbol
                 </div>
                 <div>
                   {trade.tradingForTokenSymbol}
@@ -359,7 +364,7 @@ function App() {
               </div>
               <div className="trade-of-tokens-for-tokens-trading-for-token-address-wrap" className="trade-inner-wrap">
                 <div>
-                  Trading Token Address
+                  Token Address
                 </div>
                 <div className="trade-address-overflow">
                   {trade.tradingForTokenAddress}
@@ -367,7 +372,7 @@ function App() {
               </div>
               <div className="trade-of-tokens-for-tokens-trading-for-token-amount-wrap" className="trade-inner-wrap">
                 <div>
-                  Trading Token Amount
+                  Token Amount
                 </div>
                 <div>
                   {Number(trade.tradingForTokenAmount)}
@@ -426,7 +431,7 @@ function App() {
             </div>
             <div className="trade-inner-wrap">
               <div>
-                Trading Token Name
+                Token Name
               </div>
               <div>
                 {trade.tradingTokenName}
@@ -434,7 +439,7 @@ function App() {
             </div>
             <div className="trade-inner-wrap">
               <div>
-                Trading Token Symbol
+                Token Symbol
               </div>
               <div>
                 {trade.tradingTokenSymbol}
@@ -442,7 +447,7 @@ function App() {
             </div>
             <div className="trade-of-tokens-for-eth-trading-token-address-wrap" className="trade-inner-wrap">
               <div>
-                Trading Token Address
+                Token Address
               </div>
               <div>
                 {trade.tradingTokenAddress}
@@ -450,7 +455,7 @@ function App() {
             </div>
             <div className="trade-of-tokens-for-eth-trading-token-amount-wrap" className="trade-inner-wrap">
               <div>
-                What They Will Be Trading Token Amount
+                Token Amount
               </div>
               <div>
                 {Number(trade.tradingTokenAmount)}
@@ -463,7 +468,7 @@ function App() {
             </div>
             <div className="trade-of-tokens-for-eth-trading-for-eth-amount-wrap" className="trade-inner-wrap">
               <div>
-                Trading Eth Amount
+                Eth Amount
               </div>
               <div>
                 {ethers.formatUnits(trade.tradingForEthAmount)}
@@ -521,7 +526,7 @@ function App() {
             </div>
             <div className="trade-of-eth-for-tokens-trading-eth-amount-wrap" className="trade-inner-wrap">
               <div>
-                Trading Eth Amount
+                Eth Amount
               </div>
               <div>
                 {ethers.formatUnits(trade.tradingEthAmount)}
@@ -534,7 +539,7 @@ function App() {
             </div>
             <div className="trade-inner-wrap">
               <div>
-                Trading Token Name
+                Token Name
               </div>
               <div>
                 {trade.tradingForTokenName}
@@ -542,7 +547,7 @@ function App() {
             </div>
             <div className="trade-inner-wrap">
               <div>
-                Trading Token Symbol
+                Token Symbol
               </div>
               <div>
                 {trade.tradingForTokenSymbol}
@@ -550,7 +555,7 @@ function App() {
             </div>
             <div className="trade-of-eth-for-tokens-trading-for-token-addressx-wrap" className="trade-inner-wrap">
               <div>
-                Trading Token Address
+                Token Address
               </div>
               <div>
                 {trade.tradingForTokenAddress}
@@ -558,7 +563,7 @@ function App() {
             </div>
             <div className="trade-of-eth-for-tokens-trading-for-amount-wrap" className="trade-inner-wrap">
               <div>
-                Trading Token Amount
+                Token Amount
               </div>
               <div>
                 {Number(trade.tradingForTokenAmount)}
@@ -812,6 +817,13 @@ function App() {
         <div>
           <AddEthForTokensTrade />
         </div>
+      </div>
+      <div className="display-trades-wrap">
+        <DisplayUserTrades
+          tradesOfTokensToTokens={tradesOfTokensToTokens}
+          tradesOfTokensToEth={tradesOfTokensToEth}
+          tradesOfEthToTokens={tradesOfEthToTokens}
+        />
       </div>
       <div>
         <div>

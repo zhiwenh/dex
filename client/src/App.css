@@ -51,7 +51,7 @@
   padding-top: 10px;
   margin-bottom: 15px;
   font-weight: bold;
-  font-size: 25px;
+  font-size: 30px;
 }
 
 .description {
@@ -66,6 +66,24 @@
   font-weight: bold;
   font-size: 18px;
   margin-bottom: 5px;
+}
+
+.display-user-trades-wrap {
+  display: flex;
+  justify-content: center;
+  word-wrap: break-word;
+}
+
+.display-trades-of-tokens-for-tokens{
+  width: 325px;
+}
+
+.display-trade-of-tokens-for-eth {
+  width: 325px;
+}
+
+.display-trade-of-eth-for-tokens {
+  width: 325px;
 }
 
 .trade-header-make-trade-offers {
