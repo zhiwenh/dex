@@ -829,13 +829,6 @@ function App() {
           <AddEthForTokensTrade />
         </div>
       </div>
-      <div className="display-trades-wrap">
-        <DisplayUserTrades
-          tradesOfTokensToTokens={tradesOfTokensToTokens}
-          tradesOfTokensToEth={tradesOfTokensToEth}
-          tradesOfEthToTokens={tradesOfEthToTokens}
-        />
-      </div>
       <div>
         <div>
           <div className="trade-token-title-search-for-trades">
@@ -843,18 +836,6 @@ function App() {
           </div>
           <div className="trade-for-token-title-search-by-what-they-will-be-trading">
             Search By What They Will Be Trading
-          </div>
-          <div>
-            Search By Name
-          </div>
-          <div className="search-for-token-by-name-wrap">
-            <select id="select-for-trades">
-              {tradesTokenNamesJsx}
-            </select>
-            <button onClick={formSubmitForTrades}>Submit</button>
-            <button onClick={cancelFormSubmitForTrades}>
-              Cancel
-            </button>
           </div>
           <div>
             Search By Address
@@ -873,18 +854,7 @@ function App() {
           <div className="trade-for-token-title-search-by-what-you-will-be-trading">
             Search By What You Will Be Trading
           </div>
-          <div>
-            Search By Name
-          </div>
-          <div className="search-for-trading-for-token-by-name">
-            <select id="select-for-trades-for">
-              {tradesForTokenNamesJsx}
-            </select>
-            <button onClick={formSubmitForTradesFor}>Submit</button>
-            <button onClick={cancelFormSubmitForTradesFor}>
-              Cancel
-            </button>
-          </div>
+
           <div>
             Search By Address
           </div>
@@ -930,6 +900,13 @@ function App() {
           </div>
         </div>
       </div>
+      <div className="display-trades-wrap">
+        <DisplayUserTrades
+          tradesOfTokensToTokens={tradesOfTokensToTokens}
+          tradesOfTokensToEth={tradesOfTokensToEth}
+          tradesOfEthToTokens={tradesOfEthToTokens}
+        />
+      </div>
       <div className="bottom-nav-bar">
         <div className="bottom-nav-bar-contact">
           Contact
@@ -942,6 +919,31 @@ function App() {
   );
 }
 
+// <div>
+//   Search By Name
+// </div>
 
+// <div className="search-for-token-by-name-wrap">
+//   <select id="select-for-trades">
+//     {tradesTokenNamesJsx}
+//   </select>
+//   <button onClick={formSubmitForTrades}>Submit</button>
+//   <button onClick={cancelFormSubmitForTrades}>
+//     Cancel
+//   </button>
+// </div>
+
+// <div>
+//   Search By Name
+// </div>
+// <div className="search-for-trading-for-token-by-name">
+//   <select id="select-for-trades-for">
+//     {tradesForTokenNamesJsx}
+//   </select>
+//   <button onClick={formSubmitForTradesFor}>Submit</button>
+//   <button onClick={cancelFormSubmitForTradesFor}>
+//     Cancel
+//   </button>
+// </div>
 
 export default App;

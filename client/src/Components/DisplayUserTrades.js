@@ -44,7 +44,7 @@ export function DisplayUserTrades({
       return (
         <div className="display-user-trades-trade-box" className="display-trades-of-tokens-for-tokens" key={index.toString()}>
           <div className="trade-of-tokens-for-tokens-sender-wrap" className="trade-inner-wrap">
-            <div className="trade-address-overflow">
+            <div className="display-user-trades-sender">
               Sender
             </div>
             <div className="trade-of-tokens-for-tokens-sender">
@@ -128,10 +128,10 @@ export function DisplayUserTrades({
               Trade Or Canceled Status
             </div>
             <div>
-              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded'}
+              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded Or Canceled'}
             </div>
           </div>
-          <div>
+          <div className="display-user-trades-already-traded-or-canceled-wrap">
             {trade.alreadyTraded ? undefined : <CancelTokensForTokensTrade
               sender={trade.sender}
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
@@ -149,7 +149,7 @@ export function DisplayUserTrades({
       return (
         <div className="display-user-trades-trade-box" className="display-trade-of-tokens-for-eth" key={index.toString()}>
           <div className="trade-of-tokens-for-eth-sender-wrap" className="trade-inner-wrap">
-            <div>
+            <div className="display-user-trades-sender">
               Sender
             </div>
             <div>
@@ -209,10 +209,10 @@ export function DisplayUserTrades({
               Trade Or Canceled Status
             </div>
             <div>
-              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded'}
+              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded Or Canceled'}
             </div>
           </div>
-          <div>
+          <div className="display-user-trades-already-traded-or-canceled-wrap">
             {trade.alreadyTraded ? undefined : <CancelTokensForEthTrade
               sender={trade.sender}
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
@@ -230,7 +230,7 @@ export function DisplayUserTrades({
       return (
         <div className="display-trade-of-eth-for-tokens" key={index.toString()}>
           <div className="trade-of-eth-for-tokens-sender-wrap" className="trade-inner-wrap">
-            <div>
+            <div className="display-user-trades-sender">
               Sender
             </div>
             <div className="trade-address-overflow">
@@ -290,10 +290,10 @@ export function DisplayUserTrades({
               Trade Or Canceled Status
             </div>
             <div>
-              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded'}
+              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded Or Canceled'}
             </div>
           </div>
-          <div>
+          <div className="display-user-trades-already-traded-or-canceled-wrap">
             {trade.alreadyTraded ? undefined : <CancelEthForTokensTrade
               sender={trade.sender}
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}

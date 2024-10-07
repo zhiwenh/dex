@@ -5,7 +5,7 @@
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  font-size: 20px;
+  font-size: 23px;
 }
 
 .App {
@@ -61,7 +61,7 @@
   padding-top: 10px;
   margin-bottom: 15px;
   font-weight: bold;
-  font-size: 40px;
+  font-size: 35px;
 }
 
 .description {
@@ -74,8 +74,8 @@
 
 .wallet-wrap-header {
   font-weight: bold;
-  font-size: 25px;
-  margin-bottom: 10px;
+  font-size: 23px;
+  margin-bottom: 5px;
 }
 
 .display-user-trades-wrap {
@@ -84,8 +84,8 @@
 
 .display-user-trades-your-trades-header {
   font-weight: bold;
-  font-size: 25px;
-  margin-bottom: 15px;
+  font-size: 23px;
+  margin-bottom: 5px;
 }
 
 .display-user-trades-trades-wrap {
@@ -101,6 +101,12 @@
 
 .display-user-trades-trade-box {
   margin-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.display-user-trades-sender {
+  margin-top: 3px;
 }
 
 .display-user-trades-target-trades-wrap {
@@ -149,10 +155,14 @@
   margin-bottom: 10px;
 }
 
+.display-user-trades-already-traded-or-canceled-wrap {
+  margin-bottom: 5px;
+}
+
 .trade-header-make-trade-offers {
   font-weight: bold;
-  margin-bottom: 10px;
-  font-size: 25px;
+  margin-bottom: 5px;
+  font-size: 23px;
 }
 
 .add-trade-wrap {
@@ -237,9 +247,9 @@
 }
 
 .trade-token-title-search-for-trades {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   font-weight: bold;
-  font-size: 25px;
+  font-size: 23px;
 }
 
 .trade-for-token-title-search-by-what-they-will-be-trading {
@@ -282,13 +292,14 @@
 
 .trades-header {
   font-weight: bold;
-  font-size: 25px;
-  margin-bottom: 10px;
+  font-size: 23px;
+  margin-bottom: 5px;
 }
 
 .trades {
   display: flex;
   justify-content: center;
+  min-height: 250px;
   /* grid-auto-columns: 1fr; */
   /* flex-direction: row; */
 }
@@ -339,6 +350,7 @@
   margin-bottom: 10px;
 }
 
+
 .what-they-will-be-trading-inner-header {
   font-weight: bold;
   margin-bottom: 10px;
@@ -350,12 +362,17 @@
 }
 
 .trades-of-tokens-for-tokens {
+
 }
 
 .trade-of-tokens-for-tokens {
   border: 1px solid black;
   border-radius: 5px;
   margin-bottom: 15px;
+}
+
+.trade-of-tokens-for-tokens-sender-wrap {
+  margin-top: 3px;
 }
 
 .trades-of-tokens-for-eth {
@@ -378,6 +395,14 @@
   margin-bottom: 15px;
 }
 
+.trade-of-tokens-for-eth-sender-wrap {
+  margin-top: 3px;
+}
+
+.trade-of-eth-for-tokens-sender-wrap {
+  margin-top: 3px;
+}
+
 .bottom-nav-bar {
   height: 50px;
   margin-top: 30px;
@@ -387,7 +412,7 @@
 .bottom-nav-bar-contact {
   margin-bottom: 5px;
   font-weight: bold;
-  font-size: 25px;
+  font-size: 23px;
 }
 
 .bottom-nav-bar-email {
