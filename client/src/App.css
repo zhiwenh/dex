@@ -69,7 +69,7 @@
 }
 
 .display-user-trades-wrap {
-
+  margin-bottom: 10px;
 }
 
 .display-user-trades-your-trades-header {
@@ -92,23 +92,44 @@
   margin-bottom: 10px;
 }
 
+.display-user-trades-target-trades-wrap {
+  width: 325px;
+}
+
+.display-user-trades-tokens-for-tokens-wrap {
+  width: 325px;
+  margin-left: 10px;
+}
+
 .display-trades-of-tokens-for-tokens{
-  width: 320px;
+  width: 325px;
   border: 1px solid black;
   margin-left: 10px;
   margin-bottom: 10px;
 }
 
+.display-user-trades-tokens-for-eth-wrap {
+  width: 325px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
 .display-trade-of-tokens-for-eth {
-  width: 320px;
+  width: 325px;
   border: 1px solid black;
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 10px;
 }
 
+.display-user-trades-eth-for-tokens-wrap {
+  width: 325px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
 .display-trade-of-eth-for-tokens {
-  width: 320px;
+  width: 325px;
   border: 1px solid black;
   margin-right: 10px;
   margin-bottom: 10px;

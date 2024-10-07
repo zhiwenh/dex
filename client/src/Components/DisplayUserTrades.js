@@ -13,6 +13,11 @@ import { waitForTransactionReceipt } from '@wagmi/core'
 import { getTransactionReceipt } from '@wagmi/core'
 import { localhost } from '@wagmi/core/chains'
 
+import { CancelTokensForTokensTrade } from './CancelTokensForTokensTrade.js';
+import { CancelTokensForEthTrade } from './CancelTokensForEthTrade.js'
+import { CancelEthForTokensTrade } from './CancelEthForTokensTrade.js';
+
+
 const dexJson = require('./../Dex.json');
 const dexAbi = dexJson.abi;
 
@@ -120,11 +125,17 @@ export function DisplayUserTrades({
           </div>
           <div>
             <div>
-              Trade Status
+              Trade Or Canceled Status
             </div>
             <div>
-              {trade.alreadyTraded ? 'Traded' : 'Not Traded'}
+              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded'}
             </div>
+          </div>
+          <div>
+            {trade.alreadyTraded ? undefined : <CancelTokensForTokensTrade
+              sender={trade.sender}
+              indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
+            />}
           </div>
         </div>
       )
@@ -195,11 +206,17 @@ export function DisplayUserTrades({
           </div>
           <div>
             <div>
-              Trade Status
+              Trade Or Canceled Status
             </div>
             <div>
-              {trade.alreadyTraded ? 'Traded' : 'Not Traded'}
+              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded'}
             </div>
+          </div>
+          <div>
+            {trade.alreadyTraded ? undefined : <CancelTokensForEthTrade
+              sender={trade.sender}
+              indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
+            />}
           </div>
         </div>
       );
@@ -270,11 +287,17 @@ export function DisplayUserTrades({
           </div>
           <div>
             <div>
-              Trade Status
+              Trade Or Canceled Status
             </div>
             <div>
-              {trade.alreadyTraded ? 'Traded' : 'Not Traded'}
+              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded'}
             </div>
+          </div>
+          <div>
+            {trade.alreadyTraded ? undefined : <CancelEthForTokensTrade
+              sender={trade.sender}
+              indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
+            />}
           </div>
         </div>
       )
@@ -290,8 +313,8 @@ export function DisplayUserTrades({
       <div className="display-user-trades-your-trades-header">
         Your Trades
       </div>
-      <div className="display-user-trades-trades-wrap">
-        <div>
+      <div class="display-user-trades-trades-wrap">
+        <div className="display-user-trades-tokens-for-tokens-wrap">
           <div className="display-user-trades-trade-header">
             Tokens For Tokens Trades
           </div>
@@ -299,7 +322,7 @@ export function DisplayUserTrades({
             {tradesOfTokensToTokens}
           </div>
         </div>
-        <div>
+        <div className="display-user-trades-tokens-for-eth-wrap">
           <div className="display-user-trades-trade-header">
             Tokens For Eth Trades
           </div>
@@ -307,7 +330,7 @@ export function DisplayUserTrades({
             {tradesOfTokensToEth}
           </div>
         </div>
-        <div>
+        <div className="display-user-trades-eth-for-tokens-wrap">
           <div className="display-user-trades-trade-header">
             Eth For Tokens Trades
           </div>
