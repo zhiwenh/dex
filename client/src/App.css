@@ -48,7 +48,10 @@
 }
 
 .title {
-  margin-bottom: 10px;
+  padding-top: 10px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 25px;
 }
 
 .description {
@@ -59,27 +62,92 @@
   margin-bottom: 10px;
 }
 
+.wallet-wrap-header {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.trade-header-make-trade-offers {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
 .add-trade-wrap {
   display: flex;
   justify-content: center;
+}
+
+.make-token-trade-approve-button {
+  margin-bottom: 5px;
+}
+
+.make-tokens-trade-approve-header{
+  margin-bottom: 5px;
 }
 
 .add-tokens-for-tokens-trade-wrap {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+
+.add-trade-token-for-token-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.add-tokens-for-tokens-trade-approve-header {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.add-tokens-for-tokens-approve-button {
+  margin-bottom: 5px;
 }
 
 .add-tokens-for-eth-trade-wrap {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+
+.add-trade-token-for-eth-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.add-tokens-for-eth-trade-approve-header {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.add-tokens-for-eth-approve-button {
+  margin-bottom: 5px;
 }
 
 .add-eth-for-tokens-trade-wrap {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.add-trade-eth-for-token-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.add-eth-for-tokens-trade-button {
+  margin-top: 5px;
 }
 
 .orderList{
@@ -87,12 +155,20 @@
   flex-direction: row;
 }
 
-.trade-token-title {
+.trade-token-title-search-for-trades {
   margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 18px;
 }
 
-.trade-for-token-title {
-  margin-bottom: 10px;
+.trade-for-token-title-search-by-what-they-will-be-trading {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.trade-for-token-title-search-by-what-you-will-be-trading {
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .search-for-token-by-name-wrap {
@@ -120,12 +196,25 @@
 }
 
 .trades-wrap {
+  margin-bottom: 10px;
+}
 
+.trades-header {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
 .trades {
   display: flex;
-  flex-direction: row;
+  justify-content: center;
+  /* grid-auto-columns: 1fr; */
+  /* flex-direction: row; */
+}
+
+.trade-address-overflow {
+  word-wrap: break-word;
+  white-space: initial;
 }
 
 .trade-inner-wrap {
@@ -133,15 +222,40 @@
 }
 
 .trades-of-tokens-for-tokens-wrap {
-  width: 500px;
+  grid-row: 1;
+  width: 325px;
+  word-wrap: break-word;
+  margin-left: 10px;
+}
+
+.trades-of-tokens-for-tokens-header{
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .trades-of-tokens-for-eth-wrap {
-  width: 500px;
+  grid-row: 1;
+  width: 325px;
+  word-wrap: break-word;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 
-.trades-of-eth-for-tokens-wrap  {
-  width: 500px;
+.trades-of-tokens-for-eth-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.trades-of-eth-for-tokens  {
+  grid-row: 1;
+  width: 325px;
+  word-wrap: break-word;
+  margin-right: 10px;
+}
+
+.trades-of-eth-for-tokens-header {
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .what-they-will-be-trading-inner-header {
@@ -155,8 +269,6 @@
 }
 
 .trades-of-tokens-for-tokens {
-  margin-left: 10px;
-  margin-right: 10px;
 }
 
 .trade-of-tokens-for-tokens {
@@ -165,8 +277,7 @@
 }
 
 .trades-of-tokens-for-eth {
-  margin-left: 10px;
-  margin-right: 10px;
+
 }
 
 .trade-of-tokens-for-eth {
@@ -175,11 +286,26 @@
 }
 
 .trades-of-eth-for-tokens {
-  margin-left: 10px;
-  margin-right: 10px;
+
 }
 
 .trade-of-eth-for-tokens {
   border: 1px solid black;
   margin-bottom: 15px;
+}
+
+.bottom-nav-bar {
+  height: 50px;
+  margin-top: 30px;
+  padding-bottom: 10px;
+}
+
+.bottom-nav-bar-contact {
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.bottom-nav-bar-email {
+
 }

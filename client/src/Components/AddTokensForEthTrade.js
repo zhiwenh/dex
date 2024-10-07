@@ -112,42 +112,42 @@ export function AddTokensForEthTrade() {
   console.log('error', error);
   return (
     <div className="add-tokens-for-eth-trade-wrap">
-    <div>
-      Make a Token For Eth Trade Offer
-    </div>
-      <form onSubmit={submit}>
-      <div>
-        <div>
-          Trading Token Address
-        </div>
-        <input name="trading-token-address" id="trading-token-address-2" required />
-        <div>
-          Trading Token Amount
-        </div>
-        <input name="trading-token-amount" id="trading-token-amount-2" required/>
-        <div>
-          Trading For Eth Amount
-        </div>
-        <input name="trading-for-eth-amount" id="trading-for-eth-amount-2" required/>
+      <div className="add-trade-token-for-eth-title">
+        Make a Token For Eth Trade Offer
       </div>
-      <div>
+        <form onSubmit={submit}>
         <div>
-          Approve Tokens To Be Traded By Dex
+          <div>
+            Trading Token Address
+          </div>
+          <input name="trading-token-address" id="trading-token-address-2" required />
+          <div>
+            Trading Token Amount
+          </div>
+          <input name="trading-token-amount" id="trading-token-amount-2" required/>
+          <div>
+            Trading For Eth Amount
+          </div>
+          <input name="trading-for-eth-amount" id="trading-for-eth-amount-2" required/>
         </div>
         <div>
-          <button onClick={approveTokens}>
-            {isPending ? 'Confirming...' : 'Approve Tokens'}
-          </button>
+          <div className="add-tokens-for-eth-trade-approve-header">
+            Approve Tokens To Be Traded By Dex
+          </div>
+          <div>
+            <button className="add-tokens-for-eth-approve-button" onClick={approveTokens}>
+              {isPending ? 'Confirming...' : 'Approve Tokens'}
+            </button>
+          </div>
         </div>
-      </div>
-        <button type="submit">{isPending || isConfirming ? 'Confirming...' : 'Add Trade'} </button>
-      </form>
-      {hash && <div>Transaction Hash: {hash}</div>}
-      {isConfirming && <div>Waiting for confirmation...</div>}
-      {isConfirmed && <div>Transaction confirmed.</div>}
-      {error && (
-        <div>Error: {(error).shortMessage || error.message}</div>
-      )}
+          <button type="submit">{isPending || isConfirming ? 'Confirming...' : 'Add Trade'} </button>
+        </form>
+        {hash && <div>Transaction Hash: {hash}</div>}
+        {isConfirming && <div>Waiting for confirmation...</div>}
+        {isConfirmed && <div>Transaction confirmed.</div>}
+        {error && (
+          <div>Error: {(error).shortMessage || error.message}</div>
+        )}
     </div>
   )
 }

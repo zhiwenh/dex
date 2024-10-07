@@ -6,14 +6,24 @@ export function ConnectWallet() {
   const { isConnected } = useAccount()
   if (isConnected)
     return (
-      <div class="wallet-wrap">
-        <Account />
+      <div className="wallet-wrap">
+        <div className="wallet-wrap-header">
+          Wallet
+        </div>
+        <div>
+          <Account />
+        </div>
       </div>
     )
 
   return (
-    <div class="wallet-wrap">
-      <WalletOptions />
+    <div className="wallet-wrap">
+      <div className="wallet-wrap-header">
+        Wallet
+      </div>
+      <div>
+        <WalletOptions />
+      </div>
     </div>
   )
 }

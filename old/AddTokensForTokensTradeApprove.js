@@ -13,6 +13,8 @@ import { waitForTransactionReceipt } from '@wagmi/core'
 import { getTransactionReceipt } from '@wagmi/core'
 import { localhost } from '@wagmi/core/chains'
 
+import './../App.css';
+
 const dexJson = require('./../Dex.json');
 const dexAbi = dexJson.abi;
 
@@ -25,11 +27,16 @@ const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setRerender }) {
   const { hash, isPending, writeContract, error } = useWriteContract();
 
-  async function approveTokens(e) {
-    e.preventDefault();
+  async function submit(e) {
+    e.preventDefault()
+
+    // console.log('setSetTokenTrades', setSetTokenTrades);
+    // console.log('e', e);
 
     const tradingTokenAddress = document.getElementById('trading-token-address-1').value;
     const tradingTokenAmount = document.getElementById('trading-token-amount-1').value;
+    const tradingForTokenAddress = document.getElementById('trading-for-token-address-1').value;
+    const tradingForTokenAmount = document.getElementById('trading-for-token-amount-1').value;
 
     const account = getAccount(wagmiConfig);
 
@@ -71,22 +78,8 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
           args: [config.dexAddress, totalAllowanceRequired]
         })
     }
-  }
 
-  async function submit(e) {
-    e.preventDefault()
-
-    // console.log('setSetTokenTrades', setSetTokenTrades);
-    // console.log('e', e);
-
-    const tradingTokenAddress = document.getElementById('trading-token-address-1').value;
-    const tradingTokenAmount = document.getElementById('trading-token-amount-1').value;
-    const tradingForTokenAddress = document.getElementById('trading-for-token-address-1').value;
-    const tradingForTokenAmount = document.getElementById('trading-for-token-amount-1').value;
-
-    const account = getAccount(wagmiConfig);
-
-    console.log('account', account);
+    console.log('allowanceForDex', allowanceForDex);
 
     console.log('tradingTokenAddress', tradingTokenAddress);
     console.log('tradingTokenAmount', tradingTokenAmount);
@@ -134,7 +127,7 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
   console.log('error', error);
   return (
     <div className="add-tokens-for-tokens-trade-wrap">
-      <div className="add-trade-token-for-token-title">
+      <div className="add-trade-token-token-title">
         Make a Token For Token Trade Offer
       </div>
         <form onSubmit={submit}>
@@ -155,28 +148,14 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
           </div>
           <input name="trading-for-token-amount" id="trading-for-token-amount-1" required/>
         </div>
-          <div>
-            <div className="add-tokens-for-tokens-trade-approve-header">
-              Approve Tokens To Be Traded By Dex
-            </div>
-            <div>
-              <button onClick={approveTokens} className="add-tokens-for-tokens-approve-button">
-                {isPending ? 'Confirming...' : 'Approve Tokens'}
-              </button>
-            </div>
-          </div>
-          <button type="submit">{isPending ? 'Confirming...' : 'Add Trade'} </button>
-        </form>
-        <div>
-        <div>
-          {hash && <div>Transaction Hash: {hash}</div>}
-          {isConfirming && <div>Waiting for confirmation...</div>}
-          {isConfirmed && <div>Transaction confirmed.</div>}
-          {error && (
-            <div>Error: {(error).shortMessage || error.message}</div>
-          )}
-        </div>
-      </div>
+        <button type="submit">{isPending ? 'Confirming...' : 'Add Trade'} </button>
+      </form>
+        {hash && <div>Transaction Hash: {hash}</div>}
+        {isConfirming && <div>Waiting for confirmation...</div>}
+        {isConfirmed && <div>Transaction confirmed.</div>}
+        {error && (
+          <div>Error: {(error).shortMessage || error.message}</div>
+        )}
     </div>
   )
 }

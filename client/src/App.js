@@ -284,7 +284,7 @@ function App() {
           return (
             <div className="trade-of-tokens-for-tokens" key={index.toString()}>
               <div className="trade-of-tokens-for-tokens-sender-wrap" className="trade-inner-wrap">
-                <div>
+                <div className="trade-address-overflow">
                   Seller
                 </div>
                 <div className="trade-of-tokens-for-tokens-sender">
@@ -324,7 +324,7 @@ function App() {
                 <div>
                   Trading Token Address
                 </div>
-                <div className="trade-of-tokens-for-tokens-trading-token-address"mclassName="trade-inner-wrap">
+                <div className="trade-address-overflow" className="trade-of-tokens-for-tokens-trading-token-address"mclassName="trade-inner-wrap">
                   {trade.tradingTokenAddress}
                 </div>
               </div>
@@ -361,7 +361,7 @@ function App() {
                 <div>
                   Trading Token Address
                 </div>
-                <div>
+                <div className="trade-address-overflow">
                   {trade.tradingForTokenAddress}
                 </div>
               </div>
@@ -373,21 +373,13 @@ function App() {
                   {Number(trade.tradingForTokenAmount)}
                 </div>
               </div>
-              <div className="trade-of-tokens-for-tokens-already-traded-wrap" className="trade-inner-wrap">
-                <div>
-                  Already Traded
-                </div>
-                <div>
-                  {trade.alreadyTraded.toString()}
-                </div>
-                <div className="make-token-trade-button-wrap">
-                  <MakeTokenToTokenTrade
-                    sender={trade.sender}
-                    indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
-                    tradingForTokenAddress={trade.tradingForTokenAddress}
-                    tradingForTokenAmount={trade.tradingForTokenAmount}
-                  />
-                </div>
+              <div className="make-token-trade-button-wrap">
+                <MakeTokenToTokenTrade
+                  sender={trade.sender}
+                  indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
+                  tradingForTokenAddress={trade.tradingForTokenAddress}
+                  tradingForTokenAmount={trade.tradingForTokenAmount}
+                />
               </div>
             </div>
           )
@@ -477,20 +469,12 @@ function App() {
                 {ethers.formatUnits(trade.tradingForEthAmount)}
               </div>
             </div>
-            <div className="trade-of-tokens-for-eth-already-traded-wrap" className="trade-inner-wrap">
-              <div>
-                Already Traded
-              </div>
-              <div>
-                {trade.alreadyTraded.toString()}
-              </div>
-              <div>
-                <MakeEthToTokenTrade
-                  sender={trade.sender}
-                  indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
-                  tradingForEthAmount={trade.tradingForEthAmount}
-                />
-              </div>
+            <div>
+              <MakeEthToTokenTrade
+                sender={trade.sender}
+                indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
+                tradingForEthAmount={trade.tradingForEthAmount}
+              />
             </div>
           </div>
         )
@@ -518,7 +502,7 @@ function App() {
               <div>
                 Seller
               </div>
-              <div>
+              <div className="trade-address-overflow">
                 {trade.sender}
               </div>
             </div>
@@ -580,21 +564,13 @@ function App() {
                 {Number(trade.tradingForTokenAmount)}
               </div>
             </div>
-            <div className="trade-of-eth-for-tokens-already-traded-wrap" className="trade-inner-wrap">
-              <div>
-                Already Traded
-              </div>
-              <div>
-                {trade.alreadyTraded.toString()}
-              </div>
-              <div>
-                <MakeTokenToEthTrade
-                  sender={trade.sender}
-                  indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
-                  tradingForTokenAddress={trade.tradingForTokenAddress}
-                  tradingForTokenAmount={trade.tradingForTokenAmount}
-                />
-              </div>
+            <div>
+              <MakeTokenToEthTrade
+                sender={trade.sender}
+                indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
+                tradingForTokenAddress={trade.tradingForTokenAddress}
+                tradingForTokenAmount={trade.tradingForTokenAmount}
+              />
             </div>
           </div>
         )
@@ -812,13 +788,13 @@ function App() {
         Dex
       </div>
       <div className="description">
-        A decentralized exchange that trades for ERC20 tokens on the Ethereum blockchain.
+        A decentralized exchange that trades ERC20 tokens on the Ethereum blockchain.
       </div>
       <div>
         <ConnectWallet />
       </div>
       <div>
-        <div>
+        <div class="trade-header-make-trade-offers">
           Make Trade Offers
         </div>
       </div>
@@ -839,11 +815,14 @@ function App() {
       </div>
       <div>
         <div>
-          <div className="trade-token-title">
+          <div className="trade-token-title-search-for-trades">
             Search For Trades
           </div>
-          <div>
+          <div className="trade-for-token-title-search-by-what-they-will-be-trading">
             Search By What They Will Be Trading
+          </div>
+          <div>
+            Search By Name
           </div>
           <div className="search-for-token-by-name-wrap">
             <select id="select-for-trades">
@@ -868,7 +847,7 @@ function App() {
           </div>
         </div>
         <div>
-          <div className="trade-for-token-title">
+          <div className="trade-for-token-title-search-by-what-you-will-be-trading">
             Search By What You Will Be Trading
           </div>
           <div>
@@ -926,6 +905,14 @@ function App() {
               {tradesOfEthToTokensJsx}
             </div>
           </div>
+        </div>
+      </div>
+      <div className="bottom-nav-bar">
+        <div className="bottom-nav-bar-contact">
+          Contact
+        </div>
+        <div className="bottom-nav-bar-email">
+          My email is zhiwen555@gmail.com
         </div>
       </div>
     </div>
