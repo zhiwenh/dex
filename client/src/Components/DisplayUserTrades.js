@@ -37,7 +37,7 @@ export function DisplayUserTrades({
       return trade.sender === account.address;
     }).map((trade, index) => {
       return (
-        <div className="display-trades-of-tokens-for-tokens" key={index.toString()}>
+        <div className="display-user-trades-trade-box" className="display-trades-of-tokens-for-tokens" key={index.toString()}>
           <div className="trade-of-tokens-for-tokens-sender-wrap" className="trade-inner-wrap">
             <div className="trade-address-overflow">
               Sender
@@ -136,7 +136,7 @@ export function DisplayUserTrades({
       return trade.sender === account.address;
     }).map((trade, index) => {
       return (
-        <div className="display-trade-of-tokens-for-eth" key={index.toString()}>
+        <div className="display-user-trades-trade-box" className="display-trade-of-tokens-for-eth" key={index.toString()}>
           <div className="trade-of-tokens-for-eth-sender-wrap" className="trade-inner-wrap">
             <div>
               Sender
@@ -287,28 +287,33 @@ export function DisplayUserTrades({
 
   return (
     <div className="display-user-trades-wrap">
-      <div>
-        <div>
-          Tokens For Tokens Trades
-        </div>
-        <div>
-          {tradesOfTokensToTokens}
-        </div>
+      <div className="display-user-trades-your-trades-header">
+        Your Trades
       </div>
-      <div>
+      <div className="display-user-trades-trades-wrap">
         <div>
-          Tokens For Eth Trades
+          <div className="display-user-trades-trade-header">
+            Tokens For Tokens Trades
+          </div>
+          <div>
+            {tradesOfTokensToTokens}
+          </div>
         </div>
         <div>
-          {tradesOfTokensToEth}
+          <div className="display-user-trades-trade-header">
+            Tokens For Eth Trades
+          </div>
+          <div>
+            {tradesOfTokensToEth}
+          </div>
         </div>
-      </div>
-      <div>
         <div>
-          Eth For Tokens Trades
-        </div>
-        <div>
-          {tradesOfEthToTokens}
+          <div className="display-user-trades-trade-header">
+            Eth For Tokens Trades
+          </div>
+          <div>
+            {tradesOfEthToTokens}
+          </div>
         </div>
       </div>
     </div>

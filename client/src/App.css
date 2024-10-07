@@ -64,26 +64,54 @@
 
 .wallet-wrap-header {
   font-weight: bold;
-  font-size: 18px;
+  font-size: 20px;
   margin-bottom: 5px;
 }
 
 .display-user-trades-wrap {
+
+}
+
+.display-user-trades-your-trades-header {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.display-user-trades-trades-wrap {
   display: flex;
   justify-content: center;
   word-wrap: break-word;
 }
 
+.display-user-trades-trade-header {
+  font-weight: bold;
+}
+
+.display-user-trades-trade-box {
+  margin-bottom: 10px;
+}
+
 .display-trades-of-tokens-for-tokens{
-  width: 325px;
+  width: 320px;
+  border: 1px solid black;
+  margin-left: 10px;
+  margin-bottom: 10px;
 }
 
 .display-trade-of-tokens-for-eth {
-  width: 325px;
+  width: 320px;
+  border: 1px solid black;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 .display-trade-of-eth-for-tokens {
-  width: 325px;
+  width: 320px;
+  border: 1px solid black;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 .trade-header-make-trade-offers {
