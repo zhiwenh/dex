@@ -22,6 +22,7 @@ import { MakeTokenToTokenTrade } from './Components/MakeTokenToTokenTrade.js';
 import { MakeTokenToEthTrade } from './Components/MakeTokenToEthTrade.js';
 import { MakeEthToTokenTrade } from './Components/MakeEthToTokenTrade.js';
 import { DisplayUserTrades } from './Components/DisplayUserTrades.js';
+import { TopNavBar } from './Components/TopNavBar.js'
 
 const dexJson = require('./Dex.json');
 const dexAbi = dexJson.abi;
@@ -310,7 +311,7 @@ function App() {
               </div>
               <div>
                 <div className="what-they-will-be-trading-inner-header">
-                  This Is What They Will Be Trading
+                  What They Will Be Trading
                 </div>
               </div>
               <div className="trade-inner-wrap">
@@ -347,7 +348,7 @@ function App() {
               </div>
               <div>
                 <div class="what-you-will-be-trading-inner-header">
-                  This Is What You Will Be Trading
+                  What You Will Be Trading
                 </div>
               </div>
               <div className="trade-inner-wrap">
@@ -430,7 +431,7 @@ function App() {
             </div>
             <div>
               <div className="what-they-will-be-trading-inner-header">
-                This Is What They Will Be Trading
+                What They Will Be Trading
               </div>
             </div>
             <div className="trade-inner-wrap">
@@ -467,7 +468,7 @@ function App() {
             </div>
             <div>
               <div class="what-you-will-be-trading-inner-header">
-                This Is What You Will Be Trading
+                What You Will Be Trading
               </div>
             </div>
             <div className="trade-of-tokens-for-eth-trading-for-eth-amount-wrap" className="trade-inner-wrap">
@@ -525,7 +526,7 @@ function App() {
             </div>
             <div>
               <div className="what-they-will-be-trading-inner-header">
-                This Is What They Will Be Trading
+                What They Will Be Trading
               </div>
             </div>
             <div className="trade-of-eth-for-tokens-trading-eth-amount-wrap" className="trade-inner-wrap">
@@ -538,7 +539,7 @@ function App() {
             </div>
             <div>
               <div class="what-you-will-be-trading-inner-header">
-                This Is What You Will Be Trading
+                What You Will Be Trading
               </div>
             </div>
             <div className="trade-inner-wrap">
@@ -800,16 +801,22 @@ function App() {
   }
   return (
     <div className="App">
+      <div className="top-nav-bar-wrap">
+        <TopNavBar />
+      </div>
       <div className="title">
         Dex
       </div>
-      <div className="description">
-        A decentralized exchange that trades ERC20 tokens on the Ethereum blockchain.
+      <div className="description-wrap">
+        <div className="description">
+          A decentralized exchange that trades ERC20 tokens on the Ethereum blockchain.
+          You can make trade offers that will be completed by someone else.
+        </div>
       </div>
-      <div>
+      <div id="wallet-id">
         <ConnectWallet />
       </div>
-      <div>
+      <div id="make-trade-offers-id">
         <div class="trade-header-make-trade-offers">
           Make Trade Offers
         </div>
@@ -829,7 +836,7 @@ function App() {
           <AddEthForTokensTrade />
         </div>
       </div>
-      <div>
+      <div id="search-for-trades-id" class="search-for-trades-wrap">
         <div>
           <div className="trade-token-title-search-for-trades">
             Search For Trades
@@ -869,7 +876,7 @@ function App() {
           </div>
         </div>
       </div>
-      <div className="trades-wrap">
+      <div id="trades-id" className="trades-wrap">
         <div className="trades-header">
           Trades
         </div>
@@ -900,7 +907,7 @@ function App() {
           </div>
         </div>
       </div>
-      <div className="display-trades-wrap">
+      <div id="your-trades-id" className="display-trades-wrap">
         <DisplayUserTrades
           tradesOfTokensToTokens={tradesOfTokensToTokens}
           tradesOfTokensToEth={tradesOfTokensToEth}
@@ -908,7 +915,7 @@ function App() {
         />
       </div>
       <div className="bottom-nav-bar">
-        <div className="bottom-nav-bar-contact">
+        <div id="contact-id" className="bottom-nav-bar-contact">
           Contact
         </div>
         <div className="bottom-nav-bar-email">

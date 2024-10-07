@@ -54,7 +54,7 @@ export function AddEthForTokensTrade() {
   return (
     <div className="add-eth-for-tokens-trade-wrap">
       <div className="add-trade-eth-for-token-title">
-        Make a Eth For Token Trade Offer
+        Make a Eth For Token Offer
       </div>
         <form onSubmit={submit}>
         <div>

@@ -113,7 +113,7 @@ export function AddTokensForEthTrade() {
   return (
     <div className="add-tokens-for-eth-trade-wrap">
       <div className="add-trade-token-for-eth-title">
-        Make a Token For Eth Trade Offer
+        Make a Token For Eth Offer
       </div>
         <form onSubmit={submit}>
         <div>
@@ -132,11 +132,10 @@ export function AddTokensForEthTrade() {
         </div>
         <div>
           <div className="add-tokens-for-eth-trade-approve-header">
-            Approve Tokens To Be Traded By Dex
           </div>
           <div>
             <button className="add-tokens-for-eth-approve-button" onClick={approveTokens}>
-              {isPending ? 'Confirming...' : 'Approve Tokens'}
+              {isPending ? 'Confirming...' : 'Approve Tokens For Dex'}
             </button>
           </div>
         </div>

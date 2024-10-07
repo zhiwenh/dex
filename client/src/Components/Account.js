@@ -8,8 +8,10 @@ export function Account() {
 
   return (
     <div>
+      <div class="account-address">
       {ensAvatar && <img alt="ENS Avatar" src={ensAvatar} />}
       {address && <div>{ensName ? `${ensName} (${address})` : address}</div>}
+      </div>
       <button onClick={() => disconnect()}>Disconnect</button>
     </div>
   )

@@ -135,7 +135,7 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
   return (
     <div className="add-tokens-for-tokens-trade-wrap">
       <div className="add-trade-token-for-token-title">
-        Make a Token For Token Trade Offer
+        Make a Token For Token Offer
       </div>
         <form onSubmit={submit}>
         <div>
@@ -157,11 +157,10 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
         </div>
           <div>
             <div className="add-tokens-for-tokens-trade-approve-header">
-              Approve Tokens To Be Traded By Dex
             </div>
             <div>
               <button onClick={approveTokens} className="add-tokens-for-tokens-approve-button">
-                {isPending ? 'Confirming...' : 'Approve Tokens'}
+                {isPending ? 'Confirming...' : 'Approve Tokens For Dex'}
               </button>
             </div>
           </div>

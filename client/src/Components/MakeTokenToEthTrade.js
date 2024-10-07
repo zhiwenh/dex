@@ -90,9 +90,8 @@ export function MakeTokenToEthTrade({
       </div>
       <div>
         <div className="make-tokens-trade-approve-header">
-          Approve Tokens To Be Traded By Dex
         </div>
-        <button className="make-token-trade-approve-button" onClick={approve}>{isPending ? 'Confirming...' : 'Approve Tokens'}</button>
+        <button className="make-token-trade-approve-button" onClick={approve}>{isPending ? 'Confirming...' : 'Approve Tokens For Dex'}</button>
       </div>
       <div>
         <button onClick={submit}>{isPending ? 'Confirming...' : 'Make Trade'} </button>
