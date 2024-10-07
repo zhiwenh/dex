@@ -792,6 +792,42 @@ function App() {
 
   console.log('trades of eth to tokens jsx', tradesOfEthToTokensJsx);
 
+  dexInstance.on("EventAddToDexTradeTokensForTokens", (from, to, value, event)=>{
+    getTrades();
+  });
+
+  dexInstance.on("EventAddToDexTradeTokensForEth", (from, to, value, event)=>{
+    getTrades();
+  });
+
+  dexInstance.on("EventAddToDexTradeEthForTokens", (from, to, value, event)=>{
+    getTrades();
+  });
+
+  dexInstance.on("EventTradeTokensForTokens", (from, to, value, event)=>{
+    getTrades();
+  });
+
+  dexInstance.on("EventTradeTokensForEth", (from, to, value, event)=>{
+    getTrades();
+  });
+
+  dexInstance.on("EventTradeEthForTokens", (from, to, value, event)=>{
+    getTrades();
+  });
+
+  dexInstance.on("EventCanceledTradeTokensForTokens", (from, to, value, event)=>{
+    getTrades();
+  });
+
+  dexInstance.on("EventCanceledTradeTokensForEth", (from, to, value, event)=>{
+    getTrades();
+  });
+
+  dexInstance.on("EventCanceledTradeEthForTokens", (from, to, value, event)=>{
+    getTrades();
+  });
+
   if (pageLoaded === false) {
     return (
       <div className="loading-screen">
@@ -810,7 +846,9 @@ function App() {
       <div className="description-wrap">
         <div className="description">
           A decentralized exchange that trades ERC20 tokens on the Ethereum blockchain.
-          You can make trade offers that will be completed by someone else.
+          You can make trade offers that will be completed by someone else. You can also
+          search for a particular token by its address and trade for it, if someone else
+          has posted an offer for it.
         </div>
       </div>
       <div id="wallet-id">

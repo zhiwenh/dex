@@ -64,7 +64,7 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
     console.log('allowanceForDex', allowanceForDex);
     console.log('totalAllowanceRequired', totalAllowanceRequired);
     if (allowanceForDex < totalAllowanceRequired) {
-      await writeContract({
+      const hash = await writeContract({
           address: tradingTokenAddress,
           abi: erc20Abi,
           functionName: 'approve',
@@ -72,7 +72,7 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
         })
     }
   }
-
+  
   async function submit(e) {
     e.preventDefault()
 
@@ -93,12 +93,16 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
     console.log('tradingForTokenAddress', tradingForTokenAddress);
     console.log('tradingForTokenAmount', tradingForTokenAmount);
 
-    await writeContract({
+    const hash = await writeContract({
       address: config.dexAddress,
       abi: dexAbi,
       functionName: 'addTokensToDexForTradeWithOtherTokens',
       args: [tradingTokenAddress, tradingTokenAmount, tradingForTokenAddress, tradingForTokenAmount]
     });
+
+
+    getTrades();
+    console.log('getTrades');
 
     // const { isLoading: trxIsProcessing } = waitForTransactionReceipt(wagmiConfig, {
     //   hash: hash,
@@ -113,13 +117,18 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
     // });
   }
 
-
-
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
       hash,
     });
 
+  if (isConfirmed) {
+    getTrades();
+    console.log('getTrades');
+
+    setRerender(true);
+    console.log('setRerender');
+  }
   async function test() {
     if (isConfirmed) {
       await getTrades();
