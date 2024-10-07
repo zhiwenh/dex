@@ -1,3 +1,12 @@
+.loading-screen {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
 .App {
   text-align: center;
 }
@@ -275,6 +284,7 @@
 .trades {
   display: flex;
   justify-content: center;
+  height: 250px;
   /* grid-auto-columns: 1fr; */
   /* flex-direction: row; */
 }

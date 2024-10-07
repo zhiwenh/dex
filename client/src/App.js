@@ -57,6 +57,8 @@ function App() {
 
   const [rerender, setRerender] = useState();
 
+  const [pageLoaded, setPageLoaded] = useState(false);
+
   // tradesOfTokensToTokensJsx
 
   let tokensForTokensTrades;
@@ -263,6 +265,8 @@ function App() {
     setTradesForTokenNames(tradesForTokenNamesIn);
     setTradesForTokenSymbols(tradesForTokenSymbolsIn);
     setTradesForTokenAddresses(tradesForTokenAddressesIn);
+
+    setPageLoaded(true);
   }
 
   if (tradesOfTokensToTokens && tradesOfTokensToEth && tradesOfEthToTokens) {
@@ -787,6 +791,13 @@ function App() {
 
   console.log('trades of eth to tokens jsx', tradesOfEthToTokensJsx);
 
+  if (pageLoaded === false) {
+    return (
+      <div className="loading-screen">
+        Loading...
+      </div>
+    );
+  }
   return (
     <div className="App">
       <div className="title">
