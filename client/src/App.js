@@ -69,6 +69,9 @@ function App() {
   const [getTradeStatus, setGetTradeStatus] = useState(false);
   const [getAddressesBySelectStatus, setGetAddressesBySelectStatus] = useState(false);
   // tradesOfTokensToTokensJsx
+  const [searchByTradingAddress,  setSearchByTradingAddress] = useState(false);
+  const [searchByTradingForAddress,  setSearchByTradingForAddress] = useState(false);
+
 
   let tokensForTokensTrades;
   let tokensForEthTrades;
@@ -619,12 +622,11 @@ function App() {
     console.log('here');
     const tradesOfTokensToTokensFiltered = tradesOfTokensToTokens.filter((trade) => {
       return (
-        (trade.tradingTokenAddress === searchedForTokenAddressTrading
-        || trade.tradingForTokenAddress === searchedForTokenAddressForTrading)
+        trade.tradingTokenAddress === searchedForTokenAddressTrading
+        || trade.tradingForTokenAddress === searchedForTokenAddressForTrading
         && trade.tradingTokenAddress !== undefined
         && trade.tradingForTokenAddress !== undefined
-      );
-
+      )
     });
 
     console.log('tradesOfTokensToTokensFiltered', tradesOfTokensToTokensFiltered);
@@ -638,6 +640,7 @@ function App() {
     const tradesOfTokensToEthFiltered = tradesOfTokensToEth.filter((trade) => {
       return (trade.tradingTokenAddress === searchedForTokenAddressTrading
         && trade.tradingTokenAddress !== undefined)
+
     });
 
     console.log('tradesOfTokensToEthFiltered', tradesOfTokensToEthFiltered);
@@ -770,6 +773,8 @@ function App() {
 
     const selectedValue = document.getElementById('select-for-trades-addresses').value;
 
+    setSearchByTradingAddress(true);
+    setSearchedForTokenAddressForTrading(undefined);
     setSearchedForTokenAddressTrading(selectedValue);
 
     console.log('selectedValue', selectedValue);
@@ -783,6 +788,7 @@ function App() {
   function cancelFormSubmitForTradesAddress() {
     console.log('here 20 cancel form submit');
     setSearchedForTokenAddressTrading(undefined);
+    setSearchByTradingAddress(false);
   }
 
   function formSubmitForTradesForAddress(e) {
@@ -790,6 +796,8 @@ function App() {
 
     const selectedValue = document.getElementById('select-for-trades-for-addresses').value;
 
+    setSearchByTradingForAddress(true);
+    setSearchedForTokenAddressTrading(undefined);
     setSearchedForTokenAddressForTrading(selectedValue);
 
     console.log('selectedValue', selectedValue);
@@ -802,6 +810,7 @@ function App() {
 
   function cancelFormSubmitForTradesForAddress(e) {
     console.log('here 20 cancel form submit');
+    setSearchByTradingForAddress(false);
     setSearchedForTokenAddressForTrading(undefined);
   }
   // await getTokensForTokensTrades();
@@ -933,10 +942,12 @@ function App() {
             <select class="border rounded p-1" id="select-for-trades-addresses">
               {tradesTokenAddressesJsx}
             </select>
-            <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesAddress}>Submit</button>
-            <button class="border rounded p-1" onClick={cancelFormSubmitForTradesAddress}>
-              Cancel
-            </button>
+            <div>
+              <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesAddress}>Submit</button>
+              <button class="border rounded p-1" onClick={cancelFormSubmitForTradesAddress}>
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
         <div>
@@ -951,10 +962,12 @@ function App() {
             <select class="border rounded p-1" id="select-for-trades-for-addresses">
               {tradesForTokenAddressesJsx}
             </select>
-            <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesForAddress}>Submit</button>
-            <button class="border rounded p-1" onClick={cancelFormSubmitForTradesForAddress}>
-              Cancel
-            </button>
+            <div>
+              <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesForAddress}>Submit</button>
+              <button class="border rounded p-1" onClick={cancelFormSubmitForTradesForAddress}>
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       </div>
