@@ -305,7 +305,7 @@ export function DisplayUserTrades({
       <div className="display-user-trades-your-trades-header">
         Your Trades
       </div>
-      <div class="display-user-trades-trades-wrap">
+      <div className="display-user-trades-trades-wrap">
         <div className="display-user-trades-tokens-for-tokens-wrap">
           <div className="display-user-trades-trade-header">
             Tokens For Tokens Trades

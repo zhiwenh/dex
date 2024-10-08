@@ -27,6 +27,81 @@
   }
 }
 
+@media (max-width: 640px) {
+  .display-user-trades-trades-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .trades {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .add-trade-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .top-nav-bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .add-tokens-for-tokens-trade-wrap {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .add-tokens-for-eth-trade-wrap {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .add-eth-for-tokens-trade-wrap {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .trades-of-tokens-for-tokens-wrap {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .trades-of-tokens-for-eth-wrap {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .trades-of-eth-for-tokens-wrap {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .display-user-trades-tokens-for-tokens-wrap {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .display-user-trades-tokens-for-eth-wrap {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .display-user-trades-trade-header {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -58,7 +133,7 @@
 .top-nav-bar {
   display: flex;
   justify-content: center;
-  height: 40px;
+  min-height: 40px;
   align-items: center;
   background-color: #F7F9F9;
 }
@@ -142,43 +217,36 @@
 
 .display-user-trades-tokens-for-tokens-wrap {
   width: 300px;
-  margin-left: 15px;
 }
 
 .display-trades-of-tokens-for-tokens{
   width: 300px;
   border: 1px solid black;
   border-radius: 5px;
-  margin-left: 15px;
   margin-bottom: 10px;
 }
 
 .display-user-trades-tokens-for-eth-wrap {
   width: 300px;
-  margin-left: 15px;
-  margin-right: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .display-trade-of-tokens-for-eth {
   width: 300px;
   border: 1px solid black;
   border-radius: 5px;
-  margin-left: 15px;
-  margin-right: 15px;
   margin-bottom: 10px;
 }
 
 .display-user-trades-eth-for-tokens-wrap {
   width: 300px;
-  margin-right: 10px;
-  margin-left: 10px;
 }
 
 .display-trade-of-eth-for-tokens {
   width: 300px;
   border: 1px solid black;
   border-radius: 5px;
-  margin-right: 10px;
   margin-bottom: 10px;
 }
 
@@ -355,7 +423,6 @@
   grid-row: 1;
   width: 300px;
   word-wrap: break-word;
-  margin-left: 10px;
 }
 
 .trades-of-tokens-for-tokens-header{
@@ -371,8 +438,8 @@
   grid-row: 1;
   width: 300px;
   word-wrap: break-word;
-  margin-left: 15px;
-  margin-right: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .trades-of-tokens-for-eth-header {
@@ -382,6 +449,10 @@
 
 .trade-of-tokens-for-eth-sender-wrap {
   margin-top: 5px;
+}
+
+.trades-of-eth-for-tokens-wrap {
+  width: 300px;
 }
 
 .trades-of-eth-for-tokens  {
