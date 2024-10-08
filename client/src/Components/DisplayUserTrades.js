@@ -42,7 +42,7 @@ export function DisplayUserTrades({
       return trade.sender === account.address;
     }).map((trade, index) => {
       return (
-        <div className="display-user-trades-trade-box" className="display-trades-of-tokens-for-tokens" key={index.toString()}>
+        <div class="border rounded mb-1" className="display-user-trades-trade-box" className="display-trades-of-tokens-for-tokens" key={index.toString()}>
           <div className="trade-of-tokens-for-tokens-sender-wrap" className="trade-inner-wrap">
             <div className="display-user-trades-sender">
               Sender
@@ -143,7 +143,7 @@ export function DisplayUserTrades({
       return trade.sender === account.address;
     }).map((trade, index) => {
       return (
-        <div className="display-user-trades-trade-box" className="display-trade-of-tokens-for-eth" key={index.toString()}>
+        <div class="border rounded mb-1" className="display-user-trades-trade-box" className="display-trade-of-tokens-for-eth" key={index.toString()}>
           <div className="trade-of-tokens-for-eth-sender-wrap" className="trade-inner-wrap">
             <div className="display-user-trades-sender">
               Sender
@@ -222,7 +222,7 @@ export function DisplayUserTrades({
       return trade.sender === account.address;
     }).map((trade, index) => {
       return (
-        <div className="display-trade-of-eth-for-tokens" key={index.toString()}>
+        <div class="border rounded mb-1" className="display-trade-of-eth-for-tokens" key={index.toString()}>
           <div className="trade-of-eth-for-tokens-sender-wrap" className="trade-inner-wrap">
             <div className="display-user-trades-sender">
               Sender

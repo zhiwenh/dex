@@ -72,7 +72,7 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
         })
     }
   }
-  
+
   async function submit(e) {
     e.preventDefault()
 
@@ -151,29 +151,29 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
           <div>
             Trading Token Address
           </div>
-          <input name="trading-token-address" id="trading-token-address-1" required />
+          <input class="border rounded" name="trading-token-address" id="trading-token-address-1" required />
           <div>
             Trading Token Amount
           </div>
-          <input name="trading-token-amount" id="trading-token-amount-1" required/>
+          <input class="border rounded" name="trading-token-amount" id="trading-token-amount-1" required/>
           <div>
             Trading For Token Address
-          </div><input name="trading-for-token-address" id="trading-for-token-address-1" required/>
+          </div><input class="border rounded" name="trading-for-token-address" id="trading-for-token-address-1" required/>
           <div>
             Trading For Token Amount
           </div>
-          <input name="trading-for-token-amount" id="trading-for-token-amount-1" required/>
+          <input class="border rounded" name="trading-for-token-amount" id="trading-for-token-amount-1" required/>
         </div>
           <div>
             <div className="add-tokens-for-tokens-trade-approve-header">
             </div>
             <div>
-              <button onClick={approveTokens} className="add-tokens-for-tokens-approve-button">
+              <button class="border rounded p-1" onClick={approveTokens} className="add-tokens-for-tokens-approve-button">
                 {isPending ? 'Confirming...' : 'Approve Tokens For Dex'}
               </button>
             </div>
           </div>
-          <button type="submit">{isPending ? 'Confirming...' : 'Add Trade'} </button>
+          <button class="border rounded p-1" type="submit">{isPending ? 'Confirming...' : 'Add Trade'} </button>
         </form>
         <div>
         <div>

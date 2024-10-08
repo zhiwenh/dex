@@ -50,7 +50,7 @@ export function CancelTokensForEthTrade({ sender, indexOfTradeOfAddress }) {
   console.log('error', error);
   return (
     <div>
-      <button onClick={cancel}>Cancel Trade</button>
+      <button class="border rounded p-1" onClick={cancel}>Cancel Trade</button>
     </div>
   )
 }

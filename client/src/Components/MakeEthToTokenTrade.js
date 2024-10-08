@@ -63,7 +63,7 @@ export function MakeEthToTokenTrade({
       <div>
       </div>
       <div>
-        <button onClick={submit}>{isPending ? 'Confirming...' : 'Make Trade'} </button>
+        <button class="border rounded p-1" onClick={submit}>{isPending ? 'Confirming...' : 'Make Trade'} </button>
       </div>
       <div>
         {hash && <div>Transaction Hash: {hash}</div>}

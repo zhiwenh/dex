@@ -1,10 +1,8 @@
 import * as React from 'react'
 
 export function TopNavBar() {
-
-
   return (
-    <div className="top-nav-bar">
+    <div class="bg-white border-gray-200 dark:bg-gray-900" className="top-nav-bar">
       <div className="top-nav-bar-link">
         <a href="#wallet-id">Wallet</a>
       </div>

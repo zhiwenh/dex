@@ -323,7 +323,7 @@ function App() {
           }
 
           return (
-            <div className="trade-of-tokens-for-tokens" key={index.toString()}>
+            <div class="border rounded mb-1" className="trade-of-tokens-for-tokens" key={index.toString()}>
               <div className="trades-sender" className="trade-of-tokens-for-tokens-sender-wrap" className="trade-inner-wrap">
                 <div className="trade-address-overflow">
                   Seller
@@ -438,7 +438,7 @@ function App() {
         }
 
         return (
-          <div className="trade-of-tokens-for-eth" key={index.toString()}>
+          <div class="border rounded mb-1" className="trade-of-tokens-for-eth" key={index.toString()}>
             <div className="trades-sender" className="trade-of-tokens-for-eth-sender-wrap" className="trade-inner-wrap">
               <div>
                 Seller
@@ -531,7 +531,7 @@ function App() {
         }
 
         return (
-          <div className="trade-of-eth-for-tokens" key={index.toString()}>
+          <div class="border rounded mb-1" className="trade-of-eth-for-tokens" key={index.toString()}>
             <div className="trades-sender" className="trade-of-eth-for-tokens-sender-wrap" className="trade-inner-wrap">
               <div>
                 Seller
@@ -871,27 +871,27 @@ function App() {
     );
   }
   return (
-    <div className="App">
+    <div class="container mx-auto px-4" className="App">
       <div className="top-nav-bar-wrap">
         <TopNavBar />
       </div>
-      <div className="title">
+      <div className="title text-3xl font-bold">
         Dex
       </div>
       <div className="description-wrap">
         <div className="description">
           <div>
             A decentralized exchange that trades ERC20 tokens on the Ethereum blockchain.
-            All transactions are done through a single smart contract. You can make trade offers
-            that will be completed by someone else. You can also search for a particular token by
-            its address and trade for it if someone else has posted an offer that trades it.
+            All transactions are done through a single smart contract.
           </div>
           <br />
           <div>
             To use this dex you first need to connect your wallet. All your previous trades
             are linked up to your account, and you can view them at anytime and cancel them.
             To start trading, you need to know the token smart contract address for the token
-            you are trying to trade or are trading for.
+            you are trying to trade or are trading for. You can make trade offers
+            that will be completed by someone else. You can also search for a particular token by
+            its address and trade for it if someone else has posted an offer that trades it.
           </div>
         </div>
       </div>
@@ -930,11 +930,11 @@ function App() {
             Search By Address
           </div>
           <div className="search-for-token-by-address-wrap">
-            <select id="select-for-trades-addresses">
+            <select class="border rounded p-1" id="select-for-trades-addresses">
               {tradesTokenAddressesJsx}
             </select>
-            <button onClick={formSubmitForTradesAddress}>Submit</button>
-            <button onClick={cancelFormSubmitForTradesAddress}>
+            <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesAddress}>Submit</button>
+            <button class="border rounded p-1" onClick={cancelFormSubmitForTradesAddress}>
               Cancel
             </button>
           </div>
@@ -948,11 +948,11 @@ function App() {
             Search By Address
           </div>
           <div className="search-for-trading-for-token-by-address">
-            <select id="select-for-trades-for-addresses">
+            <select class="border rounded p-1" id="select-for-trades-for-addresses">
               {tradesForTokenAddressesJsx}
             </select>
-            <button onClick={formSubmitForTradesForAddress}>Submit</button>
-            <button onClick={cancelFormSubmitForTradesForAddress}>
+            <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesForAddress}>Submit</button>
+            <button class="border rounded p-1" onClick={cancelFormSubmitForTradesForAddress}>
               Cancel
             </button>
           </div>

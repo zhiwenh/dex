@@ -124,26 +124,26 @@ export function AddTokensForEthTrade() {
           <div>
             Trading Token Address
           </div>
-          <input name="trading-token-address" id="trading-token-address-2" required />
+          <input class="border rounded" name="trading-token-address" id="trading-token-address-2" required />
           <div>
             Trading Token Amount
           </div>
-          <input name="trading-token-amount" id="trading-token-amount-2" required/>
+          <input class="border rounded" name="trading-token-amount" id="trading-token-amount-2" required/>
           <div>
             Trading For Eth Amount
           </div>
-          <input name="trading-for-eth-amount" id="trading-for-eth-amount-2" required/>
+          <input class="border rounded" name="trading-for-eth-amount" id="trading-for-eth-amount-2" required/>
         </div>
         <div>
           <div className="add-tokens-for-eth-trade-approve-header">
           </div>
           <div>
-            <button className="add-tokens-for-eth-approve-button" onClick={approveTokens}>
+            <button class="border rounded p-1" className="add-tokens-for-eth-approve-button" onClick={approveTokens}>
               {isPending ? 'Confirming...' : 'Approve Tokens For Dex'}
             </button>
           </div>
         </div>
-          <button type="submit">{isPending || isConfirming ? 'Confirming...' : 'Add Trade'} </button>
+          <button class="border rounded p-1" type="submit">{isPending || isConfirming ? 'Confirming...' : 'Add Trade'} </button>
         </form>
         {hash && <div>Transaction Hash: {hash}</div>}
         {isConfirming && <div>Waiting for confirmation...</div>}
