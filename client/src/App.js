@@ -882,14 +882,16 @@ function App() {
         <div className="description">
           <div>
             A decentralized exchange that trades ERC20 tokens on the Ethereum blockchain.
-            You can make trade offers that will be completed by someone else. You can also
-            search for a particular token by its address and trade for it, if someone else
-            has posted an offer for it.
+            All transactions are done through a single smart contract. You can make trade offers
+            that will be completed by someone else. You can also search for a particular token by
+            its address and trade for it if someone else has posted an offer that trades it.
           </div>
           <br />
           <div>
             To use this dex you first need to connect your wallet. All your previous trades
-            are linked up to your account, and you can view them and cancel them.
+            are linked up to your account, and you can view them at anytime and cancel them.
+            To start trading, you need to know the token smart contract address for the token
+            you are trying to trade or are trading for.
           </div>
         </div>
       </div>

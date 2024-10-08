@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .loading-screen {
   margin: 0;
   position: absolute;
@@ -166,8 +170,8 @@
 
 .display-user-trades-eth-for-tokens-wrap {
   width: 300px;
-  margin-right: 15px;
-  margin-left: 15px;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .display-trade-of-eth-for-tokens {
