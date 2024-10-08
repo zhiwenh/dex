@@ -89,7 +89,11 @@ export function AddTokensForEthTrade() {
 
     const tradingTokenAddress = document.getElementById('trading-token-address-2').value;
     const tradingTokenAmount = document.getElementById('trading-token-amount-2').value;
-    let tradingForEthAmount = document.getElementById('trading-for-eth-amount-2').value;
+    const tradingForEthAmount = document.getElementById('trading-for-eth-amount-2').value;
+
+    const tradingForEthAmountFormatted = ethers.parseUnits(tradingForEthAmount, 'ether');
+
+    console.log('tradingForEthAmountFormatted', tradingForEthAmountFormatted);
 
     console.log('tradingTokenAddress', tradingTokenAddress);
     console.log('tradingTokenAmount', tradingTokenAmount);
@@ -100,7 +104,7 @@ export function AddTokensForEthTrade() {
         address: config.dexAddress,
         abi: dexAbi,
         functionName: 'addTokensToDexForTradeWithEth',
-        args: [tradingTokenAddress, tradingTokenAmount, tradingForEthAmount]
+        args: [tradingTokenAddress, tradingTokenAmount, tradingForEthAmountFormatted]
       })
   }
 

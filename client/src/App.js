@@ -97,26 +97,26 @@ function App() {
     }
 
     setGetAddressesBySelectStatus(false);
-    setGetTradeStatus(true)
+    setGetTradeStatus(true);
     console.log('called getTrades');
 
     const trades = await dexInstance.getAllTrades();
 
-    setTrades(trades);
+    // setTrades(trades);
 
     let tradesOfTokensToTokens2 = trades.tradeTokensForTokensForCall;
     let tradesOfTokensToEth2 = trades.tradeTokensForEthForCall;
     let tradesOfEthToTokens2 = trades.tradeEthForTokensForCall;
 
     tradesOfTokensToTokens2 = await Promise.all(tradesOfTokensToTokens2.map(async(trade) => {
-      const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
-      const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
+      // const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
+      // const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
 
-      const tradingErc20Name = await tradingErc20Instance.name();
-      const tradingErc20Symbol = await tradingErc20Instance.symbol();
+      // const tradingErc20Name = await tradingErc20Instance.name();
+      // const tradingErc20Symbol = await tradingErc20Instance.symbol();
 
-      const tradingForErc20Name = await tradingForErc20Instance.name();
-      const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
+      // const tradingForErc20Name = await tradingForErc20Instance.name();
+      // const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
 
       const newTrade = {};
 
@@ -128,20 +128,20 @@ function App() {
       newTrade.tradingForTokenAmount = trade.tradingForTokenAmount;
       newTrade.alreadyTraded = trade.alreadyTraded;
 
-      newTrade.tradingTokenName = tradingErc20Name;
-      newTrade.tradingTokenSymbol = tradingErc20Symbol;
-
-      newTrade.tradingForTokenName = tradingForErc20Name;
-      newTrade.tradingForTokenSymbol = tradingForErc20Symbol;
+      // newTrade.tradingTokenName = tradingErc20Name;
+      // newTrade.tradingTokenSymbol = tradingErc20Symbol;
+      //
+      // newTrade.tradingForTokenName = tradingForErc20Name;
+      // newTrade.tradingForTokenSymbol = tradingForErc20Symbol;
 
       return newTrade;
     }));
 
     tradesOfTokensToEth2 = await Promise.all(tradesOfTokensToEth2.map(async(trade) => {
-      const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
-
-      const tradingErc20Name = await tradingErc20Instance.name();
-      const tradingErc20Symbol = await tradingErc20Instance.symbol();
+      // const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
+      //
+      // const tradingErc20Name = await tradingErc20Instance.name();
+      // const tradingErc20Symbol = await tradingErc20Instance.symbol();
 
       const newTrade = {};
 
@@ -152,17 +152,17 @@ function App() {
       newTrade.tradingForEthAmount = trade.tradingForEthAmount;
       newTrade.alreadyTraded = trade.alreadyTraded;
 
-      newTrade.tradingTokenName = tradingErc20Name;
-      newTrade.tradingTokenSymbol = tradingErc20Symbol;
+      // newTrade.tradingTokenName = tradingErc20Name;
+      // newTrade.tradingTokenSymbol = tradingErc20Symbol;
 
       return newTrade;
     }));
 
     tradesOfEthToTokens2 = await Promise.all(tradesOfEthToTokens2.map(async(trade) => {
-      const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
+      // const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
 
-      const tradingForErc20Name = await tradingForErc20Instance.name();
-      const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
+      // const tradingForErc20Name = await tradingForErc20Instance.name();
+      // const tradingForErc20Symbol = await tradingForErc20Instance.symbol();
 
       const newTrade = {};
 
@@ -173,8 +173,8 @@ function App() {
       newTrade.tradingForTokenAmount = trade.tradingForTokenAmount;
       newTrade.alreadyTraded = trade.alreadyTraded;
 
-      newTrade.tradingForTokenName = tradingForErc20Name;
-      newTrade.tradingForTokenSymbol = tradingForErc20Symbol;
+      // newTrade.tradingForTokenName = tradingForErc20Name;
+      // newTrade.tradingForTokenSymbol = tradingForErc20Symbol;
 
       return newTrade;
     }));
@@ -190,7 +190,7 @@ function App() {
     setGetTradeStatus(false);
     setGetAddressesBySelectStatus(true);
     setSetTokenNameAndAddresses(true);
-    getTokenAddressNamesForSelect()
+    getTokenAddressNamesForSelect();
     setPageLoaded(true);
   }
 
@@ -347,7 +347,6 @@ function App() {
               </div>
               <div className="trade-inner-wrap">
                 <div>
-                  Token Name
                 </div>
                 <div>
                   {trade.tradingTokenName}
@@ -355,7 +354,6 @@ function App() {
               </div>
               <div className="trade-inner-wrap">
                 <div>
-                  Token Symbol
                 </div>
                 <div>
                   {trade.tradingTokenSymbol}
@@ -371,7 +369,6 @@ function App() {
               </div>
               <div className="trade-of-tokens-for-tokens-trading-token-amount-wrap" className="trade-inner-wrap">
                 <div>
-                  Token Amount
                 </div>
                 <div>
                   {Number(trade.tradingTokenAmount)}
@@ -384,7 +381,6 @@ function App() {
               </div>
               <div className="trade-inner-wrap">
                 <div>
-                  Token Name
                 </div>
                 <div>
                   {trade.tradingForTokenName}
@@ -392,7 +388,6 @@ function App() {
               </div>
               <div className="trade-inner-wrap">
                 <div>
-                  Token Symbol
                 </div>
                 <div>
                   {trade.tradingForTokenSymbol}
@@ -467,7 +462,6 @@ function App() {
             </div>
             <div className="trade-inner-wrap">
               <div>
-                Token Name
               </div>
               <div>
                 {trade.tradingTokenName}
@@ -475,7 +469,6 @@ function App() {
             </div>
             <div className="trade-inner-wrap">
               <div>
-                Token Symbol
               </div>
               <div>
                 {trade.tradingTokenSymbol}
@@ -575,7 +568,6 @@ function App() {
             </div>
             <div className="trade-inner-wrap">
               <div>
-                Token Name
               </div>
               <div>
                 {trade.tradingForTokenName}
@@ -583,7 +575,6 @@ function App() {
             </div>
             <div className="trade-inner-wrap">
               <div>
-                Token Symbol
               </div>
               <div>
                 {trade.tradingForTokenSymbol}
@@ -628,10 +619,10 @@ function App() {
     console.log('here');
     const tradesOfTokensToTokensFiltered = tradesOfTokensToTokens.filter((trade) => {
       return (
-        (trade.tradingTokenName === searchedForTokenNameTrading
-        || trade.tradingForTokenName === searchedForTokenNameForTrading
-        || trade.tradingTokenAddress === searchedForTokenAddressTrading
+        (trade.tradingTokenAddress === searchedForTokenAddressTrading
         || trade.tradingForTokenAddress === searchedForTokenAddressForTrading)
+        && trade.tradingTokenAddress !== undefined
+        && trade.tradingForTokenAddress !== undefined
       );
 
     });
@@ -645,10 +636,8 @@ function App() {
   let tradesOfTokensToEthJsx;
   if (tradesOfTokensToEth) {
     const tradesOfTokensToEthFiltered = tradesOfTokensToEth.filter((trade) => {
-      return (
-        (trade.tradingTokenName === searchedForTokenNameTrading
-        || trade.tradingTokenAddress === searchedForTokenAddressTrading)
-      );
+      return (trade.tradingTokenAddress === searchedForTokenAddressTrading
+        && trade.tradingTokenAddress !== undefined)
     });
 
     console.log('tradesOfTokensToEthFiltered', tradesOfTokensToEthFiltered);
@@ -660,10 +649,8 @@ function App() {
   let tradesOfEthToTokensJsx;
   if (tradesOfEthToTokens) {
     const tradesOfEthToTokensFiltered = tradesOfEthToTokens.filter((trade) => {
-      return (
-        (trade.tradingForTokenName === searchedForTokenNameForTrading
-        || trade.tradingForTokenAddress === searchedForTokenAddressForTrading)
-      );
+      return (trade.tradingForTokenAddress === searchedForTokenAddressForTrading
+              && trade.tradingForTokenAddress !== undefined)
     });
 
     console.log('tradesOfEthToTokensFiltered', tradesOfEthToTokensFiltered);

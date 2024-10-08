@@ -61,7 +61,6 @@ export function DisplayUserTrades({
           </div>
           <div className="trade-inner-wrap">
             <div>
-              Trading Token Name
             </div>
             <div>
               {trade.tradingTokenName}
@@ -69,7 +68,6 @@ export function DisplayUserTrades({
           </div>
           <div className="trade-inner-wrap">
             <div>
-              Trading Token Symbol
             </div>
             <div>
               {trade.tradingTokenSymbol}
@@ -93,7 +91,6 @@ export function DisplayUserTrades({
           </div>
           <div className="trade-inner-wrap">
             <div>
-              Trading For Token Name
             </div>
             <div>
               {trade.tradingForTokenName}
@@ -101,7 +98,6 @@ export function DisplayUserTrades({
           </div>
           <div className="trade-inner-wrap">
             <div>
-              Trading For Token Symbol
             </div>
             <div>
               {trade.tradingForTokenSymbol}
@@ -166,7 +162,6 @@ export function DisplayUserTrades({
           </div>
           <div className="trade-inner-wrap">
             <div>
-              Trading Token Name
             </div>
             <div>
               {trade.tradingTokenName}
@@ -174,7 +169,6 @@ export function DisplayUserTrades({
           </div>
           <div className="trade-inner-wrap">
             <div>
-              Trading Token Symbol
             </div>
             <div>
               {trade.tradingTokenSymbol}
@@ -255,7 +249,6 @@ export function DisplayUserTrades({
           </div>
           <div className="trade-inner-wrap">
             <div>
-              Trading For Token Name
             </div>
             <div>
               {trade.tradingForTokenName}
@@ -263,7 +256,6 @@ export function DisplayUserTrades({
           </div>
           <div className="trade-inner-wrap">
             <div>
-              Trading For Token Symbol
             </div>
             <div>
               {trade.tradingForTokenSymbol}
