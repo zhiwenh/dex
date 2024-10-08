@@ -4,6 +4,7 @@ import './App.css';
 import React, { useState, useEffect } from "react";
 import { ethers } from 'ethers';
 import config from './config.json';
+import { wagmiConfig } from './wagmiConfig.js';
 
 import {
   useAccount,
@@ -13,6 +14,10 @@ import {
   useConnect,
   useDisconnect
 } from 'wagmi';
+
+import {
+  watchAccount
+}  from '@wagmi/core'
 
 import { AddTokensForTokensTrade } from './Components/AddTokensForTokensTrade.js';
 import { AddTokensForEthTrade } from './Components/AddTokensForEthTrade.js';
@@ -59,7 +64,10 @@ function App() {
   const [rerender, setRerender] = useState();
 
   const [pageLoaded, setPageLoaded] = useState(false);
+  const [gotTrades, setGotTrades] = useState(false);
 
+  const [getTradeStatus, setGetTradeStatus] = useState(false);
+  const [getAddressesBySelectStatus, setGetAddressesBySelectStatus] = useState(false);
   // tradesOfTokensToTokensJsx
 
   let tokensForTokensTrades;
@@ -83,6 +91,13 @@ function App() {
   }
 
   async function getTrades() {
+
+    if (getTradeStatus === true) {
+      return;
+    }
+
+    setGetAddressesBySelectStatus(false);
+    setGetTradeStatus(true)
     console.log('called getTrades');
 
     const trades = await dexInstance.getAllTrades();
@@ -167,6 +182,16 @@ function App() {
     setTradesOfTokensToTokens(tradesOfTokensToTokens2);
     setTradesOfTokensToEth(tradesOfTokensToEth2);
     setTradesOfEthToTokens(tradesOfEthToTokens2);
+
+    if (gotTrades === false) {
+      setGotTrades(true);
+    }
+
+    setGetTradeStatus(false);
+    setGetAddressesBySelectStatus(true);
+    setSetTokenNameAndAddresses(true);
+    getTokenAddressNamesForSelect()
+    setPageLoaded(true);
   }
 
   if (setTokenTrades === true) {
@@ -175,6 +200,12 @@ function App() {
   }
 
   function getTokenAddressNamesForSelect() {
+    if (getAddressesBySelectStatus === true) {
+      return;
+    }
+
+    setGetAddressesBySelectStatus(true);
+
     console.log('called getTokenAddressNamesForSelect');
     let alreadyInTradesTokenAddresses = {};
     let tradesTokenNamesIn = [];
@@ -267,15 +298,15 @@ function App() {
     setTradesForTokenSymbols(tradesForTokenSymbolsIn);
     setTradesForTokenAddresses(tradesForTokenAddressesIn);
 
-    setPageLoaded(true);
+    setGetAddressesBySelectStatus(false);
   }
 
-  if (tradesOfTokensToTokens && tradesOfTokensToEth && tradesOfEthToTokens) {
-    if (setTokenNameAndAddresses === true) {
-      setSetTokenNameAndAddresses(false);
-      getTokenAddressNamesForSelect();
-    }
+  if (setTokenNameAndAddresses) {
+    setSetTokenNameAndAddresses(false);
+    getTokenAddressNamesForSelect();
   }
+
+
 
     // setSearchedForTokenNameTrading('TestToken1');
 
@@ -293,7 +324,7 @@ function App() {
 
           return (
             <div className="trade-of-tokens-for-tokens" key={index.toString()}>
-              <div className="trade-of-tokens-for-tokens-sender-wrap" className="trade-inner-wrap">
+              <div className="trades-sender" className="trade-of-tokens-for-tokens-sender-wrap" className="trade-inner-wrap">
                 <div className="trade-address-overflow">
                   Seller
                 </div>
@@ -413,7 +444,7 @@ function App() {
 
         return (
           <div className="trade-of-tokens-for-eth" key={index.toString()}>
-            <div className="trade-of-tokens-for-eth-sender-wrap" className="trade-inner-wrap">
+            <div className="trades-sender" className="trade-of-tokens-for-eth-sender-wrap" className="trade-inner-wrap">
               <div>
                 Seller
               </div>
@@ -508,7 +539,7 @@ function App() {
 
         return (
           <div className="trade-of-eth-for-tokens" key={index.toString()}>
-            <div className="trade-of-eth-for-tokens-sender-wrap" className="trade-inner-wrap">
+            <div className="trades-sender" className="trade-of-eth-for-tokens-sender-wrap" className="trade-inner-wrap">
               <div>
                 Seller
               </div>
@@ -794,38 +825,55 @@ function App() {
 
   dexInstance.on("EventAddToDexTradeTokensForTokens", (from, to, value, event)=>{
     getTrades();
+    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventAddToDexTradeTokensForEth", (from, to, value, event)=>{
     getTrades();
+    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventAddToDexTradeEthForTokens", (from, to, value, event)=>{
     getTrades();
+    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventTradeTokensForTokens", (from, to, value, event)=>{
     getTrades();
+    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventTradeTokensForEth", (from, to, value, event)=>{
     getTrades();
+    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventTradeEthForTokens", (from, to, value, event)=>{
     getTrades();
+    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventCanceledTradeTokensForTokens", (from, to, value, event)=>{
     getTrades();
+    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventCanceledTradeTokensForEth", (from, to, value, event)=>{
     getTrades();
+    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventCanceledTradeEthForTokens", (from, to, value, event)=>{
     getTrades();
+    getTokenAddressNamesForSelect();
+  });
+
+  const unwatch = watchAccount(wagmiConfig, {
+    onChange(data) {
+      console.log('Account changed!', data)
+      getTrades();
+      getTokenAddressNamesForSelect();
+    },
   });
 
   if (pageLoaded === false) {
@@ -845,17 +893,24 @@ function App() {
       </div>
       <div className="description-wrap">
         <div className="description">
-          A decentralized exchange that trades ERC20 tokens on the Ethereum blockchain.
-          You can make trade offers that will be completed by someone else. You can also
-          search for a particular token by its address and trade for it, if someone else
-          has posted an offer for it.
+          <div>
+            A decentralized exchange that trades ERC20 tokens on the Ethereum blockchain.
+            You can make trade offers that will be completed by someone else. You can also
+            search for a particular token by its address and trade for it, if someone else
+            has posted an offer for it.
+          </div>
+          <br />
+          <div>
+            To use this dex you first need to connect your wallet. All your previous trades
+            are linked up to your account, and you can view them and cancel them.
+          </div>
         </div>
       </div>
       <div id="wallet-id">
         <ConnectWallet />
       </div>
       <div id="make-trade-offers-id">
-        <div class="trade-header-make-trade-offers">
+        <div className="trade-header-make-trade-offers">
           Make Trade Offers
         </div>
       </div>

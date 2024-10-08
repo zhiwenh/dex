@@ -47,12 +47,6 @@
   }
 }
 
-.button-1 {
-  height: 30px;
-  width: 100px;
-}
-
-
 .App {
   text-align: center;
 }
@@ -135,20 +129,20 @@
 }
 
 .display-user-trades-sender {
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
 .display-user-trades-target-trades-wrap {
-  width: 325px;
+  width: 300px;
 }
 
 .display-user-trades-tokens-for-tokens-wrap {
-  width: 325px;
+  width: 300px;
   margin-left: 15px;
 }
 
 .display-trades-of-tokens-for-tokens{
-  width: 325px;
+  width: 300px;
   border: 1px solid black;
   border-radius: 5px;
   margin-left: 15px;
@@ -156,13 +150,13 @@
 }
 
 .display-user-trades-tokens-for-eth-wrap {
-  width: 325px;
+  width: 300px;
   margin-left: 15px;
   margin-right: 15px;
 }
 
 .display-trade-of-tokens-for-eth {
-  width: 325px;
+  width: 300px;
   border: 1px solid black;
   border-radius: 5px;
   margin-left: 15px;
@@ -171,13 +165,13 @@
 }
 
 .display-user-trades-eth-for-tokens-wrap {
-  width: 325px;
+  width: 300px;
   margin-right: 15px;
   margin-left: 15px;
 }
 
 .display-trade-of-eth-for-tokens {
-  width: 325px;
+  width: 300px;
   border: 1px solid black;
   border-radius: 5px;
   margin-right: 10px;
@@ -349,9 +343,13 @@
   margin-bottom: 5px;
 }
 
+.trades-sender {
+  margin-top: 10px;
+}
+
 .trades-of-tokens-for-tokens-wrap {
   grid-row: 1;
-  width: 325px;
+  width: 300px;
   word-wrap: break-word;
   margin-left: 10px;
 }
@@ -361,9 +359,13 @@
   margin-bottom: 10px;
 }
 
+.trade-of-tokens-for-tokens-sender-wrap {
+  margin-top: 5px;
+}
+
 .trades-of-tokens-for-eth-wrap {
   grid-row: 1;
-  width: 325px;
+  width: 300px;
   word-wrap: break-word;
   margin-left: 15px;
   margin-right: 15px;
@@ -374,9 +376,13 @@
   margin-bottom: 10px;
 }
 
+.trade-of-tokens-for-eth-sender-wrap {
+  margin-top: 5px;
+}
+
 .trades-of-eth-for-tokens  {
   grid-row: 1;
-  width: 325px;
+  width: 300px;
   word-wrap: break-word;
   margin-right: 10px;
 }
@@ -386,6 +392,9 @@
   margin-bottom: 10px;
 }
 
+.trade-of-eth-for-tokens-sender-wrap {
+  margin-top: 5px;
+}
 
 .what-they-will-be-trading-inner-header {
   font-weight: bold;
@@ -405,6 +414,7 @@
   border: 1px solid black;
   border-radius: 5px;
   margin-bottom: 15px;
+  padding-top: 2px;
 }
 
 .trade-of-tokens-for-tokens-sender-wrap {
@@ -419,6 +429,7 @@
   border: 1px solid black;
   border-radius: 5px;
   margin-bottom: 15px;
+  padding-top: 2px;
 }
 
 .trades-of-eth-for-tokens {
@@ -429,6 +440,7 @@
   border: 1px solid black;
   border-radius: 5px;
   margin-bottom: 15px;
+  padding-top: 2px;
 }
 
 .trade-of-tokens-for-eth-sender-wrap {
