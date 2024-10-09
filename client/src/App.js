@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 
+
 import React, { useState, useEffect } from "react";
 import { ethers } from 'ethers';
 import config from './config.json';
@@ -885,7 +886,7 @@ function App() {
         <TopNavBar />
       </div>
       <div className="title text-3xl font-bold">
-        Dex
+        Ethereum Decentralized Exchange
       </div>
       <div className="description-wrap">
         <div className="description">
@@ -897,6 +898,9 @@ function App() {
           <div>
             To use this dex you first need to connect your wallet. All your previous trades
             are linked up to your account, and you can view them at anytime and cancel them.
+          </div>
+          <br />
+          <div>
             To start trading, you need to know the token smart contract address for the token
             you are trying to trade or are trading for. You can make trade offers
             that will be completed by someone else. You can also search for a particular token by
@@ -938,11 +942,11 @@ function App() {
           <div>
             Search By Address
           </div>
-          <div className="search-for-token-by-address-wrap">
+          <div className="flex flex-col mb-1" className="search-for-token-by-address-wrap">
             <select class="border rounded p-1" id="select-for-trades-addresses">
               {tradesTokenAddressesJsx}
             </select>
-            <div>
+            <div class="mt-1">
               <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesAddress}>Submit</button>
               <button class="border rounded p-1" onClick={cancelFormSubmitForTradesAddress}>
                 Cancel
@@ -954,11 +958,10 @@ function App() {
           <div className="trade-for-token-title-search-by-what-you-will-be-trading">
             Search By What You Will Be Trading
           </div>
-
           <div>
             Search By Address
           </div>
-          <div className="search-for-trading-for-token-by-address">
+          <div className="flex flex-col" className="search-for-trading-for-token-by-address">
             <select class="border rounded p-1" id="select-for-trades-for-addresses">
               {tradesForTokenAddressesJsx}
             </select>

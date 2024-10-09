@@ -8,6 +8,12 @@
   font-size: 15px;
 }
 
+button {
+ border: solid #E2E2E2;
+ padding: 3px;
+ border-radius: 3px;
+}
+
 .input {
   border: solid black;
 }
@@ -27,7 +33,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 700px) {
   .display-user-trades-trades-wrap {
     display: flex;
     flex-direction: column;
@@ -108,7 +114,10 @@
   }
 
   .search-for-trading-for-token-by-address {
+    display: flex;
     flex-direction: column;
+    justify-content: center;
+    width: 400px;
   }
 
   .nav-bar-mobile-button {
@@ -411,7 +420,14 @@
 .search-for-token-by-address-wrap {
   margin-bottom: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+}
+
+#select-for-trades-addresses {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .search-for-trading-for-token-by-name {
@@ -423,7 +439,14 @@
 .search-for-trading-for-token-by-address {
   margin-bottom: 10px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+}
+
+#select-for-trades-for-addresses {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .trades-wrap {

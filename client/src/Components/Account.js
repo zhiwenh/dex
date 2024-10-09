@@ -8,6 +8,9 @@ export function Account() {
 
   return (
     <div>
+      <div>
+        Account Address:
+      </div>
       <div class="account-address">
       {ensAvatar && <img alt="ENS Avatar" src={ensAvatar} />}
       {address && <div>{ensName ? `${ensName} (${address})` : address}</div>}

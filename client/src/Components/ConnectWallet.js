@@ -8,7 +8,7 @@ export function ConnectWallet() {
     return (
       <div className="wallet-wrap">
         <div className="wallet-wrap-header">
-          Wallet
+          Wallet Connected
         </div>
         <div>
           <Account />
@@ -19,7 +19,7 @@ export function ConnectWallet() {
   return (
     <div className="wallet-wrap">
       <div className="wallet-wrap-header">
-        Wallet
+        Connect Wallet
       </div>
       <div>
         <WalletOptions />

@@ -3,13 +3,13 @@ import { useState, useEffect } from 'react';
 
 export function TopNavBar() {
 
-  const [navBarDisplayed, setNavBarDisplayed] = useState(window.innerWidth > 640 ? true : false);
+  const [navBarDisplayed, setNavBarDisplayed] = useState(window.innerWidth > 700 ? true : false);
 
   useEffect(() => {
     window.addEventListener('resize', (event) => {
-      if (window.innerWidth >= 640) {
+      if (window.innerWidth >= 700) {
         setNavBarDisplayed(true);
-      } else if (window.innerWidth < 640) {
+      } else if (window.innerWidth < 700) {
         setNavBarDisplayed(false);
       }
     });
