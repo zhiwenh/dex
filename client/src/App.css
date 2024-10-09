@@ -14,6 +14,10 @@ button {
  border-radius: 3px;
 }
 
+input {
+  border: solid #E2E2E2;
+}
+
 .input {
   border: solid black;
 }
@@ -64,66 +68,13 @@ button {
     padding-bottom: 5px;
   }
 
-  .add-tokens-for-tokens-trade-wrap {
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-
-  .add-tokens-for-eth-trade-wrap {
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-
-  .add-eth-for-tokens-trade-wrap {
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-
-  .trades-of-tokens-for-tokens-wrap {
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-
-  .trades-of-tokens-for-eth-wrap {
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-
-  .trades-of-eth-for-tokens-wrap {
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-
-  .display-user-trades-tokens-for-tokens-wrap {
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-
-  .display-user-trades-tokens-for-eth-wrap {
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-
-  .display-user-trades-trade-header {
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-
-  .search-for-token-by-address-wrap {
-    flex-direction: column;
-  }
-
-  .search-for-trading-for-token-by-address {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 400px;
-  }
-
   .nav-bar-mobile-button {
+    margin-right: auto;
+    margin-left: 40px;
+    display: visible;
     height: 35px;
     width: 35px;
-    margin-top: 10px;
+    padding-top: 5px;
   }
 
   .nav-bar-mobile-button-1 {
@@ -131,6 +82,7 @@ button {
     height: 7px;
     width: 25px;
     margin-bottom: 2px;
+    border-radius: 2px;
   }
 
   .nav-bar-mobile-button-2 {
@@ -138,6 +90,7 @@ button {
     height: 7px;
     width: 25px;
     margin-bottom: 2px;
+    border-radius: 2px;
   }
 
   .nav-bar-mobile-button-3 {
@@ -145,6 +98,7 @@ button {
     height: 7px;
     width: 25px;
     margin-bottom: 2px;
+    border-radius: 2px;
   }
 }
 
@@ -184,8 +138,6 @@ button {
   background-color: #F7F9F9;
 }
 
-
-
 .top-nav-bar a {
   text-decoration: none;
   color: black;
@@ -214,6 +166,7 @@ button {
   text-align: left;
   padding-left: 15px;
   padding-right: 15px;
+  line-height: 22px;
 }
 
 .wallet-wrap {
@@ -497,6 +450,7 @@ button {
 }
 
 .trades-of-tokens-for-eth-wrap {
+  min-width: 300px;
   width: 300px;
   word-wrap: break-word;
   margin-left: 10px;

@@ -17,6 +17,7 @@ import {
 } from 'wagmi';
 
 import {
+  getAccount,
   watchAccount
 }  from '@wagmi/core'
 
@@ -78,6 +79,8 @@ function App() {
   let tokensForEthTrades;
   let ethForTokensTrades;
 
+  const account = getAccount(wagmiConfig);
+
   const MyComponent = () => {
     const { address, isConnecting, isDisconnected } = useAccount();
     if (isConnecting) return <div>Connecting...</div>;
@@ -104,7 +107,14 @@ function App() {
     setGetTradeStatus(true);
     console.log('called getTrades');
 
-    const trades = await dexInstance.getAllTrades();
+    let trades;
+
+    try {
+     trades = await dexInstance.getAllTrades();
+    } catch (error) {
+      return;
+      console.log(error);
+    }
 
     // setTrades(trades);
 
@@ -623,10 +633,11 @@ function App() {
     console.log('here');
     const tradesOfTokensToTokensFiltered = tradesOfTokensToTokens.filter((trade) => {
       return (
-        trade.tradingTokenAddress === searchedForTokenAddressTrading
-        || trade.tradingForTokenAddress === searchedForTokenAddressForTrading
+        (trade.tradingTokenAddress === searchedForTokenAddressTrading
+        || trade.tradingForTokenAddress === searchedForTokenAddressForTrading)
         && trade.tradingTokenAddress !== undefined
         && trade.tradingForTokenAddress !== undefined
+        && trade.sender !== account.address
       )
     });
 
@@ -640,7 +651,9 @@ function App() {
   if (tradesOfTokensToEth) {
     const tradesOfTokensToEthFiltered = tradesOfTokensToEth.filter((trade) => {
       return (trade.tradingTokenAddress === searchedForTokenAddressTrading
-        && trade.tradingTokenAddress !== undefined)
+        && trade.tradingTokenAddress !== undefined
+        && trade.sender !== account.address
+      )
 
     });
 
@@ -654,7 +667,9 @@ function App() {
   if (tradesOfEthToTokens) {
     const tradesOfEthToTokensFiltered = tradesOfEthToTokens.filter((trade) => {
       return (trade.tradingForTokenAddress === searchedForTokenAddressForTrading
-              && trade.tradingForTokenAddress !== undefined)
+              && trade.tradingForTokenAddress !== undefined
+              && trade.sender !== account.address
+            )
     });
 
     console.log('tradesOfEthToTokensFiltered', tradesOfEthToTokensFiltered);
@@ -873,20 +888,20 @@ function App() {
     },
   });
 
-  if (pageLoaded === false) {
-    return (
-      <div className="loading-screen">
-        Loading...
-      </div>
-    );
-  }
+  // if (pageLoaded === false) {
+  //   return (
+  //     <div className="loading-screen">
+  //       Loading...
+  //     </div>
+  //   );
+  // }
   return (
     <div class="container mx-auto px-4" className="App">
       <div className="top-nav-bar-wrap">
         <TopNavBar />
       </div>
       <div className="title text-3xl font-bold">
-        Decentralized Exchange
+        Dex
       </div>
       <div className="description-wrap">
         <div className="description">
@@ -961,7 +976,7 @@ function App() {
           <div>
             Search By Address
           </div>
-          <div className="flex flex-col" className="search-for-trading-for-token-by-address">
+          <div className="search-for-trading-for-token-by-address">
             <select class="border rounded p-1 mb-1" id="select-for-trades-for-addresses">
               {tradesForTokenAddressesJsx}
             </select>
