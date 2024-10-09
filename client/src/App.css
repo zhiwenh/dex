@@ -275,6 +275,7 @@ button {
   border: 1px solid black;
   border-radius: 5px;
   margin-bottom: 10px;
+  padding: 2px;
 }
 
 .display-user-trades-tokens-for-eth-wrap {
@@ -288,6 +289,7 @@ button {
   border: 1px solid black;
   border-radius: 5px;
   margin-bottom: 10px;
+  padding: 2px;
 }
 
 .display-user-trades-eth-for-tokens-wrap {
@@ -299,6 +301,7 @@ button {
   border: 1px solid black;
   border-radius: 5px;
   margin-bottom: 10px;
+  padding: 2px;
 }
 
 .display-user-trades-already-traded-or-canceled-wrap {
@@ -343,7 +346,6 @@ button {
 }
 
 .add-tokens-for-tokens-approve-button {
-  margin-top: 5px;
   margin-bottom: 5px;
 }
 
@@ -367,7 +369,6 @@ button {
 }
 
 .add-tokens-for-eth-approve-button {
-  margin-top: 5px;
   margin-bottom: 5px;
 }
 
@@ -383,7 +384,6 @@ button {
 }
 
 .add-eth-for-tokens-trade-button {
-  margin-top: 10px;
 }
 
 .orderList{
@@ -447,6 +447,7 @@ button {
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 3.5px;
 }
 
 .trades-wrap {
@@ -549,6 +550,7 @@ button {
   border-radius: 5px;
   margin-bottom: 15px;
   padding-top: 2px;
+  padding: 2px;
 }
 
 .trade-of-tokens-for-tokens-sender-wrap {
@@ -564,6 +566,7 @@ button {
   border-radius: 5px;
   margin-bottom: 15px;
   padding-top: 2px;
+  padding: 2px;
 }
 
 .trades-of-eth-for-tokens {
@@ -575,6 +578,7 @@ button {
   border-radius: 5px;
   margin-bottom: 15px;
   padding-top: 2px;
+  padding: 2px;
 }
 
 .trade-of-tokens-for-eth-sender-wrap {

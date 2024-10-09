@@ -886,7 +886,7 @@ function App() {
         <TopNavBar />
       </div>
       <div className="title text-3xl font-bold">
-        Ethereum Decentralized Exchange
+        Decentralized Exchange
       </div>
       <div className="description-wrap">
         <div className="description">
@@ -962,7 +962,7 @@ function App() {
             Search By Address
           </div>
           <div className="flex flex-col" className="search-for-trading-for-token-by-address">
-            <select class="border rounded p-1" id="select-for-trades-for-addresses">
+            <select class="border rounded p-1 mb-1" id="select-for-trades-for-addresses">
               {tradesForTokenAddressesJsx}
             </select>
             <div>
