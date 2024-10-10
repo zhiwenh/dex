@@ -16,6 +16,10 @@ button {
 
 input {
   border: solid #E2E2E2;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-top: 1px;
+  padding-bottom: 1px;
 }
 
 .input {
@@ -306,8 +310,8 @@ input {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 30px;
-  margin-right: 30px;
+  margin-left: 35px;
+  margin-right: 35px;
   margin-bottom: 5px;
 }
 
@@ -544,9 +548,10 @@ input {
 }
 
 .bottom-nav-bar {
-  height: 50px;
+  height: 80px;
   margin-top: 30px;
   padding-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .bottom-nav-bar-contact {

@@ -900,139 +900,141 @@ function App() {
       <div className="top-nav-bar-wrap">
         <TopNavBar />
       </div>
-      <div className="title text-3xl font-bold">
-        Dex
-      </div>
-      <div className="description-wrap">
-        <div className="description">
-          <div>
-            A decentralized exchange that trades ERC20 tokens on the Ethereum blockchain.
-            All transactions are done through a single smart contract.
-          </div>
-          <br />
-          <div>
-            To use this dex you first need to connect your wallet. All your previous trades
-            are linked up to your account, and you can view them at anytime and cancel them.
-          </div>
-          <br />
-          <div>
-            To start trading, you need to know the token smart contract address for the token
-            you are trying to trade or are trading for. You can make trade offers
-            that will be completed by someone else. You can also search for a particular token by
-            its address and trade for it if someone else has posted an offer that trades it.
+      <div className="App-inner-wrap">
+        <div className="title text-3xl font-bold">
+          Dex
+        </div>
+        <div className="description-wrap">
+          <div className="description">
+            <div>
+              A decentralized exchange that trades ERC20 tokens on the Ethereum blockchain.
+              All transactions are done through a single smart contract.
+            </div>
+            <br />
+            <div>
+              To use this dex you first need to connect your wallet. All your previous trades
+              are linked up to your account, and you can view them at anytime and cancel them.
+            </div>
+            <br />
+            <div>
+              To start trading, you need to know the token smart contract address for the token
+              you are trying to trade or are trading for. You can make trade offers
+              that will be completed by someone else. You can also search for a particular token by
+              its address and trade for it if someone else has posted an offer that trades it.
+            </div>
           </div>
         </div>
-      </div>
-      <div id="wallet-id">
-        <ConnectWallet />
-      </div>
-      <div id="make-trade-offers-id">
-        <div className="trade-header-make-trade-offers">
-          Make Trade Offers
+        <div id="wallet-id">
+          <ConnectWallet />
         </div>
-      </div>
-      <div class="add-trade-wrap">
-        <div>
-          <AddTokensForTokensTrade
-            getTrades={getTrades}
-            setSetTokenTrades={setSetTokenTrades}
-            setRerender={setRerender}
+        <div id="make-trade-offers-id">
+          <div className="trade-header-make-trade-offers">
+            Make Trade Offers
+          </div>
+        </div>
+        <div class="add-trade-wrap">
+          <div>
+            <AddTokensForTokensTrade
+              getTrades={getTrades}
+              setSetTokenTrades={setSetTokenTrades}
+              setRerender={setRerender}
+            />
+          </div>
+          <div>
+            <AddTokensForEthTrade />
+          </div>
+          <div>
+            <AddEthForTokensTrade />
+          </div>
+        </div>
+        <div id="search-for-trades-id" class="search-for-trades-wrap">
+          <div>
+            <div className="trade-token-title-search-for-trades">
+              Search For Trades
+            </div>
+            <div className="trade-for-token-title-search-by-what-they-will-be-trading">
+              Search By What They Will Be Trading
+            </div>
+            <div>
+              Search By Address
+            </div>
+            <div className="flex flex-col mb-1" className="search-for-token-by-address-wrap">
+              <select class="border rounded p-1" id="select-for-trades-addresses">
+                {tradesTokenAddressesJsx}
+              </select>
+              <div class="mt-1">
+                <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesAddress}>Submit</button>
+                <button class="border rounded p-1" onClick={cancelFormSubmitForTradesAddress}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="trade-for-token-title-search-by-what-you-will-be-trading">
+              Search By What You Will Be Trading
+            </div>
+            <div>
+              Search By Address
+            </div>
+            <div className="search-for-trading-for-token-by-address">
+              <select class="border rounded p-1 mb-1" id="select-for-trades-for-addresses">
+                {tradesForTokenAddressesJsx}
+              </select>
+              <div>
+                <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesForAddress}>Submit</button>
+                <button class="border rounded p-1" onClick={cancelFormSubmitForTradesForAddress}>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="trades-id" className="trades-wrap">
+          <div className="trades-header">
+            Trades
+          </div>
+          <div className="trades">
+            <div className="trades-of-tokens-for-tokens-wrap">
+              <div className="trades-of-tokens-for-tokens-header">
+                Trades of Tokens For Tokens
+              </div>
+              <div className="trades-of-tokens-for-tokens">
+                {tradesOfTokensToTokensJsx}
+              </div>
+            </div>
+            <div className="trades-of-tokens-for-eth-wrap">
+              <div className="trades-of-tokens-for-eth-header">
+                Trades of Tokens for Eth
+              </div>
+              <div className="trades-of-tokens-for-eth">
+                {tradesOfTokensToEthJsx}
+              </div>
+            </div>
+            <div className="trades-of-eth-for-tokens-wrap">
+              <div className="trades-of-eth-for-tokens-header">
+                Trades of Eth for Tokens
+              </div>
+              <div className="trades-of-eth-for-tokens">
+                {tradesOfEthToTokensJsx}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="your-trades-id" className="display-trades-wrap">
+          <DisplayUserTrades
+            tradesOfTokensToTokens={tradesOfTokensToTokens}
+            tradesOfTokensToEth={tradesOfTokensToEth}
+            tradesOfEthToTokens={tradesOfEthToTokens}
           />
         </div>
-        <div>
-          <AddTokensForEthTrade />
-        </div>
-        <div>
-          <AddEthForTokensTrade />
-        </div>
-      </div>
-      <div id="search-for-trades-id" class="search-for-trades-wrap">
-        <div>
-          <div className="trade-token-title-search-for-trades">
-            Search For Trades
+        <div className="bottom-nav-bar">
+          <div id="contact-id" className="bottom-nav-bar-contact">
+            Contact
           </div>
-          <div className="trade-for-token-title-search-by-what-they-will-be-trading">
-            Search By What They Will Be Trading
+          <div className="bottom-nav-bar-email">
+            My email is zhiwen555@gmail.com
           </div>
-          <div>
-            Search By Address
-          </div>
-          <div className="flex flex-col mb-1" className="search-for-token-by-address-wrap">
-            <select class="border rounded p-1" id="select-for-trades-addresses">
-              {tradesTokenAddressesJsx}
-            </select>
-            <div class="mt-1">
-              <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesAddress}>Submit</button>
-              <button class="border rounded p-1" onClick={cancelFormSubmitForTradesAddress}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className="trade-for-token-title-search-by-what-you-will-be-trading">
-            Search By What You Will Be Trading
-          </div>
-          <div>
-            Search By Address
-          </div>
-          <div className="search-for-trading-for-token-by-address">
-            <select class="border rounded p-1 mb-1" id="select-for-trades-for-addresses">
-              {tradesForTokenAddressesJsx}
-            </select>
-            <div>
-              <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesForAddress}>Submit</button>
-              <button class="border rounded p-1" onClick={cancelFormSubmitForTradesForAddress}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="trades-id" className="trades-wrap">
-        <div className="trades-header">
-          Trades
-        </div>
-        <div className="trades">
-          <div className="trades-of-tokens-for-tokens-wrap">
-            <div className="trades-of-tokens-for-tokens-header">
-              Trades of Tokens For Tokens
-            </div>
-            <div className="trades-of-tokens-for-tokens">
-              {tradesOfTokensToTokensJsx}
-            </div>
-          </div>
-          <div className="trades-of-tokens-for-eth-wrap">
-            <div className="trades-of-tokens-for-eth-header">
-              Trades of Tokens for Eth
-            </div>
-            <div className="trades-of-tokens-for-eth">
-              {tradesOfTokensToEthJsx}
-            </div>
-          </div>
-          <div className="trades-of-eth-for-tokens-wrap">
-            <div className="trades-of-eth-for-tokens-header">
-              Trades of Eth for Tokens
-            </div>
-            <div className="trades-of-eth-for-tokens">
-              {tradesOfEthToTokensJsx}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="your-trades-id" className="display-trades-wrap">
-        <DisplayUserTrades
-          tradesOfTokensToTokens={tradesOfTokensToTokens}
-          tradesOfTokensToEth={tradesOfTokensToEth}
-          tradesOfEthToTokens={tradesOfEthToTokens}
-        />
-      </div>
-      <div className="bottom-nav-bar">
-        <div id="contact-id" className="bottom-nav-bar-contact">
-          Contact
-        </div>
-        <div className="bottom-nav-bar-email">
-          My email is zhiwen555@gmail.com
         </div>
       </div>
     </div>
