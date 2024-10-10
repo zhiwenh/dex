@@ -31,6 +31,8 @@ import { MakeEthToTokenTrade } from './Components/MakeEthToTokenTrade.js';
 import { DisplayUserTrades } from './Components/DisplayUserTrades.js';
 import { TopNavBar } from './Components/TopNavBar.js'
 
+import Select from 'react-select';
+
 const dexJson = require('./Dex.json');
 const dexAbi = dexJson.abi;
 
@@ -74,6 +76,10 @@ function App() {
   const [searchByTradingAddress,  setSearchByTradingAddress] = useState(false);
   const [searchByTradingForAddress,  setSearchByTradingForAddress] = useState(false);
 
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const [selectedOptionForTradesAddresses, setSelectedOptionForTradesAddresses] = useState(null);
+  const [selectedOptionForTradesForAddresses, setSelectedOptionForTradesForAddresses] = useState(null);
 
   let tokensForTokensTrades;
   let tokensForEthTrades;
@@ -98,7 +104,6 @@ function App() {
   }
 
   async function getTrades() {
-
     if (getTradeStatus === true) {
       return;
     }
@@ -383,6 +388,7 @@ function App() {
               </div>
               <div className="trade-of-tokens-for-tokens-trading-token-amount-wrap" className="trade-inner-wrap">
                 <div>
+                  Token Amount
                 </div>
                 <div>
                   {Number(trade.tradingTokenAmount)}
@@ -710,8 +716,18 @@ function App() {
 
   let tradesTokenAddressesJsx;
 
+  const tradesTokenAddressesOptionsForSelect = [];
   if (tradesTokenAddresses) {
     console.log('here2');
+
+    for (let i = 0; i < tradesTokenAddresses.length; i++) {
+      const address = tradesTokenAddresses[i];
+      tradesTokenAddressesOptionsForSelect.push({
+        value: address,
+        label: address
+      });
+    }
+
     tradesTokenAddressesJsx = tradesTokenAddresses.map((address, index) => {
       // console.log('trade', trade);
 
@@ -725,8 +741,18 @@ function App() {
 
   let tradesForTokenAddressesJsx;
 
+  const tradesForTokenAddressesOptionsForSelect = [];
   if (tradesForTokenAddresses) {
     console.log('here2');
+
+    for (let i = 0; i < tradesForTokenAddresses.length; i++) {
+      const address = tradesForTokenAddresses[i];
+      tradesForTokenAddressesOptionsForSelect.push({
+        value: address,
+        label: address
+      });
+    }
+
     tradesForTokenAddressesJsx = tradesForTokenAddresses.map((address, index) => {
       // console.log('trade', trade);
 
@@ -750,11 +776,11 @@ function App() {
   function formSubmitForTrades(e) {
     e.preventDefault();
 
-    const selectedValue = document.getElementById('select-for-trades').value;
+    // const selectedValue = document.getElementById('select-for-trades').value;
 
-    setSearchedForTokenNameTrading(selectedValue);
+    // setSearchedForTokenNameTrading(selectedValue);
 
-    console.log('selectedValue', selectedValue);
+    // console.log('selectedValue', selectedValue);
     // searchedForTokenNameTrading = 'TestToken1';
 
     console.log('here5 in form submit');
@@ -768,11 +794,11 @@ function App() {
   function formSubmitForTradesFor(e) {
     e.preventDefault();
 
-    const selectedValue = document.getElementById('select-for-trades-for').value;
+    // const selectedValue = document.getElementById('select-for-trades-for').value;
 
-    setSearchedForTokenNameForTrading(selectedValue);
+    // setSearchedForTokenNameForTrading(selectedValue);
 
-    console.log('selectedValue', selectedValue);
+    // console.log('selectedValue', selectedValue);
     // searchedForTokenNameTrading = 'TestToken1';
 
     console.log('here5 in form submit');
@@ -787,13 +813,15 @@ function App() {
   function formSubmitForTradesAddress(e) {
     e.preventDefault();
 
-    const selectedValue = document.getElementById('select-for-trades-addresses').value;
+    // const selectedValue = document.getElementById('select-for-trades-addresses').value;
 
     setSearchByTradingAddress(true);
     setSearchedForTokenAddressForTrading(undefined);
-    setSearchedForTokenAddressTrading(selectedValue);
+    console.log('selectedOptionForTradesAddresses', selectedOptionForTradesAddresses);
+    setSearchedForTokenAddressTrading(selectedOptionForTradesAddresses.value);
 
-    console.log('selectedValue', selectedValue);
+    console.log('selectedOptionForTradesAddresses', selectedOptionForTradesAddresses);
+
     // searchedForTokenNameTrading = 'TestToken1';
 
     console.log('here5 in form submit');
@@ -810,13 +838,13 @@ function App() {
   function formSubmitForTradesForAddress(e) {
     e.preventDefault();
 
-    const selectedValue = document.getElementById('select-for-trades-for-addresses').value;
+    // const selectedValue = document.getElementById('select-for-trades-for-addresses').value;
 
     setSearchByTradingForAddress(true);
     setSearchedForTokenAddressTrading(undefined);
-    setSearchedForTokenAddressForTrading(selectedValue);
+    setSearchedForTokenAddressForTrading(selectedOptionForTradesForAddresses.value);
 
-    console.log('selectedValue', selectedValue);
+    console.log('selectedOptionForTradesForAddresses', selectedOptionForTradesForAddresses);
     // searchedForTokenNameTrading = 'TestToken1';
 
     console.log('here 11 in form submit for address');
@@ -888,6 +916,11 @@ function App() {
     },
   });
 
+  function handleChangeAddressSelect(options) {
+    console.log('options here', options);
+    setSelectedOptionForTradesAddresses(options);
+    console.log('selectedOptionForTradesAddresses', selectedOptionForTradesAddresses);
+  }
   // if (pageLoaded === false) {
   //   return (
   //     <div className="loading-screen">
@@ -895,8 +928,9 @@ function App() {
   //     </div>
   //   );
   // }
+
   return (
-    <div class="container mx-auto px-4" className="App">
+    <div className="bg-green-50 container mx-auto px-4" className="App">
       <div className="top-nav-bar-wrap">
         <TopNavBar />
       </div>
@@ -920,7 +954,7 @@ function App() {
               To start trading, you need to know the token smart contract address for the token
               you are trying to trade or are trading for. You can make trade offers
               that will be completed by someone else. You can also search for a particular token by
-              its address and trade for it if someone else has posted an offer that trades it.
+              its address and trade for it if someone else has posted an offer for it.
             </div>
           </div>
         </div>
@@ -959,9 +993,12 @@ function App() {
               Search By Address
             </div>
             <div className="flex flex-col mb-1" className="search-for-token-by-address-wrap">
-              <select class="border rounded p-1" id="select-for-trades-addresses">
-                {tradesTokenAddressesJsx}
-              </select>
+              <Select
+                defaultValue={selectedOptionForTradesAddresses}
+                onChange={handleChangeAddressSelect}
+                options={tradesTokenAddressesOptionsForSelect}
+                className="select-for-addresses"
+              />
               <div class="mt-1">
                 <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesAddress}>Submit</button>
                 <button class="border rounded p-1" onClick={cancelFormSubmitForTradesAddress}>
@@ -978,9 +1015,12 @@ function App() {
               Search By Address
             </div>
             <div className="search-for-trading-for-token-by-address">
-              <select class="border rounded p-1 mb-1" id="select-for-trades-for-addresses">
-                {tradesForTokenAddressesJsx}
-              </select>
+              <Select
+                defaultValue={selectedOptionForTradesForAddresses}
+                onChange={setSelectedOptionForTradesForAddresses}
+                options={tradesForTokenAddressesOptionsForSelect}
+                className="select-for-addresses-for"
+              />
               <div>
                 <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesForAddress}>Submit</button>
                 <button class="border rounded p-1" onClick={cancelFormSubmitForTradesForAddress}>
