@@ -145,7 +145,7 @@ select {
   justify-content: center;
   min-height: 40px;
   align-items: center;
-  background-color: rgb(203 213 225);
+  background-color: #E2E8F0;
 }
 
 .top-nav-bar a {
