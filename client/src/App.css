@@ -69,6 +69,12 @@ select {
     align-items: center;
   }
 
+  /* .add-trades-wrap-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  } */
+
   .top-nav-bar {
     display: flex;
     flex-direction: column;
@@ -281,8 +287,19 @@ select {
   font-size: 23px;
 }
 
+#make-trade-offers-id {
+  margin-top: 30px;
+}
+
+.add-trades-wrap-inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 .add-trade-wrap {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   margin-bottom: 40px;
 }
@@ -376,6 +393,7 @@ select {
 
 .search-for-trades-wrap {
   margin-bottom: 40px;
+  margin-top: 30px;
 }
 
 .search-for-token-by-name-wrap {

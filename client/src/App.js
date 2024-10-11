@@ -33,6 +33,11 @@ import { TopNavBar } from './Components/TopNavBar.js'
 
 import Select from 'react-select';
 
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+
 const dexJson = require('./Dex.json');
 const dexAbi = dexJson.abi;
 
@@ -929,12 +934,121 @@ function App() {
   //   );
   // }
 
-  return (
-    <div className="bg-green-50 container mx-auto px-4" className="App">
-      <div className="top-nav-bar-wrap">
-        <TopNavBar />
+  function SearchForTrades() {
+    return (
+      <div>
+                <div id="search-for-trades-id" class="search-for-trades-wrap">
+                  <div>
+                    <div className="trade-token-title-search-for-trades">
+                      Search For Trades
+                    </div>
+                    <div className="trade-for-token-title-search-by-what-they-will-be-trading">
+                      Search By What They Will Be Trading
+                    </div>
+                    <div>
+                      Search By Address
+                    </div>
+                    <div className="flex flex-col mb-1" className="search-for-token-by-address-wrap">
+                      <Select
+                        defaultValue={selectedOptionForTradesAddresses}
+                        onChange={handleChangeAddressSelect}
+                        options={tradesTokenAddressesOptionsForSelect}
+                        className="select-for-addresses"
+                      />
+                      <div class="mt-1">
+                        <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesAddress}>Submit</button>
+                        <button class="border rounded p-1" onClick={cancelFormSubmitForTradesAddress}>
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="trade-for-token-title-search-by-what-you-will-be-trading">
+                      Search By What You Will Be Trading
+                    </div>
+                    <div>
+                      Search By Address
+                    </div>
+                    <div className="search-for-trading-for-token-by-address">
+                      <Select
+                        defaultValue={selectedOptionForTradesForAddresses}
+                        onChange={setSelectedOptionForTradesForAddresses}
+                        options={tradesForTokenAddressesOptionsForSelect}
+                        className="select-for-addresses-for"
+                      />
+                      <div>
+                        <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesForAddress}>Submit</button>
+                        <button class="border rounded p-1" onClick={cancelFormSubmitForTradesForAddress}>
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="trades-id" className="trades-wrap">
+                  <div className="trades-header">
+                    Trades
+                  </div>
+                  <div className="trades">
+                    <div className="trades-of-tokens-for-tokens-wrap">
+                      <div className="trades-of-tokens-for-tokens-header">
+                        Trades of Tokens For Tokens
+                      </div>
+                      <div className="trades-of-tokens-for-tokens">
+                        {tradesOfTokensToTokensJsx}
+                      </div>
+                    </div>
+                    <div className="trades-of-tokens-for-eth-wrap">
+                      <div className="trades-of-tokens-for-eth-header">
+                        Trades of Tokens for Eth
+                      </div>
+                      <div className="trades-of-tokens-for-eth">
+                        {tradesOfTokensToEthJsx}
+                      </div>
+                    </div>
+                    <div className="trades-of-eth-for-tokens-wrap">
+                      <div className="trades-of-eth-for-tokens-header">
+                        Trades of Eth for Tokens
+                      </div>
+                      <div className="trades-of-eth-for-tokens">
+                        {tradesOfEthToTokensJsx}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+    );
+  }
+
+  function MakeTrades() {
+    return (
+      <div id="make-trade-offers-id">
+        <div className="trade-header-make-trade-offers">
+          Make Trade Offers
+        </div>
+        <div className="add-trades-wrap-inner">
+          <div class="add-trade-wrap">
+            <AddTokensForTokensTrade
+              getTrades={getTrades}
+              setSetTokenTrades={setSetTokenTrades}
+              setRerender={setRerender}
+            />
+          </div>
+          <div>
+            <AddTokensForEthTrade />
+          </div>
+          <div>
+            <AddEthForTokensTrade />
+        </div>
       </div>
-      <div className="App-inner-wrap">
+    </div>
+    );
+  }
+
+  function About() {
+    return (
+      <div>
         <div className="title text-3xl font-bold">
           Dex
         </div>
@@ -958,109 +1072,22 @@ function App() {
             </div>
           </div>
         </div>
-        <div id="wallet-id">
-          <ConnectWallet />
-        </div>
-        <div id="make-trade-offers-id">
-          <div className="trade-header-make-trade-offers">
-            Make Trade Offers
-          </div>
-        </div>
-        <div class="add-trade-wrap">
-          <div>
-            <AddTokensForTokensTrade
-              getTrades={getTrades}
-              setSetTokenTrades={setSetTokenTrades}
-              setRerender={setRerender}
-            />
-          </div>
-          <div>
-            <AddTokensForEthTrade />
-          </div>
-          <div>
-            <AddEthForTokensTrade />
-          </div>
-        </div>
-        <div id="search-for-trades-id" class="search-for-trades-wrap">
-          <div>
-            <div className="trade-token-title-search-for-trades">
-              Search For Trades
-            </div>
-            <div className="trade-for-token-title-search-by-what-they-will-be-trading">
-              Search By What They Will Be Trading
-            </div>
-            <div>
-              Search By Address
-            </div>
-            <div className="flex flex-col mb-1" className="search-for-token-by-address-wrap">
-              <Select
-                defaultValue={selectedOptionForTradesAddresses}
-                onChange={handleChangeAddressSelect}
-                options={tradesTokenAddressesOptionsForSelect}
-                className="select-for-addresses"
-              />
-              <div class="mt-1">
-                <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesAddress}>Submit</button>
-                <button class="border rounded p-1" onClick={cancelFormSubmitForTradesAddress}>
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="trade-for-token-title-search-by-what-you-will-be-trading">
-              Search By What You Will Be Trading
-            </div>
-            <div>
-              Search By Address
-            </div>
-            <div className="search-for-trading-for-token-by-address">
-              <Select
-                defaultValue={selectedOptionForTradesForAddresses}
-                onChange={setSelectedOptionForTradesForAddresses}
-                options={tradesForTokenAddressesOptionsForSelect}
-                className="select-for-addresses-for"
-              />
-              <div>
-                <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesForAddress}>Submit</button>
-                <button class="border rounded p-1" onClick={cancelFormSubmitForTradesForAddress}>
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="trades-id" className="trades-wrap">
-          <div className="trades-header">
-            Trades
-          </div>
-          <div className="trades">
-            <div className="trades-of-tokens-for-tokens-wrap">
-              <div className="trades-of-tokens-for-tokens-header">
-                Trades of Tokens For Tokens
-              </div>
-              <div className="trades-of-tokens-for-tokens">
-                {tradesOfTokensToTokensJsx}
-              </div>
-            </div>
-            <div className="trades-of-tokens-for-eth-wrap">
-              <div className="trades-of-tokens-for-eth-header">
-                Trades of Tokens for Eth
-              </div>
-              <div className="trades-of-tokens-for-eth">
-                {tradesOfTokensToEthJsx}
-              </div>
-            </div>
-            <div className="trades-of-eth-for-tokens-wrap">
-              <div className="trades-of-eth-for-tokens-header">
-                Trades of Eth for Tokens
-              </div>
-              <div className="trades-of-eth-for-tokens">
-                {tradesOfEthToTokensJsx}
-              </div>
-            </div>
-          </div>
-        </div>
+      </div>
+    );
+  }
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <SearchForTrades />,
+    },
+    {
+      path: "/make-trades",
+      element: <MakeTrades />
+    },
+    {
+      path: "/your-trades",
+      element:
         <div id="your-trades-id" className="display-trades-wrap">
           <DisplayUserTrades
             tradesOfTokensToTokens={tradesOfTokensToTokens}
@@ -1068,6 +1095,25 @@ function App() {
             tradesOfEthToTokens={tradesOfEthToTokens}
           />
         </div>
+    },
+    {
+      path: "/about",
+      element: <About />
+    }
+  ]);
+
+  return (
+    <div className="bg-green-50 container mx-auto px-4" className="App">
+      <div className="top-nav-bar-wrap">
+        <TopNavBar />
+      </div>
+      <div className="App-inner-wrap">
+        <RouterProvider router={router} />
+
+        <div id="wallet-id">
+          <ConnectWallet />
+        </div>
+
         <div className="bottom-nav-bar">
           <div id="contact-id" className="bottom-nav-bar-contact">
             Contact
