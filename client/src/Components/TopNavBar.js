@@ -49,22 +49,22 @@ export function TopNavBar() {
           </div>
         </div>
         <div className="top-nav-bar-link">
-          <a href="#wallet-id">Wallet</a>
+          <a href="/">Home</a>
         </div>
         <div className="top-nav-bar-link">
-          <a href="#make-trade-offers-id">Make Trade Offers</a>
+          <a href="/wallet">Wallet</a>
         </div>
         <div className="top-nav-bar-link">
-          <a href="#search-for-trades-id">Search For Trades</a>
+          <a href="/make-trades">Make Trade Offers</a>
         </div>
         <div className="top-nav-bar-link">
-          <a href="#trades-id">Trades</a>
+          <a href="/search-for-trades">Search For Trades</a>
         </div>
         <div className="top-nav-bar-link">
-          <a href="#your-trades-id">Your Trades</a>
+          <a href="/your-trades">Your Trades</a>
         </div>
         <div className="top-nav-bar-link">
-          <a href="#contact-id">Contact</a>
+          <a href="/contact">Contact</a>
         </div>
       </div>
     )

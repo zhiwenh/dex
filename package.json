@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@floating-ui/react": "^0.26.24",
     "@metamask/sdk-react": "^0.28.4",
     "@metamask/sdk-react-ui": "^0.28.4",
     "@openzeppelin/contracts": "^5.0.2",

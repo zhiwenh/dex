@@ -186,6 +186,10 @@ select {
   line-height: 22px;
 }
 
+#wallet-id {
+  margin-top: 15px;
+}
+
 .wallet-wrap {
   margin-bottom: 40px;
 }
@@ -198,6 +202,10 @@ select {
 
 .account-address {
   margin-bottom: 5px;
+}
+
+.display-trades-wrap {
+  margin-top: 15px;
 }
 
 .display-user-trades-wrap {
@@ -288,7 +296,7 @@ select {
 }
 
 #make-trade-offers-id {
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 .add-trades-wrap-inner {
@@ -393,7 +401,7 @@ select {
 
 .search-for-trades-wrap {
   margin-bottom: 40px;
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 .search-for-token-by-name-wrap {
@@ -601,6 +609,7 @@ select {
   margin-bottom: 5px;
   font-weight: bold;
   font-size: 23px;
+  margin-top: 15px;
 }
 
 .bottom-nav-bar-email {
