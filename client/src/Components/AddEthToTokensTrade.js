@@ -19,10 +19,10 @@ const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 export function AddEthForTokensTrade() {
   const { hash, isPending, writeContract, error } = useWriteContract();
 
-  async function submit(e) {
-    e.preventDefault()
+  async function submit() {
+    // e.preventDefault()
 
-    console.log('e', e);
+    // console.log('e', e);
 
     let tradingEthAmount = document.getElementById('trading-eth-amount-3').value;
     const tradingForTokenAddress = document.getElementById('trading-for-token-address-3').value;
@@ -49,14 +49,12 @@ export function AddEthForTokensTrade() {
       hash,
     })
 
-  console.log('error', error);
-
   return (
     <div className="add-eth-for-tokens-trade-wrap">
       <div className="add-trade-eth-for-token-title">
         Make a Eth For Token Offer
       </div>
-        <form onSubmit={submit}>
+        <div>
         <div>
           <div>
             Trading Eth Amount
@@ -70,8 +68,8 @@ export function AddEthForTokensTrade() {
           </div>
           <input class="border rounded mb-1" name="trading-for-token-amount border-gray-300" id="trading-for-token-amount-3" required/>
         </div>
-          <button class="border rounded p-1" className="add-eth-for-tokens-trade-button" type="submit">{isPending ? 'Confirming...' : 'Add Trade'}</button>
-        </form>
+          <button class="border rounded p-1" className="add-eth-for-tokens-trade-button" onClick={submit}>{isPending ? 'Confirming...' : 'Add Trade'}</button>
+        </div>
         {hash && <div>Transaction Hash: {hash}</div>}
         {isConfirming && <div>Waiting for confirmation...</div>}
         {isConfirmed && <div>Transaction confirmed.</div>}

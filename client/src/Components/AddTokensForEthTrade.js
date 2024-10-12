@@ -76,11 +76,7 @@ export function AddTokensForEthTrade() {
     }
   }
 
-  async function submit(e) {
-    e.preventDefault()
-
-    console.log('e', e);
-
+  async function submit() {
     const account = getAccount(wagmiConfig);
 
     console.log('account', account);
@@ -113,13 +109,12 @@ export function AddTokensForEthTrade() {
       hash,
     })
 
-  console.log('error', error);
   return (
     <div className="add-tokens-for-eth-trade-wrap">
       <div className="add-trade-token-for-eth-title">
         Make a Token For Eth Offer
       </div>
-        <form onSubmit={submit}>
+        <div>
         <div>
           <div>
             Trading Token Address
@@ -143,8 +138,8 @@ export function AddTokensForEthTrade() {
             </button>
           </div>
         </div>
-          <button class="border rounded p-1" type="submit">{isPending || isConfirming ? 'Confirming...' : 'Add Trade'} </button>
-        </form>
+          <button class="border rounded p-1" onClick={submit}>{isPending || isConfirming ? 'Confirming...' : 'Add Trade'} </button>
+        </div>
         {hash && <div>Transaction Hash: {hash}</div>}
         {isConfirming && <div>Waiting for confirmation...</div>}
         {isConfirmed && <div>Transaction confirmed.</div>}

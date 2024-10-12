@@ -73,12 +73,7 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
     }
   }
 
-  async function submit(e) {
-    e.preventDefault()
-
-    // console.log('setSetTokenTrades', setSetTokenTrades);
-    // console.log('e', e);
-
+  async function submit() {
     const tradingTokenAddress = document.getElementById('trading-token-address-1').value;
     const tradingTokenAmount = document.getElementById('trading-token-amount-1').value;
     const tradingForTokenAddress = document.getElementById('trading-for-token-address-1').value;
@@ -99,22 +94,10 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
       functionName: 'addTokensToDexForTradeWithOtherTokens',
       args: [tradingTokenAddress, tradingTokenAmount, tradingForTokenAddress, tradingForTokenAmount]
     });
+  }
 
+  function blank() {
 
-    getTrades();
-    console.log('getTrades');
-
-    // const { isLoading: trxIsProcessing } = waitForTransactionReceipt(wagmiConfig, {
-    //   hash: hash,
-    //   chainId: localhost.id,
-    //   onError: error => {
-    //     console.log(error);
-    //   },
-    //   onSuccess: async data => {
-    //
-    //   }
-    // // setSetTokenTrades(true);
-    // });
   }
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
@@ -122,31 +105,12 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
       hash,
     });
 
-  if (isConfirmed) {
-    getTrades();
-    console.log('getTrades');
-
-    setRerender(true);
-    console.log('setRerender');
-  }
-  async function test() {
-    if (isConfirmed) {
-      await getTrades();
-      console.log('getTrades');
-      setRerender(true);
-      console.log('setRerender');
-    }
-  }
-
-  test();
-
-  console.log('error', error);
   return (
     <div className="add-tokens-for-tokens-trade-wrap">
       <div className="add-trade-token-for-token-title">
         Make a Token For Token Offer
       </div>
-        <form onSubmit={submit}>
+        <div>
         <div>
           <div>
             Trading Token Address
@@ -168,13 +132,13 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
             <div className="add-tokens-for-tokens-trade-approve-header">
             </div>
             <div>
-              <button class="border rounded p-1" onClick={approveTokens} className="add-tokens-for-tokens-approve-button">
+              <button class="border rounded p-1" onClick={isPending ? blank : approveTokens} className="add-tokens-for-tokens-approve-button">
                 {isPending ? 'Confirming...' : 'Approve Tokens For Dex'}
               </button>
             </div>
           </div>
-          <button class="border rounded p-1" type="submit">{isPending ? 'Confirming...' : 'Add Trade'} </button>
-        </form>
+          <button class="border rounded p-1" onClick={isPending ? blank : submit}>{isPending ? 'Confirming...' : 'Add Trade'} </button>
+        </div>
         <div>
         <div>
           {hash && <div>Transaction Hash: {hash}</div>}

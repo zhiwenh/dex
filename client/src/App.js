@@ -76,7 +76,6 @@ function App() {
   const [gotTrades, setGotTrades] = useState(false);
 
   const [getTradeStatus, setGetTradeStatus] = useState(false);
-  const [getAddressesBySelectStatus, setGetAddressesBySelectStatus] = useState(false);
   // tradesOfTokensToTokensJsx
   const [searchByTradingAddress,  setSearchByTradingAddress] = useState(false);
   const [searchByTradingForAddress,  setSearchByTradingForAddress] = useState(false);
@@ -113,7 +112,6 @@ function App() {
       return;
     }
 
-    setGetAddressesBySelectStatus(false);
     setGetTradeStatus(true);
     console.log('called getTrades');
 
@@ -203,6 +201,10 @@ function App() {
       return newTrade;
     }));
 
+    console.log('tradesOfTokensToTokens2', tradesOfTokensToTokens2);
+    console.log('tradesOfTokensToEth2', tradesOfTokensToEth2);
+    console.log('tradesOfEthToTokens2', tradesOfEthToTokens2);
+
     setTradesOfTokensToTokens(tradesOfTokensToTokens2);
     setTradesOfTokensToEth(tradesOfTokensToEth2);
     setTradesOfEthToTokens(tradesOfEthToTokens2);
@@ -212,7 +214,6 @@ function App() {
     }
 
     setGetTradeStatus(false);
-    setGetAddressesBySelectStatus(true);
     setSetTokenNameAndAddresses(true);
     getTokenAddressNamesForSelect();
     setPageLoaded(true);
@@ -224,12 +225,6 @@ function App() {
   }
 
   function getTokenAddressNamesForSelect() {
-    if (getAddressesBySelectStatus === true) {
-      return;
-    }
-
-    setGetAddressesBySelectStatus(true);
-
     console.log('called getTokenAddressNamesForSelect');
     let alreadyInTradesTokenAddresses = {};
     let tradesTokenNamesIn = [];
@@ -266,7 +261,7 @@ function App() {
 
             tradesForTokenNamesIn.push(name);
             tradesForTokenSymbolsIn.push(symbol);
-            tradesForTokenAddressesIn.push(tradesOfTokensToTokens[i].tradingTokenAddress);
+            tradesForTokenAddressesIn.push(tradesOfTokensToTokens[i].tradingForTokenAddress);
 
             alreadyInTradesForTokenAddresses[tradesOfTokensToTokens[i].tradingForTokenAddress] = true;
           }
@@ -309,9 +304,16 @@ function App() {
       }
     }
 
+
     getTokenAddressesTokensForTokensTrades();
     getTokenAddressesTokensForEthTrades();
     getTokenAddressesEthForTokensTrades();
+
+    console.log('alreadyInTradesForTokenAddresses', alreadyInTradesForTokenAddresses);
+
+    console.log('tradesTokenAddressesIn', tradesTokenAddressesIn);
+
+    console.log('tradesForTokenAddressesIn', tradesForTokenAddressesIn);
 
     console.log('tradesTokenNamesIn', tradesTokenNamesIn);
     setTradesTokenNames(tradesTokenNamesIn);
@@ -321,8 +323,6 @@ function App() {
     setTradesForTokenNames(tradesForTokenNamesIn);
     setTradesForTokenSymbols(tradesForTokenSymbolsIn);
     setTradesForTokenAddresses(tradesForTokenAddressesIn);
-
-    setGetAddressesBySelectStatus(false);
   }
 
   if (setTokenNameAndAddresses) {
@@ -818,6 +818,9 @@ function App() {
   function formSubmitForTradesAddress(e) {
     e.preventDefault();
 
+    if (!selectedOptionForTradesAddresses) {
+      return;
+    }
     // const selectedValue = document.getElementById('select-for-trades-addresses').value;
 
     setSearchByTradingAddress(true);
@@ -843,10 +846,16 @@ function App() {
   function formSubmitForTradesForAddress(e) {
     e.preventDefault();
 
+    if (!selectedOptionForTradesForAddresses) {
+      return;
+    }
+
     // const selectedValue = document.getElementById('select-for-trades-for-addresses').value;
 
     setSearchByTradingForAddress(true);
     setSearchedForTokenAddressTrading(undefined);
+
+
     setSearchedForTokenAddressForTrading(selectedOptionForTradesForAddresses.value);
 
     console.log('selectedOptionForTradesForAddresses', selectedOptionForTradesForAddresses);
@@ -870,62 +879,47 @@ function App() {
 
   dexInstance.on("EventAddToDexTradeTokensForTokens", (from, to, value, event)=>{
     getTrades();
-    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventAddToDexTradeTokensForEth", (from, to, value, event)=>{
     getTrades();
-    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventAddToDexTradeEthForTokens", (from, to, value, event)=>{
     getTrades();
-    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventTradeTokensForTokens", (from, to, value, event)=>{
     getTrades();
-    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventTradeTokensForEth", (from, to, value, event)=>{
     getTrades();
-    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventTradeEthForTokens", (from, to, value, event)=>{
     getTrades();
-    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventCanceledTradeTokensForTokens", (from, to, value, event)=>{
     getTrades();
-    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventCanceledTradeTokensForEth", (from, to, value, event)=>{
     getTrades();
-    getTokenAddressNamesForSelect();
   });
 
   dexInstance.on("EventCanceledTradeEthForTokens", (from, to, value, event)=>{
     getTrades();
-    getTokenAddressNamesForSelect();
   });
 
   const unwatch = watchAccount(wagmiConfig, {
     onChange(data) {
       console.log('Account changed!', data)
       getTrades();
-      getTokenAddressNamesForSelect();
     },
   });
 
-  function handleChangeAddressSelect(options) {
-    console.log('options here', options);
-    setSelectedOptionForTradesAddresses(options);
-    console.log('selectedOptionForTradesAddresses', selectedOptionForTradesAddresses);
-  }
   // if (pageLoaded === false) {
   //   return (
   //     <div className="loading-screen">
@@ -951,7 +945,7 @@ function App() {
             <div className="flex flex-col mb-1" className="search-for-token-by-address-wrap">
               <Select
                 defaultValue={selectedOptionForTradesAddresses}
-                onChange={handleChangeAddressSelect}
+                onChange={setSelectedOptionForTradesAddresses}
                 options={tradesTokenAddressesOptionsForSelect}
                 className="select-for-addresses"
               />
@@ -1046,7 +1040,7 @@ function App() {
     );
   }
 
-  function About() {
+  function Home() {
     return (
       <div>
         <div className="title text-3xl font-bold">
@@ -1092,7 +1086,7 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <About />
+      element: <Home />
     },
     {
       path: "/wallet",

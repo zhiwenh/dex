@@ -22,6 +22,8 @@ input {
   padding-top: 1px;
   padding-bottom: 1px;
   background-color: #FFFFFF;
+  height: 30px;
+  width: 200px;
 }
 
 select {
@@ -162,6 +164,10 @@ select {
 .top-nav-bar-link {
   margin-left: 15px;
   margin-right: 15px;
+}
+
+.top-nav-bar-wallet {
+  color: white;
 }
 
 .title {
@@ -424,7 +430,7 @@ select {
 }
 
 .select-for-addresses {
-  width: 470px;
+  width: 450px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -450,7 +456,7 @@ select {
 }
 
 .select-for-addresses-for {
-  width: 470px;
+  width: 450px;
   margin-left: auto;
   margin-right: auto;
 }

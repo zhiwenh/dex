@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { useAccount } from 'wagmi';
 
 export function TopNavBar() {
 
   const [navBarDisplayed, setNavBarDisplayed] = useState(window.innerWidth > 700 ? true : false);
+
+  const { address } = useAccount();
 
   useEffect(() => {
     window.addEventListener('resize', (event) => {
@@ -23,6 +26,9 @@ export function TopNavBar() {
       setNavBarDisplayed(true);
     }
   }
+
+  const connectWalletString = 'Connect Wallet'
+  const walletConnectedString = 'Wallet Connected: ' + address
 
   if (navBarDisplayed === false) {
     return (
@@ -52,9 +58,6 @@ export function TopNavBar() {
           <a href="/">Home</a>
         </div>
         <div className="top-nav-bar-link">
-          <a href="/wallet">Wallet</a>
-        </div>
-        <div className="top-nav-bar-link">
           <a href="/make-trades">Make Trade Offers</a>
         </div>
         <div className="top-nav-bar-link">
@@ -65,6 +68,9 @@ export function TopNavBar() {
         </div>
         <div className="top-nav-bar-link">
           <a href="/contact">Contact</a>
+        </div>
+        <div className="top-nav-bar-link" className="top-nav-bar-wallet">
+          {address ? <a href="/wallet">{walletConnectedString}</a> : <a href="/wallet">{connectWalletString}</a>}
         </div>
       </div>
     )
