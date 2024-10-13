@@ -1034,8 +1034,8 @@ function App() {
           </div>
           <div>
             <AddEthForTokensTrade />
+          </div>
         </div>
-      </div>
     </div>
     );
   }
@@ -1121,7 +1121,7 @@ function App() {
   ]);
 
   return (
-    <div className="bg-green-50 container mx-auto px-4" className="App">
+    <div className="App">
       <div className="top-nav-bar-wrap">
         <TopNavBar />
       </div>
