@@ -45,11 +45,11 @@ export function MakeTokenToTokenTrade({
     console.log('tradingForTokenAmount', tradingForTokenAmount);
     if (Number(allowanceForDex) < tradingForTokenAmount) {
       await writeContract({
-          address: tradingForTokenAddress,
-          abi: erc20Abi,
-          functionName: 'approve',
-          args: [config.dexAddress, tradingForTokenAmount]
-        })
+        address: tradingForTokenAddress,
+        abi: erc20Abi,
+        functionName: 'approve',
+        args: [config.dexAddress, tradingForTokenAmount]
+      })
     }
   }
 
@@ -71,11 +71,11 @@ export function MakeTokenToTokenTrade({
     console.log('indexOfTradeOfAddress', indexOfTradeOfAddress);
 
     await writeContract({
-        address: config.dexAddress,
-        abi: dexAbi,
-        functionName: 'buyTokensFromOtherTokens',
-        args: [sender, indexOfTradeOfAddress]
-      })
+      address: config.dexAddress,
+      abi: dexAbi,
+      functionName: 'buyTokensFromTokens',
+      args: [sender, indexOfTradeOfAddress]
+    })
   }
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =

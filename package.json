@@ -30,7 +30,8 @@
     "tailwindcss": "^3.4.13",
     "viem": "2.x",
     "vite": "^5.4.8",
-    "wagmi": "^2.12.16"
+    "wagmi": "^2.12.16",
+    "web3": "^4.13.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.7",

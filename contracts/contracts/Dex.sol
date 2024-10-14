@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract Dex {
   event EventAddToDexTradeTokensForTokens (
     address sender,
+    uint indexOfTrade,
     address tradingTokenAddress,
     uint tradingTokenAmount,
     address tradingForTokenAddress,
@@ -14,6 +15,7 @@ contract Dex {
 
   event EventAddToDexTradeTokensForEth (
     address sender,
+    uint indexOfTrade,
     address tradingTokenAddress,
     uint tradingTokenAmount,
     uint tradingForEthAmount
@@ -21,6 +23,7 @@ contract Dex {
 
   event EventAddToDexTradeEthForTokens (
     address sender,
+    uint indexOfTrade,
     uint tradingEthAmount,
     address tradingForTokenAddress,
     uint tradingForTokenAmount
@@ -28,28 +31,35 @@ contract Dex {
 
   event EventTradeTokensForTokens (
     address sender,
+    uint indexOfTrade,
     address tradingTokenAddress,
     uint tradingTokenAmount,
     address tradingForTokenAddress,
-    uint tradingForTokenAmount
+    uint tradingForTokenAmount,
+    address orderCompletedBy
   );
 
   event EventTradeTokensForEth (
     address sender,
+    uint indexOfTrade,
     address tradingTokenAddress,
     uint tradingTokenAmount,
-    uint tradingForEthAmount
+    uint tradingForEthAmount,
+    address orderCompletedBy
   );
 
   event EventTradeEthForTokens (
     address sender,
+    uint indexOfTrade,
     uint tradingEthAmount,
     address tradingForTokenAddress,
-    uint tradingForTokenAmount
+    uint tradingForTokenAmount,
+    address orderCompletedBy
   );
 
   event EventCanceledTradeTokensForTokens (
     address sender,
+    uint indexOfTrade,
     address tradingTokenAddress,
     uint tradingTokenAmount,
     address tradingForTokenAddress,
@@ -58,6 +68,7 @@ contract Dex {
 
   event EventCanceledTradeTokensForEth (
     address sender,
+    uint indexOfTrade,
     address tradingTokenAddress,
     uint tradingTokenAmount,
     uint tradingForEthAmount
@@ -65,6 +76,7 @@ contract Dex {
 
   event EventCanceledTradeEthForTokens (
     address sender,
+    uint indexOfTrade,
     uint tradingEthAmount,
     address tradingForTokenAddress,
     uint tradingForTokenAmount
@@ -195,6 +207,7 @@ contract Dex {
 
     emit EventAddToDexTradeTokensForTokens(
       msg.sender,
+      tradesOfTokensForTokensOfAnAddress[msg.sender].length - 1,
       tradingTokenAddress,
       tradingTokenAmount,
       tradingForTokenAddress,
@@ -258,6 +271,7 @@ contract Dex {
 
     emit EventAddToDexTradeTokensForEth(
       msg.sender,
+      tradesOfTokensForEthOfAnAddress[msg.sender].length - 1,
       tradingTokenAddress,
       tradingTokenAmount,
       tradingForEthAmount
@@ -291,6 +305,7 @@ contract Dex {
 
     emit EventAddToDexTradeEthForTokens(
       msg.sender,
+      tradesOfEthForTokensOfAnAddress[msg.sender].length - 1,
       tradingEthAmount,
       tradingForTokenAddress,
       tradingForTokenAmount
@@ -307,7 +322,7 @@ contract Dex {
     }
   }
 
-  function buyTokensFromOtherTokens(address sender, uint indexOfTrade) public {
+  function buyTokensFromTokens(address sender, uint indexOfTrade) public {
     require(sender != msg.sender);
     require(tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].alreadyTraded != true);
 
@@ -325,10 +340,12 @@ contract Dex {
 
     emit EventTradeTokensForTokens(
       sender,
+      indexOfTrade,
       tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAddress,
       tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAmount,
       tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress,
-      tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount
+      tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount,
+      msg.sender
     );
   }
 
@@ -348,9 +365,11 @@ contract Dex {
 
     emit EventTradeTokensForEth(
       sender,
+      indexOfTrade,
       tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAddress,
       tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAmount,
-      tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingForEthAmount
+      tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingForEthAmount,
+      msg.sender
     );
   }
 
@@ -372,9 +391,11 @@ contract Dex {
 
     emit EventTradeEthForTokens(
       sender,
+      indexOfTrade,
       tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingEthAmount,
       tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress,
-      tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount
+      tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount,
+      msg.sender
     );
   }
 
@@ -386,6 +407,7 @@ contract Dex {
 
     emit EventCanceledTradeTokensForTokens(
       sender,
+      indexOfTrade,
       tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAddress,
       tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingTokenAmount,
       tradesOfTokensForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress,
@@ -401,6 +423,7 @@ contract Dex {
 
     emit EventCanceledTradeTokensForEth(
       sender,
+      indexOfTrade,
       tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAddress,
       tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingTokenAmount,
       tradesOfTokensForEthOfAnAddress[sender][indexOfTrade].tradingForEthAmount
@@ -418,6 +441,7 @@ contract Dex {
 
     emit EventCanceledTradeEthForTokens(
       sender,
+      indexOfTrade,
       tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingEthAmount,
       tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAddress,
       tradesOfEthForTokensOfAnAddress[sender][indexOfTrade].tradingForTokenAmount

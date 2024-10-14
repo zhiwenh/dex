@@ -47,7 +47,7 @@
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 const HDWalletProvider = require("@truffle/hdwallet-provider")
-const mnemonic = 'item system noise artefact ready theme harsh coast reason punch rotate almost';
+const mnemonic = 'frame fruit erode refuse kingdom ask gun fiscal dignity regret ceiling buddy';
 
 module.exports = {
   /**

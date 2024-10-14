@@ -13,11 +13,6 @@ import { waitForTransactionReceipt } from '@wagmi/core'
 import { getTransactionReceipt } from '@wagmi/core'
 import { localhost } from '@wagmi/core/chains'
 
-import { CancelTokensForTokensTrade } from './CancelTokensForTokensTrade.js';
-import { CancelTokensForEthTrade } from './CancelTokensForEthTrade.js'
-import { CancelEthForTokensTrade } from './CancelEthForTokensTrade.js';
-
-
 const dexJson = require('./../Dex.json');
 const dexAbi = dexJson.abi;
 
@@ -27,20 +22,20 @@ const erc20Abi = erc20Json.abi;
 const provider = new ethers.JsonRpcProvider('http://localhost:8545');
 const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
-export function DisplayUserTrades({
-  tradesOfTokensToTokens,
-  tradesOfTokensToEth,
-  tradesOfEthToTokens
+export function DisplayYourCompletedTrades({
+  completedTradesOfTokensToTokensEvents,
+  completedTradesOfTokensToEthEvents,
+  completedTradesOfEthToTokensEvents
 }) {
 
   const account = getAccount(wagmiConfig);
 
-  console.log('tradesOfTokensToTokens', tradesOfTokensToTokens);
+  console.log('in display trades completedTradesOfTokensToTokensEvents', completedTradesOfTokensToTokensEvents);
 
-  if (tradesOfTokensToTokens) {
-    tradesOfTokensToTokens = tradesOfTokensToTokens.filter(trade => {
-      return trade.sender === account.address;
-    }).map((trade, index) => {
+  if (completedTradesOfTokensToTokensEvents) {
+    completedTradesOfTokensToTokensEvents = completedTradesOfTokensToTokensEvents.filter(event => {
+      return event.orderCompletedBy === account.address;
+    }).map((event, index) => {
       return (
         <div class="border rounded mb-1" className="display-user-trades-trade-box" className="display-trades-of-tokens-for-tokens" key={index.toString()}>
           <div className="trade-of-tokens-for-tokens-sender-wrap" className="trade-inner-wrap">
@@ -48,7 +43,7 @@ export function DisplayUserTrades({
               Sender
             </div>
             <div className="trade-of-tokens-for-tokens-sender">
-              {trade.sender}
+              {event.sender}
             </div>
           </div>
           <div className="trade-of-tokens-for-tokens-index-wrap" className="trade-inner-wrap">
@@ -56,21 +51,21 @@ export function DisplayUserTrades({
               Index
             </div>
             <div className="trade-of-tokens-for-tokens-index">
-              {Number(trade.indexOfTradeOfAddress)}
+              {Number(event.indexOfTrade)}
             </div>
           </div>
           <div className="trade-inner-wrap">
             <div>
             </div>
             <div>
-              {trade.tradingTokenName}
+              {event.tradingTokenName}
             </div>
           </div>
           <div className="trade-inner-wrap">
             <div>
             </div>
             <div>
-              {trade.tradingTokenSymbol}
+              {event.tradingTokenSymbol}
             </div>
           </div>
           <div className="trade-of-tokens-for-tokens-trading-token-address-wrap" className="trade-inner-wrap">
@@ -78,7 +73,7 @@ export function DisplayUserTrades({
               Trading Token Address
             </div>
             <div className="trade-address-overflow" className="trade-of-tokens-for-tokens-trading-token-address"mclassName="trade-inner-wrap">
-              {trade.tradingTokenAddress}
+              {event.tradingTokenAddress}
             </div>
           </div>
           <div className="trade-of-tokens-for-tokens-trading-token-amount-wrap" className="trade-inner-wrap">
@@ -86,21 +81,21 @@ export function DisplayUserTrades({
               Trading Token Amount
             </div>
             <div>
-              {Number(trade.tradingTokenAmount)}
+              {Number(event.tradingTokenAmount)}
             </div>
           </div>
           <div className="trade-inner-wrap">
             <div>
             </div>
             <div>
-              {trade.tradingForTokenName}
+              {event.tradingForTokenName}
             </div>
           </div>
           <div className="trade-inner-wrap">
             <div>
             </div>
             <div>
-              {trade.tradingForTokenSymbol}
+              {event.tradingForTokenSymbol}
             </div>
           </div>
           <div className="trade-of-tokens-for-tokens-trading-for-token-address-wrap" className="trade-inner-wrap">
@@ -108,7 +103,7 @@ export function DisplayUserTrades({
               Trading For Token Address
             </div>
             <div className="trade-address-overflow">
-              {trade.tradingForTokenAddress}
+              {event.tradingForTokenAddress}
             </div>
           </div>
           <div className="trade-of-tokens-for-tokens-trading-for-token-amount-wrap" className="trade-inner-wrap">
@@ -116,40 +111,34 @@ export function DisplayUserTrades({
               Trading For Token Amount
             </div>
             <div>
-              {Number(trade.tradingForTokenAmount)}
+              {Number(event.tradingForTokenAmount)}
             </div>
           </div>
           <div>
             <div>
-              Trade Or Canceled Status
+              Order Completed By
             </div>
             <div>
-              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded Or Canceled'}
+              {event.orderCompletedBy}
             </div>
-          </div>
-          <div className="display-user-trades-already-traded-or-canceled-wrap">
-            {trade.alreadyTraded ? undefined : <CancelTokensForTokensTrade
-              sender={trade.sender}
-              indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
-            />}
           </div>
         </div>
       )
     })
   }
 
-  if (tradesOfTokensToEth) {
-    tradesOfTokensToEth = tradesOfTokensToEth.filter(trade => {
-      return trade.sender === account.address;
-    }).map((trade, index) => {
+  if (completedTradesOfTokensToEthEvents) {
+    completedTradesOfTokensToEthEvents = completedTradesOfTokensToEthEvents.filter(event => {
+      return event.orderCompletedBy === account.address;
+    }).map((event, index) => {
       return (
-        <div class="border rounded mb-1" className="display-user-trades-trade-box" className="display-trade-of-tokens-for-eth" key={index.toString()}>
+        <div class="border rounded mb-1" className="display-user-trades-trade-box" className="display-trades-of-tokens-for-tokens" key={index.toString()}>
           <div className="trade-of-tokens-for-eth-sender-wrap" className="trade-inner-wrap">
             <div className="display-user-trades-sender">
               Sender
             </div>
             <div>
-              {trade.sender}
+              {event.sender}
             </div>
           </div>
           <div className="trade-of-tokens-for-eth-index-wrap" className="trade-inner-wrap">
@@ -157,21 +146,21 @@ export function DisplayUserTrades({
               Index
             </div>
             <div>
-              {Number(trade.indexOfTradeOfAddress)}
+              {Number(event.indexOfTrade)}
             </div>
           </div>
           <div className="trade-inner-wrap">
             <div>
             </div>
             <div>
-              {trade.tradingTokenName}
+              {event.tradingTokenName}
             </div>
           </div>
           <div className="trade-inner-wrap">
             <div>
             </div>
             <div>
-              {trade.tradingTokenSymbol}
+              {event.tradingTokenSymbol}
             </div>
           </div>
           <div className="trade-of-tokens-for-eth-trading-token-address-wrap" className="trade-inner-wrap">
@@ -179,7 +168,7 @@ export function DisplayUserTrades({
               Trading Token Address
             </div>
             <div>
-              {trade.tradingTokenAddress}
+              {event.tradingTokenAddress}
             </div>
           </div>
           <div className="trade-of-tokens-for-eth-trading-token-amount-wrap" className="trade-inner-wrap">
@@ -187,7 +176,7 @@ export function DisplayUserTrades({
               Trading Token Amount
             </div>
             <div>
-              {Number(trade.tradingTokenAmount)}
+              {Number(event.tradingTokenAmount)}
             </div>
           </div>
           <div className="trade-of-tokens-for-eth-trading-for-eth-amount-wrap" className="trade-inner-wrap">
@@ -195,34 +184,28 @@ export function DisplayUserTrades({
               Trading For Eth Amount
             </div>
             <div>
-              {ethers.formatUnits(trade.tradingForEthAmount)}
+              {ethers.formatUnits(event.tradingForEthAmount)}
             </div>
           </div>
           <div>
             <div>
-              Trade Or Canceled Status
+              Order Completed By
             </div>
             <div>
-              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded Or Canceled'}
+              {event.orderCompletedBy}
             </div>
-          </div>
-          <div className="display-user-trades-already-traded-or-canceled-wrap">
-            {trade.alreadyTraded ? undefined : <CancelTokensForEthTrade
-              sender={trade.sender}
-              indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
-            />}
           </div>
         </div>
       );
     })
   }
 
-  if (tradesOfEthToTokens) {
-    tradesOfEthToTokens = tradesOfEthToTokens.filter(trade => {
-      return trade.sender === account.address;
+  if (completedTradesOfEthToTokensEvents) {
+    completedTradesOfEthToTokensEvents = completedTradesOfEthToTokensEvents.filter(trade => {
+      return trade.orderCompletedBy === account.address;
     }).map((trade, index) => {
       return (
-        <div class="border rounded mb-1" className="display-trade-of-eth-for-tokens" key={index.toString()}>
+        <div class="border rounded mb-1" className="display-user-trades-trade-box" className="display-trades-of-tokens-for-tokens" key={index.toString()}>
           <div className="trade-of-eth-for-tokens-sender-wrap" className="trade-inner-wrap">
             <div className="display-user-trades-sender">
               Sender
@@ -236,7 +219,7 @@ export function DisplayUserTrades({
               Index
             </div>
             <div>
-              {Number(trade.indexOfTradeOfAddress)}
+              {Number(trade.indexOfTrade)}
             </div>
           </div>
           <div className="trade-of-eth-for-tokens-trading-eth-amount-wrap" className="trade-inner-wrap">
@@ -279,60 +262,52 @@ export function DisplayUserTrades({
           </div>
           <div>
             <div>
-              Trade Or Canceled Status
+              Order Completed By
             </div>
             <div>
-              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded Or Canceled'}
+              {trade.orderCompletedBy}
             </div>
-          </div>
-          <div className="display-user-trades-already-traded-or-canceled-wrap">
-            {trade.alreadyTraded ? undefined : <CancelEthForTokensTrade
-              sender={trade.sender}
-              indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
-            />}
           </div>
         </div>
       )
     })
   }
 
-  console.log('tradesOfTokensToTokens filtered', tradesOfTokensToTokens);
-  console.log('tradesOfTokensToEth', tradesOfTokensToEth);
-  console.log('tradesOfEthToTokens', tradesOfEthToTokens);
+  console.log('completedTradesOfTokensToTokensEvents filtered', completedTradesOfTokensToTokensEvents);
+  console.log('completedTradesOfTokensToEthEvents', completedTradesOfTokensToEthEvents);
+  console.log('completedTradesOfEthToTokensEvents', completedTradesOfEthToTokensEvents);
 
   return (
-    <div className="display-user-trades-wrap">
+    <div className="display-completed-trades-wrap">
       <div className="display-user-trades-your-trades-header">
-        Your Trades
+        Your Completed Trades
       </div>
-      <div className="display-user-trades-description">
-        These are the trades you listed on the dex. You also view completed and
-        canceled orders. You can cancel these orders at anytime. When you cancel
-        an order you get the ether you put in the smart contract back.
+      <div className="display-completed-trades-description">
+        These are the orders you traded for and completed.
       </div>
-      <div className="display-user-trades-trades-wrap">
-        <div className="display-user-trades-tokens-for-tokens-wrap">
-          <div className="display-user-trades-trade-header">
+      <div className="display-completed-trades-trades-wrap">
+        <div className="display-completed-trades-tokens-for-tokens-wrap">
+          <div className="display-completed-trades-trade-header">
             Tokens For Tokens Trades
           </div>
           <div>
-            {tradesOfTokensToTokens}
+            {completedTradesOfTokensToTokensEvents}
           </div>
         </div>
-        <div className="display-user-trades-tokens-for-eth-wrap">
-          <div className="display-user-trades-trade-header">
+        <div className="display-completed-trades-tokens-for-eth-wrap">
+          <div className="display-completed-trades-trade-header">
             Tokens For Eth Trades
           </div>
           <div>
-            {tradesOfTokensToEth}
+            {completedTradesOfTokensToEthEvents}
           </div>
         </div>
-        <div className="display-user-trades-eth-for-tokens-wrap">
-          <div className="display-user-trades-trade-header">
+        <div className="display-completed-trades-eth-for-tokens-wrap">
+          <div className="display-completed-trades-trade-header">
             Eth For Tokens Trades
           </div>
           <div>
-            {tradesOfEthToTokens}
+            {completedTradesOfEthToTokensEvents}
           </div>
         </div>
       </div>

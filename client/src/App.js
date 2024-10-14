@@ -29,7 +29,9 @@ import { MakeTokenToTokenTrade } from './Components/MakeTokenToTokenTrade.js';
 import { MakeTokenToEthTrade } from './Components/MakeTokenToEthTrade.js';
 import { MakeEthToTokenTrade } from './Components/MakeEthToTokenTrade.js';
 import { DisplayUserTrades } from './Components/DisplayUserTrades.js';
+import { DisplayYourCompletedTrades } from './Components/DisplayYourCompletedTrades';
 import { TopNavBar } from './Components/TopNavBar.js'
+
 
 import Select from 'react-select';
 
@@ -84,6 +86,11 @@ function App() {
 
   const [selectedOptionForTradesAddresses, setSelectedOptionForTradesAddresses] = useState(null);
   const [selectedOptionForTradesForAddresses, setSelectedOptionForTradesForAddresses] = useState(null);
+
+  const [completedTradesOfTokensToTokensEvents, setCompletedTradesOfTokensToTokensEvents] = useState();
+  const [completedTradesOfTokensToEthEvents, setCompletedTradesOfTokensToEthEvents] = useState();
+  const [completedTradesOfEthToTokensEvents, setCompletedTradesOfEthToTokensEvents] = useState();
+
 
   let tokensForTokensTrades;
   let tokensForEthTrades;
@@ -216,6 +223,7 @@ function App() {
     setGetTradeStatus(false);
     setSetTokenNameAndAddresses(true);
     getTokenAddressNamesForSelect();
+    getCompletedTradesEvents();
     setPageLoaded(true);
   }
 
@@ -330,7 +338,87 @@ function App() {
     getTokenAddressNamesForSelect();
   }
 
+  async function getCompletedTradesEvents() {
+    let completedTradesOfTokensToTokensEventsIn = await dexInstance.queryFilter("EventTradeTokensForTokens", 0, 'latest');
+    let completedTradesOfTokensToEthEventsIn = await dexInstance.queryFilter("EventTradeTokensForEth", 0, 'latest');
+    let completedTradesOfEthToTokensEventsIn = await dexInstance.queryFilter("EventTradeEthForTokens", 0, 'latest');
 
+    console.log('completedTradesOfTokensToEthEventsIn', completedTradesOfTokensToEthEventsIn);
+    console.log('completedTradesOfEthToTokensEventsIn', completedTradesOfEthToTokensEventsIn);
+
+    // event EventTradeTokensForTokens (
+    //   address sender,
+    //   address tradingTokenAddress,
+    //   uint tradingTokenAmount,
+    //   address tradingForTokenAddress,
+    //   uint tradingForTokenAmount,
+    //   address orderCompletedBy
+    // );
+
+    completedTradesOfTokensToTokensEventsIn = completedTradesOfTokensToTokensEventsIn.map(event => {
+      const newEvent = {};
+
+      newEvent.sender = event.args[0];
+      newEvent.indexOfTrade = event.args[1];
+      newEvent.tradingTokenAddress = event.args[2];
+      newEvent.tradingTokenAmount = event.args[3];
+      newEvent.tradingForTokenAddress = event.args[4];
+      newEvent.tradingForTokenAmount = event.args[5];
+      newEvent.orderCompletedBy = event.args[6];
+
+      return newEvent;
+    });
+
+    console.log('completedTradesOfTokensToTokensEventsIn mapped', completedTradesOfTokensToTokensEventsIn);
+
+    // event EventTradeTokensForEth (
+    //   address sender,
+    //   address tradingTokenAddress,
+    //   uint tradingTokenAmount,
+    //   uint tradingForEthAmount,
+    //   address orderCompletedBy
+    // );
+
+    completedTradesOfTokensToEthEventsIn = completedTradesOfTokensToEthEventsIn.map(event => {
+       const newEvent = {};
+
+       newEvent.sender = event.args[0];
+       newEvent.indexOfTrade = event.args[1];
+       newEvent.tradingTokenAddress = event.args[2];
+       newEvent.tradingTokenAmount = event.args[3];
+       newEvent.tradingForEthAmount = event.args[4];
+       newEvent.orderCompletedBy = event.args[5];
+
+       return newEvent;
+    });
+
+    console.log('completedTradesOfTokensToEthEventsIn', completedTradesOfTokensToEthEventsIn);
+
+    // event EventTradeEthForTokens (
+    //   address sender,
+    //   uint tradingEthAmount,
+    //   address tradingForTokenAddress,
+    //   uint tradingForTokenAmount,
+    //   address orderCompletedBy
+    // );
+
+    completedTradesOfEthToTokensEventsIn = completedTradesOfEthToTokensEventsIn.map(event => {
+      const newEvent = {};
+
+      newEvent.sender = event.args[0];
+      newEvent.indexOfTrade = event.args[1];
+      newEvent.tradingEthAmount = event.args[2];
+      newEvent.tradingForTokenAddress = event.args[3];
+      newEvent.tradingForTokenAmount = event.args[4];
+      newEvent.orderCompletedBy = event.args[5];
+
+      return newEvent;
+    });
+
+    setCompletedTradesOfTokensToTokensEvents(completedTradesOfTokensToTokensEventsIn);
+    setCompletedTradesOfTokensToEthEvents(completedTradesOfTokensToEthEventsIn);
+    setCompletedTradesOfEthToTokensEvents(completedTradesOfEthToTokensEventsIn);
+  }
 
     // setSearchedForTokenNameTrading('TestToken1');
 
@@ -877,6 +965,13 @@ function App() {
 
   console.log('trades of eth to tokens jsx', tradesOfEthToTokensJsx);
 
+  dexInstance.on('*', (from, to, value, event) => {
+    console.log('event', event);
+    console.log('value', value);
+    console.log('here in events');
+    getTrades();
+  });
+
   dexInstance.on("EventAddToDexTradeTokensForTokens", (from, to, value, event)=>{
     getTrades();
   });
@@ -890,6 +985,7 @@ function App() {
   });
 
   dexInstance.on("EventTradeTokensForTokens", (from, to, value, event)=>{
+    console.log('EventTradeTokensForTokens listener');
     getTrades();
   });
 
@@ -902,10 +998,12 @@ function App() {
   });
 
   dexInstance.on("EventCanceledTradeTokensForTokens", (from, to, value, event)=>{
+    console.log('EventCanceledTradeTokensForTokens listener');
     getTrades();
   });
 
   dexInstance.on("EventCanceledTradeTokensForEth", (from, to, value, event)=>{
+    console.log('EventCanceledTradeTokensForEth listener');
     getTrades();
   });
 
@@ -931,82 +1029,90 @@ function App() {
   function SearchForTrades() {
     return (
       <div>
-        <div id="search-for-trades-id" class="search-for-trades-wrap">
-          <div>
-            <div className="trade-token-title-search-for-trades">
-              Search For Trades
-            </div>
-            <div className="trade-for-token-title-search-by-what-they-will-be-trading">
-              Search By What They Will Be Trading
-            </div>
-            <div>
-              Search By Address
-            </div>
-            <div className="flex flex-col mb-1" className="search-for-token-by-address-wrap">
-              <Select
-                defaultValue={selectedOptionForTradesAddresses}
-                onChange={setSelectedOptionForTradesAddresses}
-                options={tradesTokenAddressesOptionsForSelect}
-                className="select-for-addresses"
-              />
-              <div class="mt-1">
-                <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesAddress}>Submit</button>
-                <button class="border rounded p-1" onClick={cancelFormSubmitForTradesAddress}>
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="trade-for-token-title-search-by-what-you-will-be-trading">
-              Search By What You Will Be Trading
-            </div>
-            <div>
-              Search By Address
-            </div>
-            <div className="search-for-trading-for-token-by-address">
-              <Select
-                defaultValue={selectedOptionForTradesForAddresses}
-                onChange={setSelectedOptionForTradesForAddresses}
-                options={tradesForTokenAddressesOptionsForSelect}
-                className="select-for-addresses-for"
-              />
-              <div>
-                <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesForAddress}>Submit</button>
-                <button class="border rounded p-1" onClick={cancelFormSubmitForTradesForAddress}>
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
+        <div className="top-nav-bar-wrap">
+          <TopNavBar />
         </div>
-        <div id="trades-id" className="trades-wrap">
-          <div className="trades-header">
-            Trades
+        <div>
+          <div id="search-for-trades-id" class="search-for-trades-wrap">
+            <div>
+              <div className="trade-token-title-search-for-trades">
+                Search For Trades
+              </div>
+              <div className="search-for-trades-description">
+                Search for tokens by their token address.
+              </div>
+              <div className="trade-for-token-title-search-by-what-they-will-be-trading">
+                Search By What They Will Be Trading
+              </div>
+              <div>
+                Search By Address
+              </div>
+              <div className="flex flex-col mb-1" className="search-for-token-by-address-wrap">
+                <Select
+                  defaultValue={selectedOptionForTradesAddresses}
+                  onChange={setSelectedOptionForTradesAddresses}
+                  options={tradesTokenAddressesOptionsForSelect}
+                  className="select-for-addresses"
+                />
+                <div class="mt-1">
+                  <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesAddress}>Submit</button>
+                  <button class="border rounded p-1" onClick={cancelFormSubmitForTradesAddress}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="trade-for-token-title-search-by-what-you-will-be-trading">
+                Search By What You Will Be Trading
+              </div>
+              <div>
+                Search By Address
+              </div>
+              <div className="search-for-trading-for-token-by-address">
+                <Select
+                  defaultValue={selectedOptionForTradesForAddresses}
+                  onChange={setSelectedOptionForTradesForAddresses}
+                  options={tradesForTokenAddressesOptionsForSelect}
+                  className="select-for-addresses-for"
+                />
+                <div>
+                  <button class="border rounded p-1 mr-1 ml-1" onClick={formSubmitForTradesForAddress}>Submit</button>
+                  <button class="border rounded p-1" onClick={cancelFormSubmitForTradesForAddress}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="trades">
-            <div className="trades-of-tokens-for-tokens-wrap">
-              <div className="trades-of-tokens-for-tokens-header">
-                Trades of Tokens For Tokens
-              </div>
-              <div className="trades-of-tokens-for-tokens">
-                {tradesOfTokensToTokensJsx}
-              </div>
+          <div id="trades-id" className="trades-wrap">
+            <div className="trades-header">
+              Trades
             </div>
-            <div className="trades-of-tokens-for-eth-wrap">
-              <div className="trades-of-tokens-for-eth-header">
-                Trades of Tokens for Eth
+            <div className="trades">
+              <div className="trades-of-tokens-for-tokens-wrap">
+                <div className="trades-of-tokens-for-tokens-header">
+                  Trades of Tokens For Tokens
+                </div>
+                <div className="trades-of-tokens-for-tokens">
+                  {tradesOfTokensToTokensJsx}
+                </div>
               </div>
-              <div className="trades-of-tokens-for-eth">
-                {tradesOfTokensToEthJsx}
+              <div className="trades-of-tokens-for-eth-wrap">
+                <div className="trades-of-tokens-for-eth-header">
+                  Trades of Tokens for Eth
+                </div>
+                <div className="trades-of-tokens-for-eth">
+                  {tradesOfTokensToEthJsx}
+                </div>
               </div>
-            </div>
-            <div className="trades-of-eth-for-tokens-wrap">
-              <div className="trades-of-eth-for-tokens-header">
-                Trades of Eth for Tokens
-              </div>
-              <div className="trades-of-eth-for-tokens">
-                {tradesOfEthToTokensJsx}
+              <div className="trades-of-eth-for-tokens-wrap">
+                <div className="trades-of-eth-for-tokens-header">
+                  Trades of Eth for Tokens
+                </div>
+                <div className="trades-of-eth-for-tokens">
+                  {tradesOfEthToTokensJsx}
+                </div>
               </div>
             </div>
           </div>
@@ -1017,25 +1123,36 @@ function App() {
 
   function MakeTrades() {
     return (
-      <div id="make-trade-offers-id">
-        <div className="trade-header-make-trade-offers">
-          Make Trade Offers
+      <div>
+        <div className="top-nav-bar-wrap">
+          <TopNavBar />
         </div>
-        <div className="add-trades-wrap-inner">
-          <div class="add-trade-wrap">
-            <AddTokensForTokensTrade
-              getTrades={getTrades}
-              setSetTokenTrades={setSetTokenTrades}
-              setRerender={setRerender}
-            />
+        <div id="make-trade-offers-id">
+
+          <div className="trade-header-make-trade-offers">
+            Make Trade Offers
           </div>
-          <div>
-            <AddTokensForEthTrade />
+          <div className="make-trade-offers-description">
+            Approves tokens to be used by the smart contract. For ether trades it
+            sends ether to the smart contract so that someone else can complete your order.
+            To get your ether back you just have to cancel your order.
           </div>
-          <div>
-            <AddEthForTokensTrade />
+          <div className="add-trades-wrap-inner">
+            <div class="add-trade-wrap">
+              <AddTokensForTokensTrade
+                getTrades={getTrades}
+                setSetTokenTrades={setSetTokenTrades}
+                setRerender={setRerender}
+              />
+            </div>
+            <div>
+              <AddTokensForEthTrade />
+            </div>
+            <div>
+              <AddEthForTokensTrade />
+            </div>
           </div>
-        </div>
+      </div>
     </div>
     );
   }
@@ -1043,26 +1160,31 @@ function App() {
   function Home() {
     return (
       <div>
-        <div className="title text-3xl font-bold">
-          Dex
+        <div className="top-nav-bar-wrap">
+          <TopNavBar />
         </div>
-        <div className="description-wrap">
-          <div className="description">
-            <div>
-              A decentralized exchange that trades ERC20 tokens on the Ethereum blockchain.
-              All transactions are done through a single smart contract.
-            </div>
-            <br />
-            <div>
-              To use this dex you first need to connect your wallet. All your previous trades
-              are linked up to your account, and you can view them at anytime and cancel them.
-            </div>
-            <br />
-            <div>
-              To start trading, you need to know the token smart contract address for the token
-              you are trying to trade or are trading for. You can make trade offers
-              that will be completed by someone else. You can also search for a particular token by
-              its address and trade for it if someone else has posted an offer for it.
+        <div>
+          <div className="title text-3xl font-bold">
+            Dex
+          </div>
+          <div className="description-wrap">
+            <div className="description">
+              <div>
+                A decentralized exchange that trades ERC20 tokens on the Ethereum blockchain.
+                All transactions are done through a single smart contract.
+              </div>
+              <br />
+              <div>
+                To use this dex you first need to connect your wallet. All your previous trades
+                are linked up to your account, and you can view them at anytime and cancel them.
+              </div>
+              <br />
+              <div>
+                To start trading, you need to know the token smart contract address for the token
+                you are trying to trade or are trading for. You can make trade offers
+                that will be completed by someone else. You can also search for a particular token by
+                its address and trade for it if someone else has posted an offer for it.
+              </div>
             </div>
           </div>
         </div>
@@ -1073,11 +1195,16 @@ function App() {
   function Contact() {
     return (
       <div>
-        <div id="contact-id" className="bottom-nav-bar-contact">
-          Contact
+        <div className="top-nav-bar-wrap">
+          <TopNavBar />
         </div>
-        <div className="bottom-nav-bar-email">
-          My email is zhiwen555@gmail.com
+        <div>
+          <div id="contact-id" className="bottom-nav-bar-contact">
+            Contact
+          </div>
+          <div className="bottom-nav-bar-email">
+            My email is zhiwen555@gmail.com
+          </div>
         </div>
       </div>
     );
@@ -1091,9 +1218,14 @@ function App() {
     {
       path: "/wallet",
       element:
+      <div>
+        <div className="top-nav-bar-wrap">
+          <TopNavBar />
+        </div>
         <div id="wallet-id">
           <ConnectWallet />
         </div>
+      </div>
     },
     {
       path: "/search-for-trades",
@@ -1106,11 +1238,30 @@ function App() {
     {
       path: "/your-trades",
       element:
+      <div>
+        <div className="top-nav-bar-wrap">
+          <TopNavBar />
+        </div>
         <div id="your-trades-id" className="display-trades-wrap">
           <DisplayUserTrades
             tradesOfTokensToTokens={tradesOfTokensToTokens}
             tradesOfTokensToEth={tradesOfTokensToEth}
             tradesOfEthToTokens={tradesOfEthToTokens}
+          />
+        </div>
+      </div>
+    },
+    {
+      path: "/completed-trades",
+      element:
+        <div>
+          <div className="top-nav-bar-wrap">
+            <TopNavBar />
+          </div>
+          <DisplayYourCompletedTrades
+            completedTradesOfTokensToTokensEvents={completedTradesOfTokensToTokensEvents}
+            completedTradesOfTokensToEthEvents={completedTradesOfTokensToEthEvents}
+            completedTradesOfEthToTokensEvents={completedTradesOfEthToTokensEvents}
           />
         </div>
     },
@@ -1122,9 +1273,6 @@ function App() {
 
   return (
     <div className="App">
-      <div className="top-nav-bar-wrap">
-        <TopNavBar />
-      </div>
       <div className="App-inner-wrap">
         <RouterProvider router={router} />
         <div className="bottom-nav-bar">

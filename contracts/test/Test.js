@@ -122,7 +122,7 @@ contract("Dex", (accounts) => {
 
     await testToken2Instance.approve(dexInstance.address, 10, {from: accounts[2]});
 
-    await dexInstance.buyTokensFromOtherTokens(accounts[1], 0, {from: accounts[2]});
+    await dexInstance.buyTokensFromTokens(accounts[1], 0, {from: accounts[2]});
 
     // tradesForTokensWithTokens = await dexInstance.getAllTrades();
     //
@@ -186,7 +186,7 @@ contract("Dex", (accounts) => {
 
     await testToken2Instance.approve(dexInstance.address, 10, {from: accounts[4]});
 
-    await dexInstance.buyTokensFromOtherTokens(accounts[3], 0, {from: accounts[4]});
+    await dexInstance.buyTokensFromTokens(accounts[3], 0, {from: accounts[4]});
 
     // tradesForTokensWithTokens = await dexInstance.getAllTrades();
     //

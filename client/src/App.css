@@ -94,8 +94,8 @@ select {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 12px;
+  margin-right: 12px;
   align-content: center;
   line-height: 22px;
 }
@@ -147,6 +147,13 @@ select {
 
 .display-trades-wrap {
   margin-top: 15px;
+}
+
+.display-user-trades-description {
+  max-width: 600px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .display-user-trades-wrap {
@@ -230,6 +237,45 @@ select {
   margin-bottom: 5px;
 }
 
+.display-completed-trades-trades-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+}
+
+.display-completed-trades-description {
+  margin-bottom: 7px;
+}
+
+.display-completed-trades-trades-wrap {
+  display: flex;
+  justify-content: center;
+  word-wrap: break-word;
+}
+
+.display-completed-trades-tokens-for-tokens-wrap {
+  width: 300px;
+}
+
+.display-completed-trades-tokens-for-eth-wrap {
+  width: 300px;
+}
+
+.display-completed-trades-eth-for-tokens-wrap {
+  width: 300px;
+}
+
+.display-user-trades-completed-trade-box {
+  width: 300px;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 2px;
+  border-color: #808B96;
+  word-wrap: break-word;
+}
+
 .trade-header-make-trade-offers {
   font-weight: bold;
   margin-bottom: 5px;
@@ -251,6 +297,13 @@ select {
   flex-direction: row;
   justify-content: center;
   margin-bottom: 40px;
+}
+
+.make-trade-offers-description {
+  margin-bottom: 15px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .make-token-trade-approve-button {
@@ -345,6 +398,10 @@ select {
   margin-top: 15px;
 }
 
+.search-for-trades-description {
+  margin-bottom: 10px;
+}
+
 .search-for-token-by-name-wrap {
   margin-bottom: 10px;
   display: flex;
@@ -378,7 +435,7 @@ select {
 
 .search-for-trading-for-token-by-address {
   margin-bottom: 10px;
-  display: flex;
+  display: select-for-addresses-forflex;
   flex-direction: column;
   justify-content: center;
 }
@@ -394,6 +451,7 @@ select {
   width: 450px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 4px;
 }
 
 .trades-wrap {
@@ -650,6 +708,7 @@ select {
 
   .top-nav-bar-wallet {
     margin-right: 100px;
+    width: 400px;
   }
 
   .top-nav-bar-link {
@@ -660,6 +719,13 @@ select {
     margin-right: 0px;
   }
 
+  .top-nav-bar-wallet {
+    visibility: hidden;
+    height: 0px;
+    width: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
   /* .top-nav-bar-link {
     visibility: hidden;
   } */
