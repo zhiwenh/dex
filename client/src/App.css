@@ -106,11 +106,10 @@ select {
 }
 
 .title {
-  padding-top: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-weight: bold;
   font-size: 32px;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .description-wrap {
@@ -128,7 +127,7 @@ select {
 }
 
 #wallet-id {
-  margin-top: 15px;
+  margin-top: 12px;
 }
 
 .wallet-wrap {
@@ -146,7 +145,7 @@ select {
 }
 
 .display-trades-wrap {
-  margin-top: 15px;
+  margin-top: 12px;
 }
 
 .display-user-trades-description {
@@ -159,6 +158,7 @@ select {
 .display-user-trades-wrap {
   margin-bottom: 40px;
   min-height: 250px;
+  margin-top: 10px;
 }
 
 .display-user-trades-your-trades-header {
@@ -237,6 +237,10 @@ select {
   margin-bottom: 5px;
 }
 
+.display-completed-trades-wrap {
+  margin-top: 12px;
+}
+
 .display-completed-trades-trades-wrap {
   display: flex;
   flex-direction: row;
@@ -283,7 +287,7 @@ select {
 }
 
 #make-trade-offers-id {
-  margin-top: 15px;
+  margin-top: 12px;
 }
 
 .add-trades-wrap-inner {
@@ -395,7 +399,7 @@ select {
 
 .search-for-trades-wrap {
   margin-bottom: 40px;
-  margin-top: 15px;
+  margin-top: 12px;
 }
 
 .search-for-trades-description {
@@ -606,7 +610,7 @@ select {
   margin-bottom: 5px;
   font-weight: bold;
   font-size: 23px;
-  margin-top: 15px;
+  margin-top: 12px;
 }
 
 .bottom-nav-bar-email {

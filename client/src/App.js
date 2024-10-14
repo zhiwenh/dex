@@ -91,28 +91,27 @@ function App() {
   const [completedTradesOfTokensToEthEvents, setCompletedTradesOfTokensToEthEvents] = useState();
   const [completedTradesOfEthToTokensEvents, setCompletedTradesOfEthToTokensEvents] = useState();
 
-
   let tokensForTokensTrades;
   let tokensForEthTrades;
   let ethForTokensTrades;
 
   const account = getAccount(wagmiConfig);
 
-  const MyComponent = () => {
-    const { address, isConnecting, isDisconnected } = useAccount();
-    if (isConnecting) return <div>Connecting...</div>;
-    if (isDisconnected) return <div>Disconnected</div>;
-      return <div>Connected Wallet: {address}</div>;
-  };
-
-  function Profile() {
-    const { address } = useAccount()
-    const { data, error, status } = useEnsName({ address })
-    if (status === 'pending') return <div>Loading ENS name</div>
-    if (status === 'error')
-      return <div>Error fetching ENS name: {error.message}</div>
-    return <div>ENS name: {data}</div>
-  }
+  // const MyComponent = () => {
+  //   const { address, isConnecting, isDisconnected } = useAccount();
+  //   if (isConnecting) return <div>Connecting...</div>;
+  //   if (isDisconnected) return <div>Disconnected</div>;
+  //     return <div>Connected Wallet: {address}</div>;
+  // };
+  //
+  // function Profile() {
+  //   const { address } = useAccount()
+  //   const { data, error, status } = useEnsName({ address })
+  //   if (status === 'pending') return <div>Loading ENS name</div>
+  //   if (status === 'error')
+  //     return <div>Error fetching ENS name: {error.message}</div>
+  //   return <div>ENS name: {data}</div>
+  // }
 
   async function getTrades() {
     if (getTradeStatus === true) {
@@ -1128,13 +1127,12 @@ function App() {
           <TopNavBar />
         </div>
         <div id="make-trade-offers-id">
-
           <div className="trade-header-make-trade-offers">
             Make Trade Offers
           </div>
           <div className="make-trade-offers-description">
-            Approves tokens to be used by the smart contract. For ether trades it
-            sends ether to the smart contract so that someone else can complete your order.
+            When you list a trade, other people can view them when searching for the token address.
+            For ether trades it sends ether to the smart contract so that someone else can complete your order.
             To get your ether back you just have to cancel your order.
           </div>
           <div className="add-trades-wrap-inner">
