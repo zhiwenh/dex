@@ -262,8 +262,15 @@ select {
   width: 300px;
 }
 
+.display-completed-trades-trade-header  {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
 .display-completed-trades-tokens-for-eth-wrap {
   width: 300px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .display-completed-trades-eth-for-tokens-wrap {

@@ -43,13 +43,18 @@ export function MakeEthToTokenTrade({
 
     console.log('indexOfTradeOfAddress', indexOfTradeOfAddress);
 
-    await writeContract({
-        address: config.dexAddress,
-        abi: dexAbi,
-        functionName: 'buyTokensForEth',
-        args: [sender, indexOfTradeOfAddress],
-        value: tradingForEthAmount
-      })
+    try {
+      await writeContract({
+          address: config.dexAddress,
+          abi: dexAbi,
+          functionName: 'buyTokensForEth',
+          args: [sender, indexOfTradeOfAddress],
+          value: tradingForEthAmount
+        })
+    } catch (error) {
+      console.log(error);
+    }
+
   }
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =

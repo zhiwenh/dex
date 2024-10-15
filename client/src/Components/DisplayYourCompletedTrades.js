@@ -280,7 +280,7 @@ export function DisplayYourCompletedTrades({
   return (
     <div className="display-completed-trades-wrap">
       <div className="display-user-trades-your-trades-header">
-        Your Completed Trades
+        Completed Trades
       </div>
       <div className="display-completed-trades-description">
         These are the orders you traded for and completed.

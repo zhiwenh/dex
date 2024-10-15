@@ -37,19 +37,29 @@ export function MakeTokenToEthTrade({
 
     const erc20Instance = new ethers.Contract(tradingForTokenAddress, erc20Abi, provider);
 
-    const allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
+    let allowanceForDex;
+
+    try {
+      allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
+    } catch (error) {
+      console.log(error);
+    }
 
     tradingForTokenAmount = Number(tradingForTokenAmount);
 
     console.log('allowanceForDex', allowanceForDex);
     console.log('tradingForTokenAmount', tradingForTokenAmount);
     if (Number(allowanceForDex) < tradingForTokenAmount) {
-      await writeContract({
+      try {
+        await writeContract({
           address: tradingForTokenAddress,
           abi: erc20Abi,
           functionName: 'approve',
           args: [config.dexAddress, tradingForTokenAmount]
         })
+      } catch (error) {
+         console.log(error);
+      }
     }
   }
 
