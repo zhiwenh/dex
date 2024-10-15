@@ -34,10 +34,13 @@ export function DisplayTrades({
   searchedForTokenAddressForTrading
 }) {
 
+  console.log('here 5 in display trades');
   const account = getAccount(wagmiConfig);
 
   if (tradesOfTokensToTokens) {
-    const tradesOfTokensToTokens = tradesOfTokensToTokens.filter((trade) => {
+    console.log('here 6 in display trades');
+
+    tradesOfTokensToTokens = tradesOfTokensToTokens.filter((trade) => {
       return (
         (trade.tradingTokenAddress === searchedForTokenAddressTrading
         || trade.tradingForTokenAddress === searchedForTokenAddressForTrading)
@@ -149,7 +152,7 @@ export function DisplayTrades({
   }
 
   if (tradesOfTokensToEth) {
-    tradesOfTokensToEth= tradesOfTokensToEth.filter((trade) => {
+    tradesOfTokensToEth = tradesOfTokensToEth.filter((trade) => {
       return (trade.tradingTokenAddress === searchedForTokenAddressTrading
         && trade.tradingTokenAddress !== undefined
         && trade.sender !== account.address

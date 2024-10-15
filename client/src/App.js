@@ -961,6 +961,7 @@ function App() {
 
     setSearchByTradingAddress(true);
     setSearchedForTokenAddressForTrading(undefined);
+    setSelectedOptionForTradesForAddresses(undefined);
     console.log('selectedOptionForTradesAddresses', selectedOptionForTradesAddresses);
     setSearchedForTokenAddressTrading(selectedOptionForTradesAddresses.value);
 
@@ -990,7 +991,7 @@ function App() {
 
     setSearchByTradingForAddress(true);
     setSearchedForTokenAddressTrading(undefined);
-
+    setSelectedOptionForTradesAddresses(undefined);
 
     setSearchedForTokenAddressForTrading(selectedOptionForTradesForAddresses.value);
 
