@@ -104,7 +104,7 @@ export function MakeTokenToEthTrade({
         <button class="border rounded p-1 mb-1" className="make-token-trade-approve-button" onClick={approve}>{isPending ? 'Confirming...' : 'Approve Tokens For Dex'}</button>
       </div>
       <div>
-        <button class="border rounded p-1" onClick={submit}>{isPending ? 'Confirming...' : 'Make Trade'} </button>
+        <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : submit}>{isPending || isConfirming ? 'Confirming...' : 'Make Trade'} </button>
       </div>
       <div>
         {hash && <div>Transaction Hash: {hash}</div>}

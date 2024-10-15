@@ -323,6 +323,7 @@ function App() {
     console.log('tradesForTokenAddressesIn', tradesForTokenAddressesIn);
 
     console.log('tradesTokenNamesIn', tradesTokenNamesIn);
+
     setTradesTokenNames(tradesTokenNamesIn);
     setTradesTokenSymbols(tradesTokenSymbolsIn);
     setTradesTokenAddresses(tradesTokenAddressesIn);
@@ -393,6 +394,8 @@ function App() {
 
     console.log('completedTradesOfTokensToEthEventsIn', completedTradesOfTokensToEthEventsIn);
 
+    // completedTradesOfTokensToEthEventsIn
+
     // event EventTradeEthForTokens (
     //   address sender,
     //   uint tradingEthAmount,
@@ -413,6 +416,53 @@ function App() {
 
       return newEvent;
     });
+
+    console.log('tradesOfTokensToTokens here5', tradesOfTokensToTokens);
+
+    if (tradesOfTokensToTokens) {
+      for (let i = 0; i < completedTradesOfTokensToTokensEventsIn.length; i++) {
+        const trade1 = completedTradesOfTokensToTokensEventsIn[i];
+
+        for (let j = 0; j < tradesOfTokensToTokens.length; j++) {
+          const trade2 = tradesOfTokensToTokens[j];
+          if ((trade1.sender === trade2.sender) && (trade1.indexOfTrade === trade2.indexOfTrade)) {
+            tradesOfTokensToTokens[j].orderCompletedBy = trade1.orderCompletedBy;
+          }
+        }
+      }
+    }
+
+    if (tradesOfTokensToEth) {
+      for (let i = 0; i < completedTradesOfTokensToEthEventsIn.length; i++) {
+        const trade1 = completedTradesOfTokensToEthEventsIn[i];
+
+        for (let j = 0; j < tradesOfTokensToEth.length; j++) {
+          const trade2 = tradesOfTokensToEth[j];
+          if ((trade1.sender === trade2.sender) && (trade1.indexOfTrade === trade2.indexOfTrade)) {
+            tradesOfTokensToEth[j].orderCompletedBy = trade1.orderCompletedBy;
+          }
+        }
+      }
+    }
+
+    if (tradesOfEthToTokens) {
+      for (let i = 0; i < completedTradesOfEthToTokensEventsIn.length; i++) {
+        const trade1 = completedTradesOfEthToTokensEventsIn[i];
+
+        for (let j = 0; j < tradesOfEthToTokens.length; j++) {
+          const trade2 = tradesOfEthToTokens[j];
+          if ((trade1.sender === trade2.sender) && (trade1.indexOfTrade === trade2.indexOfTrade)) {
+            tradesOfEthToTokens[j].orderCompletedBy = trade1.orderCompletedBy;
+          }
+        }
+      }
+    }
+
+    // setTradesOfTokensToTokens(tradesOfTokensToTokens);
+    // setTradesOfTokensToEth(tradesOfTokensToEth);
+    // setTradesOfEthToTokens(tradesOfEthToTokens);
+
+    console.log('tradesOfTokensToTokens added completed by', tradesOfTokensToTokens);
 
     setCompletedTradesOfTokensToTokensEvents(completedTradesOfTokensToTokensEventsIn);
     setCompletedTradesOfTokensToEthEvents(completedTradesOfTokensToEthEventsIn);
@@ -1245,6 +1295,9 @@ function App() {
             tradesOfTokensToTokens={tradesOfTokensToTokens}
             tradesOfTokensToEth={tradesOfTokensToEth}
             tradesOfEthToTokens={tradesOfEthToTokens}
+            completedTradesOfTokensToTokensEvents={completedTradesOfTokensToTokensEvents}
+            completedTradesOfTokensToEthEvents={completedTradesOfTokensToEthEvents}
+            completedTradesOfEthToTokensEvents={completedTradesOfEthToTokensEvents}
           />
         </div>
       </div>

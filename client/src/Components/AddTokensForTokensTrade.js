@@ -132,12 +132,12 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
             <div className="add-tokens-for-tokens-trade-approve-header">
             </div>
             <div>
-              <button class="border rounded p-1" onClick={isPending ? blank : approveTokens} className="add-tokens-for-tokens-approve-button">
-                {isPending ? 'Confirming...' : 'Approve Tokens For Dex'}
+              <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : approveTokens} className="add-tokens-for-tokens-approve-button">
+                {isPending || isConfirming ? 'Confirming...' : 'Approve Tokens For Dex'}
               </button>
             </div>
           </div>
-          <button class="border rounded p-1" onClick={isPending ? blank : submit}>{isPending ? 'Confirming...' : 'Add Trade'} </button>
+          <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : submit}>{isPending || isConfirming ? 'Confirming...' : 'Add Trade'} </button>
         </div>
         <div>
         <div>

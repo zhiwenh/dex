@@ -68,7 +68,7 @@ export function AddEthForTokensTrade() {
           </div>
           <input class="border rounded mb-1" name="trading-for-token-amount border-gray-300" id="trading-for-token-amount-3" required/>
         </div>
-          <button class="border rounded p-1" className="add-eth-for-tokens-trade-button" onClick={submit}>{isPending ? 'Confirming...' : 'Add Trade'}</button>
+          <button class="border rounded p-1" className="add-eth-for-tokens-trade-button" onClick={isPending || isConfirming ? () => {} : submit}>{isPending || isConfirming ? 'Confirming...' : 'Add Trade'}</button>
         </div>
         {hash && <div>Transaction Hash: {hash}</div>}
         {isConfirming && <div>Waiting for confirmation...</div>}

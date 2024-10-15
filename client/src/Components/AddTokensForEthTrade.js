@@ -138,7 +138,7 @@ export function AddTokensForEthTrade() {
             </button>
           </div>
         </div>
-          <button class="border rounded p-1" onClick={submit}>{isPending || isConfirming ? 'Confirming...' : 'Add Trade'} </button>
+          <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : submit}>{isPending || isConfirming ? 'Confirming...' : 'Add Trade'} </button>
         </div>
         {hash && <div>Transaction Hash: {hash}</div>}
         {isConfirming && <div>Waiting for confirmation...</div>}

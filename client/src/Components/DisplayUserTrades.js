@@ -30,7 +30,10 @@ const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 export function DisplayUserTrades({
   tradesOfTokensToTokens,
   tradesOfTokensToEth,
-  tradesOfEthToTokens
+  tradesOfEthToTokens,
+  completedTradesOfTokensToTokensEvents,
+  completedTradesOfTokensToEthEvents,
+  completedTradesOfEthToTokensEvents
 }) {
 
   const account = getAccount(wagmiConfig);
@@ -41,6 +44,30 @@ export function DisplayUserTrades({
     tradesOfTokensToTokens = tradesOfTokensToTokens.filter(trade => {
       return trade.sender === account.address;
     }).map((trade, index) => {
+      let orderCompletedBy;
+
+      if (completedTradesOfTokensToTokensEvents) {
+        completedTradesOfTokensToTokensEvents = completedTradesOfTokensToTokensEvents.filter(event => {
+          return event.sender === account.address;
+        });
+
+        for (let i = 0; i < completedTradesOfTokensToTokensEvents.length; i++) {
+          const event = completedTradesOfTokensToTokensEvents[i];
+
+          console.log('event here sender 7', event.sender);
+          console.log('trade here sender', trade.sender);
+
+          console.log('event here indexOfTrade 7', event.indexOfTrade);
+          console.log('trade here indexOfTrade 7', trade.indexOfTradeOfAddress);
+
+          if ((event.sender === trade.sender) && (Number(event.indexOfTrade) === Number(trade.indexOfTradeOfAddress))) {
+            orderCompletedBy = event.orderCompletedBy;
+            console.log('orderCompletedBy here6', orderCompletedBy);
+            break;
+          }
+        }
+      }
+
       return (
         <div class="border rounded mb-1" className="display-user-trades-trade-box" className="display-trades-of-tokens-for-tokens" key={index.toString()}>
           <div className="trade-of-tokens-for-tokens-sender-wrap" className="trade-inner-wrap">
@@ -121,10 +148,10 @@ export function DisplayUserTrades({
           </div>
           <div>
             <div>
-              Trade Or Canceled Status
+              Traded Or Canceled Status
             </div>
             <div>
-              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded Or Canceled'}
+              {trade.alreadyTraded ? (orderCompletedBy ? 'Traded' : 'Canceled') : 'Not Traded Or Canceled'}
             </div>
           </div>
           <div className="display-user-trades-already-traded-or-canceled-wrap">
@@ -132,6 +159,14 @@ export function DisplayUserTrades({
               sender={trade.sender}
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
             />}
+          </div>
+          <div className="trade-inner-wrap">
+            <div>
+              {orderCompletedBy ? 'Order Completed By' : undefined}
+            </div>
+            <div>
+              {orderCompletedBy ? orderCompletedBy : undefined}
+            </div>
           </div>
         </div>
       )
@@ -142,6 +177,30 @@ export function DisplayUserTrades({
     tradesOfTokensToEth = tradesOfTokensToEth.filter(trade => {
       return trade.sender === account.address;
     }).map((trade, index) => {
+      let orderCompletedBy;
+
+      if (completedTradesOfTokensToEthEvents) {
+        completedTradesOfTokensToEthEvents = completedTradesOfTokensToEthEvents.filter(event => {
+          return event.sender === account.address;
+        });
+
+        for (let i = 0; i < completedTradesOfTokensToEthEvents.length; i++) {
+          const event = completedTradesOfTokensToEthEvents[i];
+
+          console.log('event here sender 7', event.sender);
+          console.log('trade here sender', trade.sender);
+
+          console.log('event here indexOfTrade 7', event.indexOfTrade);
+          console.log('trade here indexOfTrade 7', trade.indexOfTradeOfAddress);
+
+          if ((event.sender === trade.sender) && (Number(event.indexOfTrade) === Number(trade.indexOfTradeOfAddress))) {
+            orderCompletedBy = event.orderCompletedBy;
+            console.log('orderCompletedBy here6', orderCompletedBy);
+            break;
+          }
+        }
+      }
+
       return (
         <div class="border rounded mb-1" className="display-user-trades-trade-box" className="display-trade-of-tokens-for-eth" key={index.toString()}>
           <div className="trade-of-tokens-for-eth-sender-wrap" className="trade-inner-wrap">
@@ -200,10 +259,10 @@ export function DisplayUserTrades({
           </div>
           <div>
             <div>
-              Trade Or Canceled Status
+              Traded Or Canceled Status
             </div>
             <div>
-              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded Or Canceled'}
+              {trade.alreadyTraded ? (orderCompletedBy ? 'Traded' : 'Canceled') : 'Not Traded Or Canceled'}
             </div>
           </div>
           <div className="display-user-trades-already-traded-or-canceled-wrap">
@@ -211,6 +270,14 @@ export function DisplayUserTrades({
               sender={trade.sender}
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
             />}
+          </div>
+          <div className="trade-inner-wrap">
+            <div>
+              {orderCompletedBy ? 'Order Completed By' : undefined}
+            </div>
+            <div>
+              {orderCompletedBy ? orderCompletedBy : undefined}
+            </div>
           </div>
         </div>
       );
@@ -221,6 +288,30 @@ export function DisplayUserTrades({
     tradesOfEthToTokens = tradesOfEthToTokens.filter(trade => {
       return trade.sender === account.address;
     }).map((trade, index) => {
+      let orderCompletedBy;
+
+      if (completedTradesOfEthToTokensEvents) {
+        completedTradesOfEthToTokensEvents = completedTradesOfEthToTokensEvents.filter(event => {
+          return event.sender === account.address;
+        });
+
+        for (let i = 0; i < completedTradesOfEthToTokensEvents.length; i++) {
+          const event = completedTradesOfEthToTokensEvents[i];
+
+          console.log('event here sender 7', event.sender);
+          console.log('trade here sender', trade.sender);
+
+          console.log('event here indexOfTrade 7', event.indexOfTrade);
+          console.log('trade here indexOfTrade 7', trade.indexOfTradeOfAddress);
+
+          if ((event.sender === trade.sender) && (Number(event.indexOfTrade) === Number(trade.indexOfTradeOfAddress))) {
+            orderCompletedBy = event.orderCompletedBy;
+            console.log('orderCompletedBy here6', orderCompletedBy);
+            break;
+          }
+        }
+      }
+
       return (
         <div class="border rounded mb-1" className="display-trade-of-eth-for-tokens" key={index.toString()}>
           <div className="trade-of-eth-for-tokens-sender-wrap" className="trade-inner-wrap">
@@ -279,10 +370,10 @@ export function DisplayUserTrades({
           </div>
           <div>
             <div>
-              Trade Or Canceled Status
+              Traded Or Canceled Status
             </div>
             <div>
-              {trade.alreadyTraded ? 'Traded Or Canceled' : 'Not Traded Or Canceled'}
+              {trade.alreadyTraded ? (orderCompletedBy ? 'Traded' : 'Canceled') : 'Not Traded Or Canceled'}
             </div>
           </div>
           <div className="display-user-trades-already-traded-or-canceled-wrap">
@@ -290,6 +381,14 @@ export function DisplayUserTrades({
               sender={trade.sender}
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
             />}
+          </div>
+          <div className="trade-inner-wrap">
+            <div>
+              {orderCompletedBy ? 'Order Completed By' : undefined}
+            </div>
+            <div>
+              {orderCompletedBy ? orderCompletedBy : undefined}
+            </div>
           </div>
         </div>
       )
