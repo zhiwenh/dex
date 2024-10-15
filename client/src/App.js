@@ -1,7 +1,5 @@
 import logo from './logo.svg';
 import './App.css';
-
-
 import React, { useState, useEffect } from "react";
 import { ethers } from 'ethers';
 import config from './config.json';
@@ -28,6 +26,7 @@ import { ConnectWallet } from './Components/ConnectWallet.js';
 import { MakeTokenToTokenTrade } from './Components/MakeTokenToTokenTrade.js';
 import { MakeTokenToEthTrade } from './Components/MakeTokenToEthTrade.js';
 import { MakeEthToTokenTrade } from './Components/MakeEthToTokenTrade.js';
+import { DisplayTrades } from './Components/DisplayTrades.js';
 import { DisplayUserTrades } from './Components/DisplayUserTrades.js';
 import { DisplayYourCompletedTrades } from './Components/DisplayYourCompletedTrades';
 import { TopNavBar } from './Components/TopNavBar.js'
@@ -1133,36 +1132,14 @@ function App() {
                 </div>
               </div>
             </div>
-          </div>
-          <div id="trades-id" className="trades-wrap">
-            <div className="trades-header">
-              Trades
-            </div>
-            <div className="trades">
-              <div className="trades-of-tokens-for-tokens-wrap">
-                <div className="trades-of-tokens-for-tokens-header">
-                  Trades of Tokens For Tokens
-                </div>
-                <div className="trades-of-tokens-for-tokens">
-                  {tradesOfTokensToTokensJsx}
-                </div>
-              </div>
-              <div className="trades-of-tokens-for-eth-wrap">
-                <div className="trades-of-tokens-for-eth-header">
-                  Trades of Tokens for Eth
-                </div>
-                <div className="trades-of-tokens-for-eth">
-                  {tradesOfTokensToEthJsx}
-                </div>
-              </div>
-              <div className="trades-of-eth-for-tokens-wrap">
-                <div className="trades-of-eth-for-tokens-header">
-                  Trades of Eth for Tokens
-                </div>
-                <div className="trades-of-eth-for-tokens">
-                  {tradesOfEthToTokensJsx}
-                </div>
-              </div>
+            <div>
+              <DisplayTrades
+                tradesOfTokensToTokens={tradesOfTokensToTokens}
+                tradesOfTokensToEth={tradesOfTokensToEth}
+                tradesOfEthToTokens={tradesOfEthToTokens}
+                searchedForTokenAddressTrading={searchedForTokenAddressTrading}
+                searchedForTokenAddressForTrading={searchedForTokenAddressForTrading}
+              />
             </div>
           </div>
         </div>

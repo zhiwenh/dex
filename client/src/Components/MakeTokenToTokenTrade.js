@@ -1,4 +1,5 @@
-import * as React from 'react'
+import * as React from 'react';
+import { useState } from 'react';
 import {
   type BaseError,
   useWaitForTransactionReceipt,
@@ -24,9 +25,11 @@ export function MakeTokenToTokenTrade({
   sender,
   indexOfTradeOfAddress,
   tradingForTokenAddress,
-  tradingForTokenAmount }) {
+  tradingForTokenAmount,
+}) {
 
   const { hash, isPending, writeContract, error } = useWriteContract();
+  const [errorMessage, setErrorMessage] = useState();
 
   async function approve() {
     const account = getAccount(wagmiConfig);
@@ -36,6 +39,18 @@ export function MakeTokenToTokenTrade({
     console.log('here3');
 
     const erc20Instance = new ethers.Contract(tradingForTokenAddress, erc20Abi, provider);
+
+    console.log('here3');
+
+    let balanceOfToken = await erc20Instance.balanceOf(account.address);
+    balanceOfToken = Number(balanceOfToken);
+
+    if (balanceOfToken < tradingForTokenAmount) {
+      setErrorMessage('Balance of token not enough')
+      return;
+    } else {
+      setErrorMessage(undefined);
+    }
 
     const allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
 
@@ -104,6 +119,9 @@ export function MakeTokenToTokenTrade({
       </div>
       <div>
         <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : submit}>{isPending || isConfirming ? 'Confirming...' : 'Make Trade'} </button>
+      </div>
+      <div>
+        {errorMessage ? errorMessage : undefined}
       </div>
       <div>
         {hash && <div>Transaction Hash: {hash}</div>}

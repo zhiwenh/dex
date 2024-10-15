@@ -1,4 +1,5 @@
-import * as React from 'react'
+import * as React from 'react';
+import { useState } from 'react';
 import {
   type BaseError,
   useWaitForTransactionReceipt,
@@ -22,6 +23,7 @@ const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
 export function AddTokensForEthTrade() {
   const { hash, isPending, writeContract, error } = useWriteContract();
+  const [errorMessage, setErrorMessage] = useState();
 
   async function approveTokens(e) {
     e.preventDefault();
@@ -36,6 +38,16 @@ export function AddTokensForEthTrade() {
     const erc20Instance = new ethers.Contract(tradingTokenAddress, erc20Abi, provider);
 
     console.log('here3');
+
+    let balanceOfToken = await erc20Instance.balanceOf(account.address);
+    balanceOfToken = Number(balanceOfToken);
+
+    if (balanceOfToken < tradingTokenAmount) {
+      setErrorMessage('Balance of token not enough')
+      return;
+    } else {
+      setErrorMessage(undefined);
+    }
 
     let allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
 
@@ -140,12 +152,17 @@ export function AddTokensForEthTrade() {
         </div>
           <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : submit}>{isPending || isConfirming ? 'Confirming...' : 'Add Trade'} </button>
         </div>
-        {hash && <div>Transaction Hash: {hash}</div>}
-        {isConfirming && <div>Waiting for confirmation...</div>}
-        {isConfirmed && <div>Transaction confirmed.</div>}
-        {error && (
-          <div>Error: {(error).shortMessage || error.message}</div>
-        )}
+        <div>
+          {errorMessage ? errorMessage : undefined}
+        </div>
+        <div>
+          {hash && <div>Transaction Hash: {hash}</div>}
+          {isConfirming && <div>Waiting for confirmation...</div>}
+          {isConfirmed && <div>Transaction confirmed.</div>}
+          {error && (
+            <div>Error: {(error).shortMessage || error.message}</div>
+          )}
+        </div>
     </div>
   )
 }
