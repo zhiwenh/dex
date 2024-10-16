@@ -115,7 +115,7 @@ export function MakeTokenToTokenTrade({
       <div>
         <div className="make-tokens-trade-approve-header">
         </div>
-        <button class="border rounded p-1 mb-1" className="make-token-trade-approve-button" onClick={approve}>{isPending ? 'Confirming...' : 'Approve Tokens For Dex'}</button>
+        <button class="border rounded p-1 mb-1" className="make-token-trade-approve-button" onClick={isPending || isConfirming ? () => {} : approve}>{isPending ? 'Confirming...' : 'Approve Tokens For Dex'}</button>
       </div>
       <div>
         <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : submit}>{isPending || isConfirming ? 'Confirming...' : 'Make Trade'} </button>
@@ -124,12 +124,12 @@ export function MakeTokenToTokenTrade({
         {errorMessage ? errorMessage : undefined}
       </div>
       <div>
-        {hash && <div>Transaction Hash: {hash}</div>}
-        {isConfirming && <div>Waiting for confirmation...</div>}
-        {isConfirmed && <div>Transaction confirmed.</div>}
-        {error && (
+        {hash ? <div>Transaction Hash: {hash}</div> : undefined}
+        {isConfirming ? <div>Waiting for confirmation...</div> : undefined}
+        {isConfirmed ? <div>Transaction confirmed.</div> : undefined}
+        {error ? (
           <div>Error: {(error).shortMessage || error.message}</div>
-        )}
+        ) : undefined }
       </div>
     </div>
   )

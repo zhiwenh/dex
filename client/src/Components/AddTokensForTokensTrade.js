@@ -36,12 +36,19 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
 
     console.log('account', account);
 
-    const erc20Instance = new ethers.Contract(tradingTokenAddress, erc20Abi, provider);
+    let erc20Instance;
+    let balanceOfToken;
+
+    try {
+       erc20Instance = new ethers.Contract(tradingTokenAddress, erc20Abi, provider);
+       balanceOfToken = await erc20Instance.balanceOf(account.address);
+       balanceOfToken = Number(balanceOfToken);
+
+    } catch (error) {
+      console.log(error);
+    }
 
     console.log('here3');
-
-    let balanceOfToken = await erc20Instance.balanceOf(account.address);
-    balanceOfToken = Number(balanceOfToken);
 
     if (balanceOfToken < tradingTokenAmount) {
       setErrorMessage('Balance of token not enough')
@@ -50,8 +57,15 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
       setErrorMessage(undefined);
     }
 
-    let allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
-    allowanceForDex = Number(allowanceForDex);
+    let allowanceForDex
+
+    try {
+      allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
+      allowanceForDex = Number(allowanceForDex);
+    } catch (error) {
+      // console.log('error here 5',error);
+      setErrorMessage(error.error);
+    }
 
     const allTrades = await dexInstance.getAllTrades();
 

@@ -83,6 +83,8 @@ select {
   min-height: 50px;
   align-items: center;
   background-color: #E2E8F0;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .top-nav-bar a {
@@ -381,6 +383,11 @@ select {
 }
 
 .add-eth-for-tokens-trade-button {
+
+}
+
+.add-trade-transaction-hash-or-error {
+  word-wrap: break-word;
 }
 
 .orderList{

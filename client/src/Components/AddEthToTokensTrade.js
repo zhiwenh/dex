@@ -102,7 +102,7 @@ export function AddEthForTokensTrade() {
         <div>
           {errorMessage ? errorMessage : undefined}
         </div>
-        <div>
+        <div className="add-trade-transaction-hash-or-error">
           {hash && <div>Transaction Hash: {hash}</div>}
           {isConfirming && <div>Waiting for confirmation...</div>}
           {isConfirmed && <div>Transaction confirmed.</div>}
