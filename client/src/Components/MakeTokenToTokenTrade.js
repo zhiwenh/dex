@@ -123,7 +123,7 @@ export function MakeTokenToTokenTrade({
       <div>
         {errorMessage ? errorMessage : undefined}
       </div>
-      <div>
+      <div className="make-trade-error-transaction">
         {hash ? <div>Transaction Hash: {hash}</div> : undefined}
         {isConfirming ? <div>Waiting for confirmation...</div> : undefined}
         {isConfirmed ? <div>Transaction confirmed.</div> : undefined}

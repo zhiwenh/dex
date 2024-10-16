@@ -22,7 +22,14 @@ const erc20Abi = erc20Json.abi;
 const provider = new ethers.JsonRpcProvider('http://localhost:8545');
 const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
-export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setRerender }) {
+export function AddTokensForTokensTrade({
+  getTrades,
+  setSetTokenTrades,
+  setRerender,
+  tradesOfTokensToTokens,
+  tradesOfTokensToEth,
+  tradesOfEthToTokens
+}) {
   const { hash, isPending, writeContract, error } = useWriteContract();
   const [errorMessage, setErrorMessage] = useState();
 
@@ -67,22 +74,17 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
       setErrorMessage(error.error);
     }
 
-    const allTrades = await dexInstance.getAllTrades();
-
-    const tokensForTokensTrades = allTrades.tradeTokensForTokensForCall;
-    const tokensForEthTrades = allTrades.tradeTokensForEthForCall;
-
     let totalAllowanceRequired = tradingTokenAmount;
 
-    for (let i = 0; i < tokensForTokensTrades.length; i++) {
-      if (tokensForTokensTrades[i].tradingTokenAddress === tradingTokenAddress) {
-        totalAllowanceRequired = totalAllowanceRequired + Number(tokensForTokensTrades[i].tradingTokenAmount);
+    for (let i = 0; i < tradesOfTokensToTokens.length; i++) {
+      if (tradesOfTokensToTokens[i].tradingTokenAddress === tradingTokenAddress) {
+        totalAllowanceRequired = totalAllowanceRequired + Number(tradesOfTokensToTokens[i].tradingTokenAmount);
       }
     }
 
-    for (let i = 0; i < tokensForEthTrades.length; i++) {
-      if (tokensForEthTrades[i].tradingTokenAddress === tradingTokenAddress) {
-        totalAllowanceRequired = totalAllowanceRequired + Number(tokensForEthTrades[i].tradingTokenAmount);
+    for (let i = 0; i < tradesOfTokensToEth.length; i++) {
+      if (tradesOfTokensToEth[i].tradingTokenAddress === tradingTokenAddress) {
+        totalAllowanceRequired = totalAllowanceRequired + Number(tradesOfTokensToEth[i].tradingTokenAmount);
       }
     }
 
@@ -168,7 +170,7 @@ export function AddTokensForTokensTrade({ getTrades, setSetTokenTrades, setReren
         <div>
           {errorMessage ? errorMessage : undefined}
         </div>
-        <div>
+        <div className="add-trade-transaction-hash-or-error">
           {hash && <div>Transaction Hash: {hash}</div>}
           {isConfirming && <div>Waiting for confirmation...</div>}
           {isConfirmed && <div>Transaction confirmed.</div>}

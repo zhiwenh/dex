@@ -299,6 +299,10 @@ select {
   margin-top: 12px;
 }
 
+.make-trade-error-transaction {
+  word-wrap: break-word;
+}
+
 .add-trades-wrap-inner {
   display: flex;
   flex-direction: row;
@@ -332,6 +336,7 @@ select {
   flex-direction: column;
   justify-content: center;
   margin-bottom: 5px;
+  width: 250px;
 }
 
 .add-trade-token-for-token-title {
@@ -355,6 +360,7 @@ select {
   margin-left: 35px;
   margin-right: 35px;
   margin-bottom: 5px;
+  width: 250px;
 }
 
 .add-trade-token-for-eth-title {
@@ -375,6 +381,7 @@ select {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  max-width: 250px;
 }
 
 .add-trade-eth-for-token-title {
@@ -680,6 +687,7 @@ select {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
   }
 
   .top-nav-bar {

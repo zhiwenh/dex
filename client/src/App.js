@@ -1160,15 +1160,19 @@ function App() {
           </div>
           <div className="make-trade-offers-description">
             When you list a trade, other people can view them when searching for the token address.
+            To make a token trade you first have to approve your tokens to be used by the dex.
             For ether trades it sends ether to the smart contract so that someone else can complete your order.
             To get your ether back you just have to cancel your order.
           </div>
           <div className="add-trades-wrap-inner">
-            <div class="add-trade-wrap">
+            <div>
               <AddTokensForTokensTrade
                 getTrades={getTrades}
                 setSetTokenTrades={setSetTokenTrades}
                 setRerender={setRerender}
+                tradesOfTokensToTokens={tradesOfTokensToTokens}
+                tradesOfTokensToEth={tradesOfTokensToEth}
+                tradesOfEthToTokens={tradesOfEthToTokens}
               />
             </div>
             <div>
