@@ -31,6 +31,7 @@ export function MakeTokenToTokenTrade({
   const { hash, isPending, writeContract, error } = useWriteContract();
   const [errorMessage, setErrorMessage] = useState();
 
+
   async function approve() {
     const account = getAccount(wagmiConfig);
 
@@ -109,16 +110,18 @@ export function MakeTokenToTokenTrade({
 
   console.log('error', error);
   return (
-    <div className="add-tokens-for-tokens-trade-wrap">
+    <div className="make-tokens-for-tokens-trade-wrap">
       <div>
       </div>
       <div>
         <div className="make-tokens-trade-approve-header">
         </div>
-        <button class="border rounded p-1 mb-1" className="make-token-trade-approve-button" onClick={isPending || isConfirming ? () => {} : approve}>{isPending ? 'Confirming...' : 'Approve Tokens For Dex'}</button>
+        <button class="border rounded p-1 mb-1" className="make-token-trade-approve-button" onClick={(isPending || isConfirming) ? () => {} : approve}>{isPending ? 'Confirming...' : 'Approve Tokens For Dex'}</button>
       </div>
       <div>
-        <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : submit}>{isPending || isConfirming ? 'Confirming...' : 'Make Trade'} </button>
+        <button class="border rounded p-1" onClick={(isPending || isConfirming) ? () => {} : submit}>
+          {isConfirmed ? 'Traded' : (isPending || isConfirming) ? 'Confirming...' : 'Make Trade'}
+        </button>
       </div>
       <div>
         {errorMessage ? errorMessage : undefined}

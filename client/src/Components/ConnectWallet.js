@@ -2,7 +2,7 @@ import { useAccount } from 'wagmi';
 import { Account } from './Account';
 import { WalletOptions } from './WalletOptions';
 
-export function ConnectWallet() {
+export function ConnectWallet({ getTrades }) {
   const { isConnected } = useAccount()
   if (isConnected)
     return (
@@ -11,7 +11,9 @@ export function ConnectWallet() {
           Wallet Connected
         </div>
         <div>
-          <Account />
+          <Account
+            getTrades={getTrades}
+          />
         </div>
       </div>
     )
@@ -22,7 +24,9 @@ export function ConnectWallet() {
         Connect Wallet
       </div>
       <div>
-        <WalletOptions />
+        <WalletOptions
+          getTrades={getTrades}
+        />
       </div>
     </div>
   )

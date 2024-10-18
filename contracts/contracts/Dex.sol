@@ -163,6 +163,8 @@ contract Dex {
     address tradingForTokenAddress,
     uint tradingForTokenAmount) public {
 
+    require(tradingTokenAddress != tradingForTokenAddress);
+
     ERC20 tradingErc20 = ERC20(tradingTokenAddress);
 
     uint totalAllowanceRequired = tradingTokenAmount;

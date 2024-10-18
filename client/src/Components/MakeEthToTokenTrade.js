@@ -26,7 +26,7 @@ export function MakeEthToTokenTrade({
   tradingForEthAmount
    }) {
 
-  const { hash, isPending, writeContract, error } = useWriteContract();
+  const { data: hash, isPending, writeContract, error } = useWriteContract();
 
   async function submit(e) {
     e.preventDefault()
@@ -64,13 +64,15 @@ export function MakeEthToTokenTrade({
 
   console.log('error', error);
   return (
-    <div className="add-tokens-for-eth-trade-wrap">
+    <div className="make-tokens-for-eth-trade-wrap">
       <div>
       </div>
       <div>
-        <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : submit}>{isPending || isConfirming ? 'Confirming...' : 'Make Trade'} </button>
+        <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : submit}>
+          {isConfirmed ? 'Traded' : (isPending || isConfirming ? 'Confirming...' : 'Make Trade')}
+        </button>
       </div>
-      <div>
+      <div className="make-trade-error-transaction">
         {hash && <div>Transaction Hash: {hash}</div>}
         {isConfirming && <div>Waiting for confirmation...</div>}
         {isConfirmed && <div>Transaction confirmed.</div>}

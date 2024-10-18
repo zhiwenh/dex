@@ -21,7 +21,11 @@ const erc20Abi = erc20Json.abi;
 const provider = new ethers.JsonRpcProvider('http://localhost:8545');
 const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
-export function AddTokensForEthTrade() {
+export function AddTokensForEthTrade({
+  tradesOfTokensToTokens,
+  tradesOfTokensToEth,
+  getTrades
+}) {
   const { hash, isPending, writeContract, error } = useWriteContract();
   const [errorMessage, setErrorMessage] = useState();
 
@@ -62,29 +66,37 @@ export function AddTokensForEthTrade() {
       allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
       allowanceForDex = Number(allowanceForDex);
     } catch (error) {
-      // console.log('error here 5',error);
-      setErrorMessage(error.error);
+      console.log('error here 5',error);
+      // setErrorMessage(error.error);
     }
-
-    const allTrades = await dexInstance.getAllTrades();
-
-    const tokensForTokensTrades = allTrades.tradeTokensForTokensForCall;
-    const tokensForEthTrades = allTrades.tradeTokensForEthForCall;
 
     let totalAllowanceRequired = tradingTokenAmount;
 
     console.log('here4');
 
+    let allTrades;
+
+    try {
+      allTrades = await dexInstance.getAllTrades();
+    } catch (error) {
+      console.log(error);
+    }
+
+    const tokensForTokensTrades = allTrades.tradeTokensForTokensForCall;
+    const tokensForEthTrades = allTrades.tradeTokensForEthForCall;
+
     for (let i = 0; i < tokensForTokensTrades.length; i++) {
-      if (tokensForTokensTrades[i].tradingTokenAddress === tradingTokenAddress) {
+      if (tokensForTokensTrades[i].sender === account.address &&
+          tokensForTokensTrades[i].tradingTokenAddress === tradingTokenAddress
+      ) {
         totalAllowanceRequired = totalAllowanceRequired + Number(tokensForTokensTrades[i].tradingTokenAmount);
       }
     }
 
-    console.log('here5');
-
     for (let i = 0; i < tokensForEthTrades.length; i++) {
-      if (tokensForEthTrades[i].tradingTokenAddress === tradingTokenAddress) {
+      if (tokensForEthTrades[i].sender === account.address &&
+          tokensForEthTrades[i].tradingTokenAddress === tradingTokenAddress
+      ) {
         totalAllowanceRequired = totalAllowanceRequired + Number(tokensForEthTrades[i].tradingTokenAmount);
       }
     }
@@ -92,12 +104,16 @@ export function AddTokensForEthTrade() {
     console.log('allowanceForDex', allowanceForDex);
     console.log('totalAllowanceRequired', totalAllowanceRequired);
     if (allowanceForDex < totalAllowanceRequired) {
-      await writeContract({
-          address: tradingTokenAddress,
-          abi: erc20Abi,
-          functionName: 'approve',
-          args: [config.dexAddress, totalAllowanceRequired]
-        })
+      try {
+        await writeContract({
+            address: tradingTokenAddress,
+            abi: erc20Abi,
+            functionName: 'approve',
+            args: [config.dexAddress, totalAllowanceRequired]
+          })
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
@@ -121,18 +137,27 @@ export function AddTokensForEthTrade() {
     console.log('tradingForEthAmount', tradingForEthAmount);
 
     console.log('dexAbi', dexAbi);
-    await writeContract({
-        address: config.dexAddress,
-        abi: dexAbi,
-        functionName: 'addTokensToDexForTradeWithEth',
-        args: [tradingTokenAddress, tradingTokenAmount, tradingForEthAmountFormatted]
-      })
+
+    try {
+      await writeContract({
+          address: config.dexAddress,
+          abi: dexAbi,
+          functionName: 'addTokensToDexForTradeWithEth',
+          args: [tradingTokenAddress, tradingTokenAmount, tradingForEthAmountFormatted]
+        })
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
       hash,
     })
+
+  if (isConfirmed) {
+    getTrades();
+  }
 
   return (
     <div className="add-tokens-for-eth-trade-wrap">

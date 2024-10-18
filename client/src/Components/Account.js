@@ -1,6 +1,6 @@
 import { useAccount, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi';
 
-export function Account() {
+export function Account({ getTrades }) {
   const { address } = useAccount()
   const { disconnect } = useDisconnect()
   const { data: ensName } = useEnsName({ address })
@@ -15,7 +15,10 @@ export function Account() {
       {ensAvatar && <img alt="ENS Avatar" src={ensAvatar} />}
       {address && <div>{ensName ? `${ensName} (${address})` : address}</div>}
       </div>
-      <button class="border rounded p-1" onClick={() => disconnect()}>Disconnect</button>
+      <button class="border rounded p-1" onClick={() => {
+        disconnect();
+        getTrades();
+      }}>Disconnect</button>
     </div>
   )
 }

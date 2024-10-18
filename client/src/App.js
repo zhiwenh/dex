@@ -90,6 +90,11 @@ function App() {
   const [completedTradesOfTokensToEthEvents, setCompletedTradesOfTokensToEthEvents] = useState();
   const [completedTradesOfEthToTokensEvents, setCompletedTradesOfEthToTokensEvents] = useState();
 
+  const [tradingTokenAddressInputAddTokenToToken, setTradingTokenAddressInputAddTokenToToken] = useState('');
+  const [tradingTokenAmountInputAddTokenToToken, setTradingTokenAmountInputAddTokenToToken] = useState('');
+  const [tradingForTokenAddressAddTokenToToken, setTradingForTokenAddressAddTokenToToken] = useState('');
+  const [tradingForTokenAmountAddTokenToToken, setTradingForTokenAmountAddTokenToToken] = useState('');
+
   let tokensForTokensTrades;
   let tokensForEthTrades;
   let ethForTokensTrades;
@@ -1012,61 +1017,6 @@ function App() {
   // await getTokensForEthTrades();
   // await getEthForTokensTrades();
 
-  console.log('trades of eth to tokens jsx', tradesOfEthToTokensJsx);
-
-  dexInstance.on('*', (from, to, value, event) => {
-    console.log('event', event);
-    console.log('value', value);
-    console.log('here in events');
-    getTrades();
-  });
-
-  dexInstance.on("EventAddToDexTradeTokensForTokens", (from, to, value, event)=>{
-    getTrades();
-  });
-
-  dexInstance.on("EventAddToDexTradeTokensForEth", (from, to, value, event)=>{
-    getTrades();
-  });
-
-  dexInstance.on("EventAddToDexTradeEthForTokens", (from, to, value, event)=>{
-    getTrades();
-  });
-
-  dexInstance.on("EventTradeTokensForTokens", (from, to, value, event)=>{
-    console.log('EventTradeTokensForTokens listener');
-    getTrades();
-  });
-
-  dexInstance.on("EventTradeTokensForEth", (from, to, value, event)=>{
-    getTrades();
-  });
-
-  dexInstance.on("EventTradeEthForTokens", (from, to, value, event)=>{
-    getTrades();
-  });
-
-  dexInstance.on("EventCanceledTradeTokensForTokens", (from, to, value, event)=>{
-    console.log('EventCanceledTradeTokensForTokens listener');
-    getTrades();
-  });
-
-  dexInstance.on("EventCanceledTradeTokensForEth", (from, to, value, event)=>{
-    console.log('EventCanceledTradeTokensForEth listener');
-    getTrades();
-  });
-
-  dexInstance.on("EventCanceledTradeEthForTokens", (from, to, value, event)=>{
-    getTrades();
-  });
-
-  const unwatch = watchAccount(wagmiConfig, {
-    onChange(data) {
-      console.log('Account changed!', data)
-      getTrades();
-    },
-  });
-
   // if (pageLoaded === false) {
   //   return (
   //     <div className="loading-screen">
@@ -1173,13 +1123,27 @@ function App() {
                 tradesOfTokensToTokens={tradesOfTokensToTokens}
                 tradesOfTokensToEth={tradesOfTokensToEth}
                 tradesOfEthToTokens={tradesOfEthToTokens}
+                tradingTokenAddressInputAddTokenToToken={tradingTokenAddressInputAddTokenToToken}
+                setTradingTokenAddressInputAddTokenToToken={setTradingTokenAddressInputAddTokenToToken}
+                tradingTokenAmountInputAddTokenToToken={tradingTokenAmountInputAddTokenToToken}
+                setTradingTokenAmountInputAddTokenToToken={setTradingTokenAmountInputAddTokenToToken}
+                tradingForTokenAddressAddTokenToToken={tradingForTokenAddressAddTokenToToken}
+                setTradingForTokenAddressAddTokenToToken={setTradingForTokenAddressAddTokenToToken}
+                tradingForTokenAmountAddTokenToToken={tradingForTokenAmountAddTokenToToken}
+                setTradingForTokenAmountAddTokenToToken={setTradingForTokenAmountAddTokenToToken}
               />
             </div>
             <div>
-              <AddTokensForEthTrade />
+              <AddTokensForEthTrade
+                tradesOfTokensToTokens={tradesOfTokensToTokens}
+                tradesOfTokensToEth={tradesOfTokensToEth}
+                getTrades={getTrades}
+              />
             </div>
             <div>
-              <AddEthForTokensTrade />
+              <AddEthForTokensTrade
+                getTrades={getTrades}
+              />
             </div>
           </div>
       </div>
@@ -1253,7 +1217,9 @@ function App() {
           <TopNavBar />
         </div>
         <div id="wallet-id">
-          <ConnectWallet />
+          <ConnectWallet
+            getTrades={getTrades}
+          />
         </div>
       </div>
     },

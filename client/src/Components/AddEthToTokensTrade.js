@@ -21,7 +21,7 @@ const erc20Abi = erc20Json.abi;
 const provider = new ethers.JsonRpcProvider('http://localhost:8545');
 const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
-export function AddEthForTokensTrade() {
+export function AddEthForTokensTrade({ getTrades }) {
   const { hash, isPending, writeContract, error } = useWriteContract();
   const [errorMessage, setErrorMessage] = useState();
 
@@ -38,7 +38,14 @@ export function AddEthForTokensTrade() {
     tradingEthAmount = ethers.parseUnits(tradingEthAmount, 'ether');
 
     console.log('here 10');
-    let balanceOfAccount = await provider.getBalance(account.address);
+
+    let balanceOfAccount;
+
+    try {
+      balanceOfAccount = await provider.getBalance(account.address);
+    } catch (error) {
+      console.log(error);
+    }
 
     console.log('here 11 balanceOfAccount', balanceOfAccount);
 
@@ -64,13 +71,18 @@ export function AddEthForTokensTrade() {
     console.log('tradingForTokenAmount', tradingForTokenAmount);
 
     console.log('dexAbi', dexAbi);
-    writeContract({
-        address: config.dexAddress,
-        abi: dexAbi,
-        functionName: 'addEthToDexForTradeWithTokens',
-        args: [tradingEthAmount, tradingForTokenAddress, tradingForTokenAmount],
-        value: tradingEthAmount
-      })
+
+    try {
+      writeContract({
+          address: config.dexAddress,
+          abi: dexAbi,
+          functionName: 'addEthToDexForTradeWithTokens',
+          args: [tradingEthAmount, tradingForTokenAddress, tradingForTokenAmount],
+          value: tradingEthAmount
+        })
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
@@ -78,6 +90,10 @@ export function AddEthForTokensTrade() {
       hash,
     })
 
+  if (isConfirmed) {
+    getTrades();
+  }
+  
   return (
     <div className="add-eth-for-tokens-trade-wrap">
       <div className="add-trade-eth-for-token-title">
