@@ -22,8 +22,8 @@ const erc20Abi = erc20Json.abi;
 const provider = new ethers.JsonRpcProvider('http://localhost:8545');
 const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
-export function CancelTokensForTokensTrade({ sender, indexOfTradeOfAddress }) {
-  const { hash, isPending, writeContract, error } = useWriteContract();
+export function CancelTokensForTokensTrade({ sender, indexOfTradeOfAddress, getTrades }) {
+  const { data: hash, isPending, writeContract, error } = useWriteContract();
 
   async function cancel(e) {
     e.preventDefault();
@@ -44,8 +44,13 @@ export function CancelTokensForTokensTrade({ sender, indexOfTradeOfAddress }) {
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
-      hash,
+      hash: hash
     });
+
+  if (isConfirmed) {
+    console.log('here 2 in isConfirmed');
+    getTrades();
+  }
 
   console.log('error', error);
   return (

@@ -1085,6 +1085,7 @@ function App() {
             </div>
             <div>
               <DisplayTrades
+                getTrades={getTrades}
                 tradesOfTokensToTokens={tradesOfTokensToTokens}
                 tradesOfTokensToEth={tradesOfTokensToEth}
                 tradesOfEthToTokens={tradesOfEthToTokens}
@@ -1246,6 +1247,7 @@ function App() {
             completedTradesOfTokensToTokensEvents={completedTradesOfTokensToTokensEvents}
             completedTradesOfTokensToEthEvents={completedTradesOfTokensToEthEvents}
             completedTradesOfEthToTokensEvents={completedTradesOfEthToTokensEvents}
+            getTrades={getTrades}
           />
         </div>
       </div>

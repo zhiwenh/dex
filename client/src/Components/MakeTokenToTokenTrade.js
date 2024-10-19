@@ -26,9 +26,12 @@ export function MakeTokenToTokenTrade({
   indexOfTradeOfAddress,
   tradingForTokenAddress,
   tradingForTokenAmount,
+  getTrades
 }) {
 
-  const { hash, isPending, writeContract, error } = useWriteContract();
+  const { data: hash, isPending, writeContract, error } = useWriteContract();
+  const { data: hash2, isPending: isPending2, writeContract: writeContract2, error: error2 } = useWriteContract();
+
   const [errorMessage, setErrorMessage] = useState();
 
 
@@ -53,7 +56,13 @@ export function MakeTokenToTokenTrade({
       setErrorMessage(undefined);
     }
 
-    const allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
+    let allowanceForDex;
+
+    try {
+      allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
+    } catch (error) {
+      console.log(error);
+    }
 
     tradingForTokenAmount = Number(tradingForTokenAmount);
 
@@ -61,7 +70,7 @@ export function MakeTokenToTokenTrade({
     console.log('tradingForTokenAmount', tradingForTokenAmount);
     if (Number(allowanceForDex) < tradingForTokenAmount) {
       try {
-        await writeContract({
+        await writeContract2({
           address: tradingForTokenAddress,
           abi: erc20Abi,
           functionName: 'approve',
@@ -105,8 +114,13 @@ export function MakeTokenToTokenTrade({
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
-      hash,
+      hash: hash
     })
+
+  if (isConfirmed) {
+    console.log('here 2 in isConfirmed');
+    getTrades();
+  }
 
   console.log('error', error);
   return (

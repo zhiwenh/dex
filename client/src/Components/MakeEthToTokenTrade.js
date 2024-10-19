@@ -23,7 +23,8 @@ const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 export function MakeEthToTokenTrade({
   sender,
   indexOfTradeOfAddress,
-  tradingForEthAmount
+  tradingForEthAmount,
+  getTrades
    }) {
 
   const { data: hash, isPending, writeContract, error } = useWriteContract();
@@ -59,8 +60,13 @@ export function MakeEthToTokenTrade({
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
-      hash,
+      hash: hash
     })
+
+  if (isConfirmed) {
+    console.log('here 2 in isConfirmed');
+    getTrades();
+  }
 
   console.log('error', error);
   return (

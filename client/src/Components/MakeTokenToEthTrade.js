@@ -24,9 +24,12 @@ export function MakeTokenToEthTrade({
   sender,
   indexOfTradeOfAddress,
   tradingForTokenAddress,
-  tradingForTokenAmount }) {
+  tradingForTokenAmount,
+  getTrades
+}) {
 
-  const { hash, isPending, writeContract, error } = useWriteContract();
+  const { data: hash, isPending, writeContract, error } = useWriteContract();
+  const { data: hash2, isPending: isPending2, writeContract: writeContract2, error: error2 } = useWriteContract();
 
   async function approve() {
     const account = getAccount(wagmiConfig);
@@ -51,7 +54,7 @@ export function MakeTokenToEthTrade({
     console.log('tradingForTokenAmount', tradingForTokenAmount);
     if (Number(allowanceForDex) < tradingForTokenAmount) {
       try {
-        await writeContract({
+        await writeContract2({
           address: tradingForTokenAddress,
           abi: erc20Abi,
           functionName: 'approve',
@@ -90,8 +93,13 @@ export function MakeTokenToEthTrade({
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
-      hash,
+      hash: hash
     })
+
+  if (isConfirmed) {
+    console.log('here 2 in isConfirmed');
+    getTrades();
+  }
 
   console.log('error', error);
   return (
@@ -105,7 +113,7 @@ export function MakeTokenToEthTrade({
       </div>
       <div>
         <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : submit}>
-          {isConfirmed ? 'Traded' : (isPending || isConfirming ? 'Confirming...' : 'Make Trade')} 
+          {isConfirmed ? 'Traded' : (isPending || isConfirming ? 'Confirming...' : 'Make Trade')}
         </button>
       </div>
       <div className="make-trade-error-transaction">

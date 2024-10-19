@@ -27,6 +27,7 @@ const provider = new ethers.JsonRpcProvider('http://localhost:8545');
 const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
 export function DisplayTrades({
+  getTrades,
   tradesOfTokensToTokens,
   tradesOfTokensToEth,
   tradesOfEthToTokens,
@@ -144,6 +145,7 @@ export function DisplayTrades({
                 indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
                 tradingForTokenAddress={trade.tradingForTokenAddress}
                 tradingForTokenAmount={trade.tradingForTokenAmount}
+                getTrades={getTrades}
               />
             </div>
           </div>
@@ -234,6 +236,7 @@ export function DisplayTrades({
               sender={trade.sender}
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
               tradingForEthAmount={trade.tradingForEthAmount}
+              getTrades={getTrades}
             />
           </div>
         </div>
@@ -321,6 +324,7 @@ export function DisplayTrades({
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
               tradingForTokenAddress={trade.tradingForTokenAddress}
               tradingForTokenAmount={trade.tradingForTokenAmount}
+              getTrades={getTrades}
             />
           </div>
         </div>

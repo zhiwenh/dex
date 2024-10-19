@@ -196,10 +196,10 @@ export function AddTokensForTokensTrade({
       }
     });
 
-  // if (isConfirmed) {
-  //   console.log('here 2 in isConfirmed');
-  //   getTrades();
-  // }
+  if (isConfirmed) {
+    console.log('here 2 in isConfirmed');
+    getTrades();
+  }
 
   // onSuccess(() => {
   //   console.log('here 3 onSuccess');

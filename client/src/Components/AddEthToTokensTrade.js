@@ -22,7 +22,7 @@ const provider = new ethers.JsonRpcProvider('http://localhost:8545');
 const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
 export function AddEthForTokensTrade({ getTrades }) {
-  const { hash, isPending, writeContract, error } = useWriteContract();
+  const { data: hash, isPending, writeContract, error } = useWriteContract();
   const [errorMessage, setErrorMessage] = useState();
 
   async function submit() {
@@ -87,13 +87,17 @@ export function AddEthForTokensTrade({ getTrades }) {
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
-      hash,
-    })
+      hash: hash,
+      onSuccess(data) {
+        console.log('onSuccess here 5');
+        getTrades();
+      }
+    });
 
   if (isConfirmed) {
     getTrades();
   }
-  
+
   return (
     <div className="add-eth-for-tokens-trade-wrap">
       <div className="add-trade-eth-for-token-title">

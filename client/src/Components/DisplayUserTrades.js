@@ -33,7 +33,8 @@ export function DisplayUserTrades({
   tradesOfEthToTokens,
   completedTradesOfTokensToTokensEvents,
   completedTradesOfTokensToEthEvents,
-  completedTradesOfEthToTokensEvents
+  completedTradesOfEthToTokensEvents,
+  getTrades
 }) {
 
   const account = getAccount(wagmiConfig);
@@ -158,6 +159,7 @@ export function DisplayUserTrades({
             {trade.alreadyTraded ? undefined : <CancelTokensForTokensTrade
               sender={trade.sender}
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
+              getTrades={getTrades}
             />}
           </div>
           <div className="trade-inner-wrap">
@@ -269,6 +271,7 @@ export function DisplayUserTrades({
             {trade.alreadyTraded ? undefined : <CancelTokensForEthTrade
               sender={trade.sender}
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
+              getTrades={getTrades}
             />}
           </div>
           <div className="trade-inner-wrap">
@@ -380,6 +383,7 @@ export function DisplayUserTrades({
             {trade.alreadyTraded ? undefined : <CancelEthForTokensTrade
               sender={trade.sender}
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
+              getTrades={getTrades}
             />}
           </div>
           <div className="trade-inner-wrap">

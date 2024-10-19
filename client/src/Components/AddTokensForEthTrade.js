@@ -26,7 +26,9 @@ export function AddTokensForEthTrade({
   tradesOfTokensToEth,
   getTrades
 }) {
-  const { hash, isPending, writeContract, error } = useWriteContract();
+  const { data: hash, isPending, writeContract, error } = useWriteContract();
+  const { data: hash2, isPending: isPending2, writeContract: writeContract2, error: error2 } = useWriteContract();
+
   const [errorMessage, setErrorMessage] = useState();
 
   async function approveTokens(e) {
@@ -105,7 +107,7 @@ export function AddTokensForEthTrade({
     console.log('totalAllowanceRequired', totalAllowanceRequired);
     if (allowanceForDex < totalAllowanceRequired) {
       try {
-        await writeContract({
+        await writeContract2({
             address: tradingTokenAddress,
             abi: erc20Abi,
             functionName: 'approve',
@@ -152,8 +154,12 @@ export function AddTokensForEthTrade({
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
-      hash,
-    })
+      hash: hash,
+      onSuccess(data) {
+        console.log('onSuccess here 5');
+        getTrades();
+      }
+    });
 
   if (isConfirmed) {
     getTrades();
