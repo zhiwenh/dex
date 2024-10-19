@@ -26,6 +26,8 @@ export function MakeTokenToTokenTrade({
   indexOfTradeOfAddress,
   tradingForTokenAddress,
   tradingForTokenAmount,
+  index,
+  recentlyCompletedAdderTokensToTokensTrades,
   getTrades
 }) {
 
@@ -34,9 +36,9 @@ export function MakeTokenToTokenTrade({
 
   const [errorMessage, setErrorMessage] = useState();
 
+  const account = getAccount(wagmiConfig);
 
   async function approve() {
-    const account = getAccount(wagmiConfig);
 
     console.log('account', account);
 
@@ -120,6 +122,7 @@ export function MakeTokenToTokenTrade({
   if (isConfirmed) {
     console.log('here 2 in isConfirmed');
     getTrades();
+    recentlyCompletedAdderTokensToTokensTrades(index, account.address)
   }
 
   console.log('error', error);

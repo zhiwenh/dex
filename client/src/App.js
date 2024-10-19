@@ -95,6 +95,10 @@ function App() {
   const [tradingForTokenAddressAddTokenToToken, setTradingForTokenAddressAddTokenToToken] = useState('');
   const [tradingForTokenAmountAddTokenToToken, setTradingForTokenAmountAddTokenToToken] = useState('');
 
+  const [savedTokensToTokensTrades, setSavedTokensToTokensTrades] = useState([]);
+  const [savedTokensToEthTrades, setSavedTokensToEthTrades] = useState([]);
+  const [savedEthToTokensTrades, setSavedEthToTokensTrades] = useState([]);
+
   let tokensForTokensTrades;
   let tokensForEthTrades;
   let ethForTokensTrades;
@@ -233,6 +237,36 @@ function App() {
   if (setTokenTrades === true) {
     setSetTokenTrades(false);
     getTrades();
+  }
+
+  function saveTokenToTokenTrades(sender, indexOfTrade, completedBy) {
+    const newObj = {};
+    newObj.sender = sender;
+    newObj.indexOfTrade = indexOfTrade;
+    newObj.completedBy = completedBy;
+
+    savedTokensToTokensTrades.push(newObj);
+    setSavedTokensToTokensTrades(savedTokensToTokensTrades);
+  }
+
+  function saveTokenToEthTrades(sender, indexOfTrade, completedBy) {
+    const newObj = {};
+    newObj.sender = sender;
+    newObj.indexOfTrade = indexOfTrade;
+    newObj.completedBy = completedBy;
+
+    savedTokensToEthTrades.push(newObj);
+    setSavedTokensToEthTrades(savedTokensToEthTrades);
+  }
+
+  function saveEthToTokenTrades(sender, indexOfTrade, completedBy) {
+    const newObj = {};
+    newObj.sender = sender;
+    newObj.indexOfTrade = indexOfTrade;
+    newObj.completedBy = completedBy;
+
+    savedEthToTokensTrades.push(newObj);
+    setSavedEthToTokensTrades(savedEthToTokensTrades);
   }
 
   function getTokenAddressNamesForSelect() {
@@ -478,307 +512,6 @@ function App() {
 
   console.log('tradesOfTokensToTokens', tradesOfTokensToTokens);
 
-  function getTokensForTokensTradesJsx(tradesOfTokensToTokensArg) {
-    if (tradesOfTokensToTokensArg) {
-      const tradesOfTokensToTokensJsxIn = tradesOfTokensToTokensArg.map((trade, index) => {
-          // trade.tradingTokenAddress
-
-          if (trade.alreadyTraded === true) {
-            return;
-          }
-
-          return (
-            <div class="border rounded mb-1" className="trade-of-tokens-for-tokens" key={index.toString()}>
-              <div className="trades-sender" className="trade-of-tokens-for-tokens-sender-wrap" className="trade-inner-wrap">
-                <div className="trade-address-overflow">
-                  Seller
-                </div>
-                <div className="trade-of-tokens-for-tokens-sender">
-                  {trade.sender}
-                </div>
-              </div>
-              <div className="trade-of-tokens-for-tokens-index-wrap" className="trade-inner-wrap">
-                <div>
-                  Index
-                </div>
-                <div className="trade-of-tokens-for-tokens-index">
-                  {Number(trade.indexOfTradeOfAddress)}
-                </div>
-              </div>
-              <div>
-                <div className="what-they-will-be-trading-inner-header">
-                  What They Will Be Trading
-                </div>
-              </div>
-              <div className="trade-inner-wrap">
-                <div>
-                </div>
-                <div>
-                  {trade.tradingTokenName}
-                </div>
-              </div>
-              <div className="trade-inner-wrap">
-                <div>
-                </div>
-                <div>
-                  {trade.tradingTokenSymbol}
-                </div>
-              </div>
-              <div className="trade-of-tokens-for-tokens-trading-token-address-wrap" className="trade-inner-wrap">
-                <div>
-                  Token Address
-                </div>
-                <div className="trade-address-overflow" className="trade-of-tokens-for-tokens-trading-token-address"mclassName="trade-inner-wrap">
-                  {trade.tradingTokenAddress}
-                </div>
-              </div>
-              <div className="trade-of-tokens-for-tokens-trading-token-amount-wrap" className="trade-inner-wrap">
-                <div>
-                  Token Amount
-                </div>
-                <div>
-                  {Number(trade.tradingTokenAmount)}
-                </div>
-              </div>
-              <div>
-                <div class="what-you-will-be-trading-inner-header">
-                  What You Will Be Trading
-                </div>
-              </div>
-              <div className="trade-inner-wrap">
-                <div>
-                </div>
-                <div>
-                  {trade.tradingForTokenName}
-                </div>
-              </div>
-              <div className="trade-inner-wrap">
-                <div>
-                </div>
-                <div>
-                  {trade.tradingForTokenSymbol}
-                </div>
-              </div>
-              <div className="trade-of-tokens-for-tokens-trading-for-token-address-wrap" className="trade-inner-wrap">
-                <div>
-                  Token Address
-                </div>
-                <div className="trade-address-overflow">
-                  {trade.tradingForTokenAddress}
-                </div>
-              </div>
-              <div className="trade-of-tokens-for-tokens-trading-for-token-amount-wrap" className="trade-inner-wrap">
-                <div>
-                  Token Amount
-                </div>
-                <div>
-                  {Number(trade.tradingForTokenAmount)}
-                </div>
-              </div>
-              <div className="make-token-trade-button-wrap">
-                <MakeTokenToTokenTrade
-                  sender={trade.sender}
-                  indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
-                  tradingForTokenAddress={trade.tradingForTokenAddress}
-                  tradingForTokenAmount={trade.tradingForTokenAmount}
-                />
-              </div>
-            </div>
-          )
-      });
-
-      return tradesOfTokensToTokensJsxIn;
-    }
-
-  }
-
-  function getTokensForEthTradesJsx(tradesOfTokensToEthArg) {
-    if (tradesOfTokensToEthArg) {
-
-      console.log('here 21');
-      console.log('tradesOfTokensToEthArg', tradesOfTokensToEthArg);
-      const tradesOfTokensToEthJsxIn = tradesOfTokensToEthArg.map((trade, index) => {
-
-        if (trade.alreadyTraded === true) {
-          return;
-        }
-
-        return (
-          <div class="border rounded mb-1" className="trade-of-tokens-for-eth" key={index.toString()}>
-            <div className="trades-sender" className="trade-of-tokens-for-eth-sender-wrap" className="trade-inner-wrap">
-              <div>
-                Seller
-              </div>
-              <div>
-                {trade.sender}
-              </div>
-            </div>
-            <div className="trade-of-tokens-for-eth-index-wrap" className="trade-inner-wrap">
-              <div>
-                Index
-              </div>
-              <div>
-                {Number(trade.indexOfTradeOfAddress)}
-              </div>
-            </div>
-            <div>
-              <div className="what-they-will-be-trading-inner-header">
-                What They Will Be Trading
-              </div>
-            </div>
-            <div className="trade-inner-wrap">
-              <div>
-              </div>
-              <div>
-                {trade.tradingTokenName}
-              </div>
-            </div>
-            <div className="trade-inner-wrap">
-              <div>
-              </div>
-              <div>
-                {trade.tradingTokenSymbol}
-              </div>
-            </div>
-            <div className="trade-of-tokens-for-eth-trading-token-address-wrap" className="trade-inner-wrap">
-              <div>
-                Token Address
-              </div>
-              <div>
-                {trade.tradingTokenAddress}
-              </div>
-            </div>
-            <div className="trade-of-tokens-for-eth-trading-token-amount-wrap" className="trade-inner-wrap">
-              <div>
-                Token Amount
-              </div>
-              <div>
-                {Number(trade.tradingTokenAmount)}
-              </div>
-            </div>
-            <div>
-              <div class="what-you-will-be-trading-inner-header">
-                What You Will Be Trading
-              </div>
-            </div>
-            <div className="trade-of-tokens-for-eth-trading-for-eth-amount-wrap" className="trade-inner-wrap">
-              <div>
-                Eth Amount
-              </div>
-              <div>
-                {ethers.formatUnits(trade.tradingForEthAmount)}
-              </div>
-            </div>
-            <div>
-              <MakeEthToTokenTrade
-                sender={trade.sender}
-                indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
-                tradingForEthAmount={trade.tradingForEthAmount}
-              />
-            </div>
-          </div>
-        )
-      });
-
-      console.log('tradesOfTokensToEthJsxIn', tradesOfTokensToEthJsxIn);
-      return tradesOfTokensToEthJsxIn;
-    }
-  }
-
-  function getEthForTokensTradesJsx(tradesOfEthToTokensArg) {
-    if (tradesOfEthToTokensArg) {
-
-      console.log('here 22');
-
-      const tradesOfEthToTokensJsxIn = tradesOfEthToTokensArg.map((trade, index) => {
-
-        if (trade.alreadyTraded === true) {
-          return;
-        }
-
-        return (
-          <div class="border rounded mb-1" className="trade-of-eth-for-tokens" key={index.toString()}>
-            <div className="trades-sender" className="trade-of-eth-for-tokens-sender-wrap" className="trade-inner-wrap">
-              <div>
-                Seller
-              </div>
-              <div className="trade-address-overflow">
-                {trade.sender}
-              </div>
-            </div>
-            <div className="trade-of-eth-for-tokens-index-wrap" className="trade-inner-wrap">
-              <div>
-                Index
-              </div>
-              <div>
-                {Number(trade.indexOfTradeOfAddress)}
-              </div>
-            </div>
-            <div>
-              <div className="what-they-will-be-trading-inner-header">
-                What They Will Be Trading
-              </div>
-            </div>
-            <div className="trade-of-eth-for-tokens-trading-eth-amount-wrap" className="trade-inner-wrap">
-              <div>
-                Eth Amount
-              </div>
-              <div>
-                {ethers.formatUnits(trade.tradingEthAmount)}
-              </div>
-            </div>
-            <div>
-              <div class="what-you-will-be-trading-inner-header">
-                What You Will Be Trading
-              </div>
-            </div>
-            <div className="trade-inner-wrap">
-              <div>
-              </div>
-              <div>
-                {trade.tradingForTokenName}
-              </div>
-            </div>
-            <div className="trade-inner-wrap">
-              <div>
-              </div>
-              <div>
-                {trade.tradingForTokenSymbol}
-              </div>
-            </div>
-            <div className="trade-of-eth-for-tokens-trading-for-token-addressx-wrap" className="trade-inner-wrap">
-              <div>
-                Token Address
-              </div>
-              <div>
-                {trade.tradingForTokenAddress}
-              </div>
-            </div>
-            <div className="trade-of-eth-for-tokens-trading-for-amount-wrap" className="trade-inner-wrap">
-              <div>
-                Token Amount
-              </div>
-              <div>
-                {Number(trade.tradingForTokenAmount)}
-              </div>
-            </div>
-            <div>
-              <MakeTokenToEthTrade
-                sender={trade.sender}
-                indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
-                tradingForTokenAddress={trade.tradingForTokenAddress}
-                tradingForTokenAmount={trade.tradingForTokenAmount}
-              />
-            </div>
-          </div>
-        )
-      });
-
-      console.log('tradesOfEthToTokensJsxIn', tradesOfEthToTokensJsxIn);
-      return tradesOfEthToTokensJsxIn;
-    }
-  }
-
   // let tradesOfTokensToTokensFiltered;
   let tradesOfTokensToTokensJsx;
   if (tradesOfTokensToTokens) {
@@ -792,10 +525,6 @@ function App() {
         && trade.sender !== account.address
       )
     });
-
-    console.log('tradesOfTokensToTokensFiltered', tradesOfTokensToTokensFiltered);
-
-    tradesOfTokensToTokensJsx = getTokensForTokensTradesJsx(tradesOfTokensToTokensFiltered);
   }
 
   // let tradesOfTokensToEthFiltered;
@@ -808,10 +537,6 @@ function App() {
       )
 
     });
-
-    console.log('tradesOfTokensToEthFiltered', tradesOfTokensToEthFiltered);
-
-    tradesOfTokensToEthJsx = getTokensForEthTradesJsx(tradesOfTokensToEthFiltered);
   }
 
   // let tradesOfEthToTokensFiltered;
@@ -823,10 +548,6 @@ function App() {
               && trade.sender !== account.address
             )
     });
-
-    console.log('tradesOfEthToTokensFiltered', tradesOfEthToTokensFiltered);
-
-    tradesOfEthToTokensJsx = getEthForTokensTradesJsx(tradesOfEthToTokensFiltered);
   }
 
   let tradesTokenNamesJsx;

@@ -35,16 +35,39 @@ export function DisplayTrades({
   searchedForTokenAddressForTrading
 }) {
 
+  function recentlyCompletedAdderTokensToTokensTrades(index, completedBy) {
+    console.log('tradesOfTokensToTokens', tradesOfTokensToTokens);
+    console.log('index', index);
+    console.log('tradesOfTokensToTokens[index]', tradesOfTokensToTokens[index]);
+    tradesOfTokensToTokens[index].recentlyCompleted = true;
+    tradesOfTokensToTokens[index].completedBy = completedBy;
+  }
+
+  function recentlyCompletedAdderTokensToEthTrades(index, completedBy) {
+    tradesOfTokensToTokens[index].recentlyCompleted = true;
+    tradesOfTokensToTokens[index].completedBy = completedBy;
+  }
+
+  function recentlyCompletedAdderEthTokensTrades(index, completedBy) {
+    tradesOfTokensToTokens[index].recentlyCompleted = true;
+    tradesOfTokensToTokens[index].completedBy = completedBy;
+  }
+
   console.log('here 5 in display trades');
   const account = getAccount(wagmiConfig);
 
+  let tradesOfTokensToTokens2;
+  let tradesOfTokensToEth2;
+  let tradesOfEthToTokens2;
+  
   if (tradesOfTokensToTokens) {
     console.log('here 6 in display trades');
 
-    tradesOfTokensToTokens = tradesOfTokensToTokens.filter((trade) => {
+    tradesOfTokensToTokens2 = tradesOfTokensToTokens.filter((trade) => {
       return (
         (trade.tradingTokenAddress === searchedForTokenAddressTrading
-        || trade.tradingForTokenAddress === searchedForTokenAddressForTrading)
+        || trade.tradingForTokenAddress === searchedForTokenAddressForTrading
+        || trade.recentlyCompleted === true)
         && trade.tradingTokenAddress !== undefined
         && trade.tradingForTokenAddress !== undefined
         && trade.sender !== account.address
@@ -142,9 +165,11 @@ export function DisplayTrades({
             <div className="make-token-trade-button-wrap">
               <MakeTokenToTokenTrade
                 sender={trade.sender}
+                index={index}
                 indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
                 tradingForTokenAddress={trade.tradingForTokenAddress}
                 tradingForTokenAmount={trade.tradingForTokenAmount}
+                recentlyCompletedAdderTokensToTokensTrades={recentlyCompletedAdderTokensToTokensTrades}
                 getTrades={getTrades}
               />
             </div>
@@ -154,8 +179,9 @@ export function DisplayTrades({
   }
 
   if (tradesOfTokensToEth) {
-    tradesOfTokensToEth = tradesOfTokensToEth.filter((trade) => {
-      return (trade.tradingTokenAddress === searchedForTokenAddressTrading
+    tradesOfTokensToEth2 = tradesOfTokensToEth.filter((trade) => {
+      return ((trade.tradingTokenAddress === searchedForTokenAddressTrading
+        || trade.recentlyCompleted === true)
         && trade.tradingTokenAddress !== undefined
         && trade.sender !== account.address
         && !trade.alreadyTraded
@@ -236,6 +262,7 @@ export function DisplayTrades({
               sender={trade.sender}
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
               tradingForEthAmount={trade.tradingForEthAmount}
+              recentlyCompletedAdderTokensToEthTrades={recentlyCompletedAdderTokensToEthTrades}
               getTrades={getTrades}
             />
           </div>
@@ -245,7 +272,7 @@ export function DisplayTrades({
   }
 
   if (tradesOfEthToTokens) {
-    tradesOfEthToTokens = tradesOfEthToTokens.filter((trade) => {
+    tradesOfEthToTokens2 = tradesOfEthToTokens.filter((trade) => {
       return (trade.tradingForTokenAddress === searchedForTokenAddressForTrading
               && trade.tradingForTokenAddress !== undefined
               && trade.sender !== account.address
@@ -324,6 +351,7 @@ export function DisplayTrades({
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
               tradingForTokenAddress={trade.tradingForTokenAddress}
               tradingForTokenAmount={trade.tradingForTokenAmount}
+              recentlyCompletedAdderEthTokensTrades={recentlyCompletedAdderEthTokensTrades}
               getTrades={getTrades}
             />
           </div>
@@ -344,7 +372,7 @@ export function DisplayTrades({
             Trades of Tokens For Tokens
           </div>
           <div className="trades-of-tokens-for-tokens">
-            {tradesOfTokensToTokens}
+            {tradesOfTokensToTokens2}
           </div>
         </div>
         <div className="trades-of-tokens-for-eth-wrap">
@@ -352,7 +380,7 @@ export function DisplayTrades({
             Trades of Tokens for Eth
           </div>
           <div className="trades-of-tokens-for-eth">
-            {tradesOfTokensToEth}
+            {tradesOfTokensToEth2}
           </div>
         </div>
         <div className="trades-of-eth-for-tokens-wrap">
@@ -360,7 +388,7 @@ export function DisplayTrades({
             Trades of Eth for Tokens
           </div>
           <div className="trades-of-eth-for-tokens">
-            {tradesOfEthToTokens}
+            {tradesOfEthToTokens2}
           </div>
         </div>
       </div>
