@@ -1,6 +1,11 @@
 import { useAccount, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi';
 
-export function Account({ getTrades }) {
+export function Account({
+  getTrades,
+  setSavedTokensToTokensTrades,
+  setSavedTokensToEthTrades,
+  setSavedEthToTokensTrades
+}) {
   const { address } = useAccount()
   const { disconnect } = useDisconnect()
   const { data: ensName } = useEnsName({ address })
@@ -18,6 +23,9 @@ export function Account({ getTrades }) {
       <button class="border rounded p-1" onClick={() => {
         disconnect();
         getTrades();
+        setSavedTokensToTokensTrades([]);
+        setSavedTokensToEthTrades([]);
+        setSavedEthToTokensTrades([]);
       }}>Disconnect</button>
     </div>
   )

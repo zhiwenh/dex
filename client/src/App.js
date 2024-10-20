@@ -1000,6 +1000,9 @@ function App() {
         <div id="wallet-id">
           <ConnectWallet
             getTrades={getTrades}
+            setSavedTokensToTokensTrades={setSavedTokensToTokensTrades}
+            setSavedTokensToEthTrades={setSavedTokensToEthTrades}
+            setSavedEthToTokensTrades={setSavedEthToTokensTrades}
           />
         </div>
       </div>
