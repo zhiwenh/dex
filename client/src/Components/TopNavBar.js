@@ -71,14 +71,14 @@ export function TopNavBar( { getTrades } ) {
         for (let i = 0; i < navBarItems.length; i++) {
           if (mobileTabsOn === false) {
             navBarItems[i].style.visibility = "hidden";
-            // navBarItems[i].style.height = "0px";
-            // navBarItems[i].style.width = "0px";
-            // navBarItems[i].style.marginBottom = "0px";
+            navBarItems[i].style.height = "0px";
+            navBarItems[i].style.width = "0px";
+            navBarItems[i].style.marginBottom = "0px";
           } else {
             navBarItems[i].style.visibility = "visible";
             navBarItems[i].style.height = "auto";
             navBarItems[i].style.width = "auto";
-            navBarItems[i].style.marginBottom = "3px";
+            // navBarItems[i].style.marginBottom = "3px";
           }
         }
 
@@ -126,14 +126,14 @@ export function TopNavBar( { getTrades } ) {
         navBarItems[i].style.visibility = "visible";
         navBarItems[i].style.height = "auto";
         navBarItems[i].style.width = "200px";
-        navBarItems[i].style.marginBottom = "3px";
+        // navBarItems[i].style.marginBottom = "3px";
       }
 
       const walletItem = document.querySelectorAll('.top-nav-bar-wallet');
       walletItem[0].style.visibility = "visible";
       walletItem[0].style.height = "auto";
       walletItem[0].style.width = "200px";
-      walletItem[0].style.marginBottom = "3px";
+      // walletItem[0].style.marginBottom = "3px";
 
       mobileTabsOn = true;
     } else {

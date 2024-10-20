@@ -694,6 +694,12 @@ select {
     align-items: center;
   }
 
+  .display-completed-trades-trades-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
   /* .add-trade-wrap {
     display: flex;
     flex-direction: column;
