@@ -32,7 +32,13 @@ export function DisplayTrades({
   tradesOfTokensToEth,
   tradesOfEthToTokens,
   searchedForTokenAddressTrading,
-  searchedForTokenAddressForTrading
+  searchedForTokenAddressForTrading,
+  savedTokensToTokensTrades,
+  savedTokensToEthTrades,
+  savedEthToTokensTrades,
+  saveTokenToTokenTrades,
+  saveTokenToEthTrades,
+  saveEthToTokenTrades
 }) {
 
   function recentlyCompletedAdderTokensToTokensTrades(index, completedBy) {
@@ -59,9 +65,29 @@ export function DisplayTrades({
   let tradesOfTokensToTokens2;
   let tradesOfTokensToEth2;
   let tradesOfEthToTokens2;
-  
+
   if (tradesOfTokensToTokens) {
     console.log('here 6 in display trades');
+
+    for (let i = 0; i < tradesOfTokensToTokens.length; i++) {
+      const trade = tradesOfTokensToTokens[i];
+      for (let j = 0; j < savedTokensToTokensTrades.length; j++) {
+        const savedTrade = savedTokensToTokensTrades[j];
+
+        if (trade.sender === savedTrade.sender
+            && trade.indexOfTradeOfAddress === savedTrade.indexOfTrade) {
+              trade.recentlyCompleted = true;
+              trade.completedBy = savedTrade.completedBy;
+            }
+      }
+    }
+
+    for (let i = 0; i < tradesOfTokensToTokens.length; i++) {
+      const trade = tradesOfTokensToTokens[i];
+      if (trade.alreadyTraded === true && !trade.recentlyCompleted) {
+        trade.toRemove = true;
+      }
+    }
 
     tradesOfTokensToTokens2 = tradesOfTokensToTokens.filter((trade) => {
       return (
@@ -71,7 +97,7 @@ export function DisplayTrades({
         && trade.tradingTokenAddress !== undefined
         && trade.tradingForTokenAddress !== undefined
         && trade.sender !== account.address
-        && !trade.alreadyTraded
+        && trade.toRemove !== true
       )
     }).map((trade, index) => {
         return (
@@ -163,7 +189,12 @@ export function DisplayTrades({
               </div>
             </div>
             <div className="make-token-trade-button-wrap">
-              <MakeTokenToTokenTrade
+              {trade.completedBy ? (
+                <div>
+                  <div>Trade Completed By</div>
+                  <div>{trade.completedBy}</div>
+                </div>)
+                  : <MakeTokenToTokenTrade
                 sender={trade.sender}
                 index={index}
                 indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
@@ -171,7 +202,9 @@ export function DisplayTrades({
                 tradingForTokenAmount={trade.tradingForTokenAmount}
                 recentlyCompletedAdderTokensToTokensTrades={recentlyCompletedAdderTokensToTokensTrades}
                 getTrades={getTrades}
-              />
+                savedTokensToTokensTrades={savedTokensToTokensTrades}
+                saveTokenToTokenTrades={saveTokenToTokenTrades}
+              />}
             </div>
           </div>
         )
@@ -264,6 +297,8 @@ export function DisplayTrades({
               tradingForEthAmount={trade.tradingForEthAmount}
               recentlyCompletedAdderTokensToEthTrades={recentlyCompletedAdderTokensToEthTrades}
               getTrades={getTrades}
+              savedTokensToEthTrades={savedTokensToEthTrades}
+              saveTokenToEthTrades={saveTokenToEthTrades}
             />
           </div>
         </div>
@@ -353,6 +388,8 @@ export function DisplayTrades({
               tradingForTokenAmount={trade.tradingForTokenAmount}
               recentlyCompletedAdderEthTokensTrades={recentlyCompletedAdderEthTokensTrades}
               getTrades={getTrades}
+              savedEthToTokensTrades={savedEthToTokensTrades}
+              saveEthToTokenTrades={saveEthToTokenTrades}
             />
           </div>
         </div>

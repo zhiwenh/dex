@@ -25,15 +25,16 @@ export function MakeTokenToEthTrade({
   indexOfTradeOfAddress,
   tradingForTokenAddress,
   tradingForTokenAmount,
-  getTrades
+  getTrades,
+  saveEthToTokenTrades
 }) {
 
   const { data: hash, isPending, writeContract, error } = useWriteContract();
   const { data: hash2, isPending: isPending2, writeContract: writeContract2, error: error2 } = useWriteContract();
 
-  async function approve() {
-    const account = getAccount(wagmiConfig);
+  const account = getAccount(wagmiConfig);
 
+  async function approve() {
     console.log('account', account);
 
     console.log('here3');
@@ -98,6 +99,7 @@ export function MakeTokenToEthTrade({
 
   if (isConfirmed) {
     console.log('here 2 in isConfirmed');
+    saveEthToTokenTrades(sender, indexOfTradeOfAddress, account.address);
     getTrades();
   }
 

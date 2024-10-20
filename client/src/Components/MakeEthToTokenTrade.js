@@ -24,17 +24,18 @@ export function MakeEthToTokenTrade({
   sender,
   indexOfTradeOfAddress,
   tradingForEthAmount,
-  getTrades
+  getTrades,
+  saveTokenToEthTrades
    }) {
 
   const { data: hash, isPending, writeContract, error } = useWriteContract();
+
+  const account = getAccount(wagmiConfig);
 
   async function submit(e) {
     e.preventDefault()
 
     console.log('e', e);
-
-    const account = getAccount(wagmiConfig);
 
     console.log('dexAbi', dexAbi);
     console.log('sender', sender);
@@ -65,6 +66,7 @@ export function MakeEthToTokenTrade({
 
   if (isConfirmed) {
     console.log('here 2 in isConfirmed');
+    saveTokenToEthTrades(sender, indexOfTradeOfAddress, account.address);
     getTrades();
   }
 

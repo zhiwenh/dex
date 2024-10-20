@@ -28,7 +28,9 @@ export function MakeTokenToTokenTrade({
   tradingForTokenAmount,
   index,
   recentlyCompletedAdderTokensToTokensTrades,
-  getTrades
+  getTrades,
+  savedTokensToTokensTrades,
+  saveTokenToTokenTrades
 }) {
 
   const { data: hash, isPending, writeContract, error } = useWriteContract();
@@ -121,8 +123,8 @@ export function MakeTokenToTokenTrade({
 
   if (isConfirmed) {
     console.log('here 2 in isConfirmed');
+    saveTokenToTokenTrades(sender, indexOfTradeOfAddress, account.address);
     getTrades();
-    recentlyCompletedAdderTokensToTokensTrades(index, account.address)
   }
 
   console.log('error', error);

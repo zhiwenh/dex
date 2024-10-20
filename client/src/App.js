@@ -245,8 +245,16 @@ function App() {
     newObj.indexOfTrade = indexOfTrade;
     newObj.completedBy = completedBy;
 
+    for (let i = 0; i < savedTokensToTokensTrades.length; i++) {
+      if (savedTokensToTokensTrades[i].sender === sender
+        && savedTokensToTokensTrades[i].indexOfTrade === indexOfTrade) {
+        return;
+      }
+    }
+
     savedTokensToTokensTrades.push(newObj);
     setSavedTokensToTokensTrades(savedTokensToTokensTrades);
+    console.log('savedTokensToTokensTrades', savedTokensToTokensTrades);
   }
 
   function saveTokenToEthTrades(sender, indexOfTrade, completedBy) {
@@ -254,6 +262,13 @@ function App() {
     newObj.sender = sender;
     newObj.indexOfTrade = indexOfTrade;
     newObj.completedBy = completedBy;
+
+    for (let i = 0; i < savedTokensToEthTrades.length; i++) {
+      if (savedTokensToEthTrades[i].sender === sender
+        && savedTokensToEthTrades[i].indexOfTrade === indexOfTrade) {
+        return;
+      }
+    }
 
     savedTokensToEthTrades.push(newObj);
     setSavedTokensToEthTrades(savedTokensToEthTrades);
@@ -264,6 +279,13 @@ function App() {
     newObj.sender = sender;
     newObj.indexOfTrade = indexOfTrade;
     newObj.completedBy = completedBy;
+
+    for (let i = 0; i < savedEthToTokensTrades.length; i++) {
+      if (savedEthToTokensTrades[i].sender === sender
+        && savedEthToTokensTrades[i].indexOfTrade === indexOfTrade) {
+        return;
+      }
+    }
 
     savedEthToTokensTrades.push(newObj);
     setSavedEthToTokensTrades(savedEthToTokensTrades);
@@ -746,6 +768,36 @@ function App() {
   //   );
   // }
 
+  // function saveTokenToTokenTrades(sender, indexOfTrade, completedBy) {
+  //   const newObj = {};
+  //   newObj.sender = sender;
+  //   newObj.indexOfTrade = indexOfTrade;
+  //   newObj.completedBy = completedBy;
+  //
+  //   savedTokensToTokensTrades.push(newObj);
+  //   setSavedTokensToTokensTrades(savedTokensToTokensTrades);
+  // }
+  //
+  // function saveTokenToEthTrades(sender, indexOfTrade, completedBy) {
+  //   const newObj = {};
+  //   newObj.sender = sender;
+  //   newObj.indexOfTrade = indexOfTrade;
+  //   newObj.completedBy = completedBy;
+  //
+  //   savedTokensToEthTrades.push(newObj);
+  //   setSavedTokensToEthTrades(savedTokensToEthTrades);
+  // }
+  //
+  // function saveEthToTokenTrades(sender, indexOfTrade, completedBy) {
+  //   const newObj = {};
+  //   newObj.sender = sender;
+  //   newObj.indexOfTrade = indexOfTrade;
+  //   newObj.completedBy = completedBy;
+  //
+  //   savedEthToTokensTrades.push(newObj);
+  //   setSavedEthToTokensTrades(savedEthToTokensTrades);
+  // }
+
   function SearchForTrades() {
     return (
       <div>
@@ -812,6 +864,12 @@ function App() {
                 tradesOfEthToTokens={tradesOfEthToTokens}
                 searchedForTokenAddressTrading={searchedForTokenAddressTrading}
                 searchedForTokenAddressForTrading={searchedForTokenAddressForTrading}
+                savedTokensToTokensTrades={savedTokensToTokensTrades}
+                savedTokensToEthTrades={savedTokensToEthTrades}
+                savedEthToTokensTrades={savedEthToTokensTrades}
+                saveTokenToTokenTrades={saveTokenToTokenTrades}
+                saveTokenToEthTrades={saveTokenToEthTrades}
+                saveEthToTokenTrades={saveEthToTokenTrades}
               />
             </div>
           </div>
