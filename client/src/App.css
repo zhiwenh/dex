@@ -8,11 +8,30 @@
   font-size: 15px;
 }
 
+.pop-up {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  width: 450px;
+  height: 200px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 button {
  border: solid #E2E2E2;
  padding: 3px;
  border-radius: 3px;
  background-color: #FCFCFC;
+}
+
+.top-nav-bar button {
+  border: none;
+  background-color: inherit;
 }
 
 input {
@@ -104,7 +123,6 @@ select {
 
 .top-nav-bar-wallet {
   margin-left: 100px;
-  color: #FFFFFF;
 }
 
 .title {
@@ -381,7 +399,7 @@ select {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 250px;
+  width: 250px;
 }
 
 .add-trade-eth-for-token-title {

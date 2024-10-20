@@ -35,7 +35,21 @@ export function AddEthForTokensTrade({ getTrades }) {
     const tradingForTokenAddress = document.getElementById('trading-for-token-address-3').value;
     const tradingForTokenAmount = document.getElementById('trading-for-token-amount-3').value;
 
-    tradingEthAmount = ethers.parseUnits(tradingEthAmount, 'ether');
+    if (!ethers.isAddress(tradingForTokenAddress)) {
+      setErrorMessage('Not valid trading for token address');
+      return;
+    }
+
+    if (isNaN(tradingForTokenAmount)) {
+      setErrorMessage('Trading for token amount not a number');
+      return;
+    }
+
+    try {
+      tradingEthAmount = ethers.parseUnits(tradingEthAmount, 'ether');
+    } catch (error) {
+      console.log(error);
+    }
 
     console.log('here 10');
 

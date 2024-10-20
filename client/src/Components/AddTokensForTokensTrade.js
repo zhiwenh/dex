@@ -36,11 +36,20 @@ export function AddTokensForTokensTrade({
   const inputRef = useRef(null);
 
   async function approveTokens(e) {
-    setPressedOnButton(true);
     e.preventDefault();
 
     const tradingTokenAddress = document.getElementById('trading-token-address-1').value;
     const tradingTokenAmount = document.getElementById('trading-token-amount-1').value;
+
+    if (!ethers.isAddress(tradingTokenAddress)) {
+      setErrorMessage('Not valid trading token address');
+      return;
+    }
+
+    if (isNaN(tradingTokenAmount)) {
+      setErrorMessage('Trading token amount not a number');
+      return;
+    }
 
     const account = getAccount(wagmiConfig);
 
@@ -55,7 +64,6 @@ export function AddTokensForTokensTrade({
        balanceOfToken = await erc20Instance.balanceOf(account.address);
        console.log('here4');
        balanceOfToken = Number(balanceOfToken);
-
     } catch (error) {
       console.log(error);
     }
@@ -121,23 +129,111 @@ export function AddTokensForTokensTrade({
         })
       } catch (error) {
         console.log(error);
-        setPressedOnButton(false);
         return;
       }
+    } else {
+      setErrorMessage('Allowance for dex is enough already');
     }
-
-    setPressedOnButton(false);
   }
 
   async function submit() {
-    setPressedOnButton(true);
-
     const tradingTokenAddress = document.getElementById('trading-token-address-1').value;
     const tradingTokenAmount = document.getElementById('trading-token-amount-1').value;
     const tradingForTokenAddress = document.getElementById('trading-for-token-address-1').value;
     const tradingForTokenAmount = document.getElementById('trading-for-token-amount-1').value;
 
+    if (!ethers.isAddress(tradingTokenAddress)) {
+      setErrorMessage('Not valid trading token address');
+      return;
+    }
+
+    if (!ethers.isAddress(tradingForTokenAddress)) {
+      setErrorMessage('Not valid trading for token address');
+      return;
+    }
+
+    if (isNaN(tradingTokenAmount)) {
+      setErrorMessage('Trading token amount not a number');
+      return;
+    }
+
+    if (isNaN(tradingForTokenAmount)) {
+      setErrorMessage('Trading for token amount not a number');
+      return;
+    }
+
     const account = getAccount(wagmiConfig);
+
+    let erc20Instance;
+    let balanceOfToken;
+
+    try {
+       erc20Instance = new ethers.Contract(tradingTokenAddress, erc20Abi, provider);
+       console.log('here3');
+       balanceOfToken = await erc20Instance.balanceOf(account.address);
+       console.log('here4');
+       balanceOfToken = Number(balanceOfToken);
+
+    } catch (error) {
+      console.log(error);
+    }
+
+    console.log('here3');
+
+    if (balanceOfToken < tradingTokenAmount) {
+      setErrorMessage('Balance of token not enough');
+      return;
+    } else {
+      setErrorMessage(undefined);
+    }
+
+    let allowanceForDex;
+
+    try {
+      allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
+      allowanceForDex = Number(allowanceForDex);
+    } catch (error) {
+      console.log(error);
+      // setErrorMessage(error.error);
+    }
+
+    let totalAllowanceRequired = tradingTokenAmount;
+
+    let allTrades;
+
+    try {
+      allTrades = await dexInstance.getAllTrades();
+    } catch (error) {
+      console.log(error);
+    }
+
+    const tokensForTokensTrades = allTrades.tradeTokensForTokensForCall;
+    const tokensForEthTrades = allTrades.tradeTokensForEthForCall;
+
+    for (let i = 0; i < tokensForTokensTrades.length; i++) {
+      if (tokensForTokensTrades[i].sender === account.address &&
+          tokensForTokensTrades[i].tradingTokenAddress === tradingTokenAddress
+      ) {
+        totalAllowanceRequired = totalAllowanceRequired + Number(tokensForTokensTrades[i].tradingTokenAmount);
+      }
+    }
+
+    for (let i = 0; i < tokensForEthTrades.length; i++) {
+      if (tokensForEthTrades[i].sender === account.address &&
+          tokensForEthTrades[i].tradingTokenAddress === tradingTokenAddress
+      ) {
+        totalAllowanceRequired = totalAllowanceRequired + Number(tokensForEthTrades[i].tradingTokenAmount);
+      }
+    }
+
+    console.log('allowanceForDex', allowanceForDex);
+    console.log('totalAllowanceRequired', totalAllowanceRequired);
+    if (allowanceForDex < totalAllowanceRequired) {
+      setErrorMessage('Dex allowance not enough');
+      return;
+    } else {
+      setErrorMessage(undefined);
+    }
 
     console.log('account', account);
 
@@ -160,11 +256,8 @@ export function AddTokensForTokensTrade({
         }
       });
     } catch (error) {
-      setPressedOnButton(false);
       return;
     }
-
-    setPressedOnButton(false);
   }
 
   // function tradingTokenAddressInputOnChange(e) {
@@ -251,12 +344,12 @@ export function AddTokensForTokensTrade({
             <div className="add-tokens-for-tokens-trade-approve-header">
             </div>
             <div>
-              <button class="border rounded p-1" onClick={isPending || isPending2 || isConfirming || isConfirming2 || pressedOnButton ? () => {} : approveTokens} className="add-tokens-for-tokens-approve-button">
+              <button class="border rounded p-1" onClick={isPending || isPending2 || isConfirming || isConfirming2 ? () => {} : approveTokens} className="add-tokens-for-tokens-approve-button">
                 {isPending || isPending2 || isConfirming || isConfirming2 ? 'Confirming...' : 'Approve Tokens For Dex'}
               </button>
             </div>
           </div>
-          <button class="border rounded p-1" onClick={isPending || isPending2 || isConfirming || isConfirming2 || pressedOnButton ? () => {} : submit}>{isPending || isPending2 || isConfirming || isConfirming2 ? 'Confirming...' : 'Add Trade'} </button>
+          <button class="border rounded p-1" onClick={isPending || isPending2 || isConfirming || isConfirming2 ? () => {} : submit}>{isPending || isPending2 || isConfirming || isConfirming2 ? 'Confirming...' : 'Add Trade'} </button>
         </div>
         <div>
         <div>

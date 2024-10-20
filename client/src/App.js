@@ -31,7 +31,6 @@ import { DisplayUserTrades } from './Components/DisplayUserTrades.js';
 import { DisplayYourCompletedTrades } from './Components/DisplayYourCompletedTrades';
 import { TopNavBar } from './Components/TopNavBar.js'
 
-
 import Select from 'react-select';
 
 import {
@@ -799,17 +798,25 @@ function App() {
   //   setSavedEthToTokensTrades(savedEthToTokensTrades);
   // }
 
+  function TopNavBarWrap() {
+    return (
+      <div>
+        <TopNavBar getTrades={getTrades}/>
+      </div>
+    );
+  }
+
   function SearchForTrades() {
     return (
       <div>
         <div className="top-nav-bar-wrap">
-          <TopNavBar />
+          <TopNavBarWrap />
         </div>
         <div>
           <div id="search-for-trades-id" class="search-for-trades-wrap">
             <div>
               <div className="trade-token-title-search-for-trades">
-                Search For Trades
+                Search
               </div>
               <div className="search-for-trades-description">
                 Search for tokens by their token address.
@@ -883,11 +890,11 @@ function App() {
     return (
       <div>
         <div className="top-nav-bar-wrap">
-          <TopNavBar />
+          <TopNavBarWrap />
         </div>
         <div id="make-trade-offers-id">
           <div className="trade-header-make-trade-offers">
-            Make Trade Offers
+            Make Offers
           </div>
           <div className="make-trade-offers-description">
             When you list a trade, other people can view them when searching for the token address.
@@ -936,7 +943,7 @@ function App() {
     return (
       <div>
         <div className="top-nav-bar-wrap">
-          <TopNavBar />
+          <TopNavBarWrap />
         </div>
         <div>
           <div className="title text-3xl font-bold">
@@ -971,7 +978,7 @@ function App() {
     return (
       <div>
         <div className="top-nav-bar-wrap">
-          <TopNavBar />
+          <TopNavBarWrap />
         </div>
         <div>
           <div id="contact-id" className="bottom-nav-bar-contact">
@@ -995,7 +1002,7 @@ function App() {
       element:
       <div>
         <div className="top-nav-bar-wrap">
-          <TopNavBar />
+          <TopNavBarWrap />
         </div>
         <div id="wallet-id">
           <ConnectWallet
@@ -1020,7 +1027,7 @@ function App() {
       element:
       <div>
         <div className="top-nav-bar-wrap">
-          <TopNavBar />
+          <TopNavBarWrap />
         </div>
         <div id="your-trades-id" className="display-trades-wrap">
           <DisplayUserTrades
@@ -1040,7 +1047,7 @@ function App() {
       element:
         <div>
           <div className="top-nav-bar-wrap">
-            <TopNavBar />
+            <TopNavBarWrap />
           </div>
           <DisplayYourCompletedTrades
             completedTradesOfTokensToTokensEvents={completedTradesOfTokensToTokensEvents}

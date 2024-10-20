@@ -37,6 +37,16 @@ export function AddTokensForEthTrade({
     const tradingTokenAddress = document.getElementById('trading-token-address-2').value;
     const tradingTokenAmount = document.getElementById('trading-token-amount-2').value;
 
+    if (!ethers.isAddress(tradingTokenAddress)) {
+      setErrorMessage('Not valid trading token address');
+      return;
+    }
+
+    if (isNaN(tradingTokenAmount)) {
+      setErrorMessage('Trading token amount not a number');
+      return;
+    }
+
     const account = getAccount(wagmiConfig);
 
     console.log('account', account);
@@ -116,6 +126,8 @@ export function AddTokensForEthTrade({
       } catch (error) {
         console.log(error);
       }
+    } else {
+      setErrorMessage('Allowance for dex is enough already');
     }
   }
 
@@ -130,7 +142,22 @@ export function AddTokensForEthTrade({
     const tradingTokenAmount = document.getElementById('trading-token-amount-2').value;
     const tradingForEthAmount = document.getElementById('trading-for-eth-amount-2').value;
 
-    const tradingForEthAmountFormatted = ethers.parseUnits(tradingForEthAmount, 'ether');
+    if (!ethers.isAddress(tradingTokenAddress)) {
+      setErrorMessage('Not valid trading token address');
+      return;
+    }
+
+    if (isNaN(tradingTokenAmount)) {
+      setErrorMessage('Trading token amount not a number');
+      return;
+    }
+
+    let tradingForEthAmountFormatted;
+    try {
+      tradingForEthAmountFormatted = ethers.parseUnits(tradingForEthAmount, 'ether');
+    } catch (error) {
+      console.log(error);
+    }
 
     console.log('tradingForEthAmountFormatted', tradingForEthAmountFormatted);
 

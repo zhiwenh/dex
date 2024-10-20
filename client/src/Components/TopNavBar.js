@@ -2,8 +2,10 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { Link } from 'react-router-dom';
+import Popup from 'reactjs-popup';
+import { ConnectWallet } from './ConnectWallet.js';
 
-export function TopNavBar() {
+export function TopNavBar( { getTrades } ) {
 
   const [navBarDisplayed, setNavBarDisplayed] = useState(window.innerWidth > 700 ? true : false);
   const [over700, setOver700] = useState(window.innerWidth > 700 ? true : false);
@@ -247,10 +249,10 @@ export function TopNavBar() {
         <Link to="/">Home</Link>
       </div>
       <div className="top-nav-bar-link">
-        <Link to="/make-trades">Make Trade Offers</Link>
+        <Link to="/make-trades">Make Offers</Link>
       </div>
       <div className="top-nav-bar-link">
-        <Link to="/search-for-trades">Search For Trades</Link>
+        <Link to="/search-for-trades">Search</Link>
       </div>
       <div className="top-nav-bar-link">
         <Link to="/your-trades">Your Trades</Link>
@@ -262,7 +264,11 @@ export function TopNavBar() {
         <Link to="/contact">Contact</Link>
       </div>
       <div className="top-nav-bar-link" id="top-nav-bar-wallet-id" className="top-nav-bar-wallet">
-        {address ? <Link to="/wallet">{walletConnectedString}</Link> : <Link to="/wallet">{connectWalletString}</Link>}
+        <Popup trigger={<button>{address ? walletConnectedString : connectWalletString}</button>}>
+          <div className="pop-up">
+            <ConnectWallet getTrades={getTrades}/>
+          </div>
+        </Popup>
       </div>
     </div>
   )
