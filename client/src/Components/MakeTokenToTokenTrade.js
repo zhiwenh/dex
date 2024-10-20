@@ -93,6 +93,38 @@ export function MakeTokenToTokenTrade({
 
     const account = getAccount(wagmiConfig);
 
+    const erc20Instance = new ethers.Contract(tradingForTokenAddress, erc20Abi, provider);
+
+    let tokenBalance;
+
+    try {
+      tokenBalance = await erc20Instance.balanceOf(account.address);
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (tokenBalance < tradingForTokenAmount) {
+      setErrorMessage('Balance of token not enough');
+      return;
+    } else {
+      setErrorMessage(undefined);
+    }
+
+    let allowanceForDex;
+
+    try {
+      allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (allowanceForDex < tradingForTokenAmount) {
+      setErrorMessage('Dex allowance not enough');
+      return;
+    } else {
+      setErrorMessage(undefined);
+    }
+
     tradingForTokenAmount = Number(tradingForTokenAmount);
 
     console.log('dexAbi', dexAbi);
@@ -127,6 +159,11 @@ export function MakeTokenToTokenTrade({
     getTrades();
   }
 
+  const { isLoading: isConfirming2, isSuccess: isConfirmed2 } =
+    useWaitForTransactionReceipt({
+      hash: hash2
+    });
+
   console.log('error', error);
   return (
     <div className="make-tokens-for-tokens-trade-wrap">
@@ -135,11 +172,11 @@ export function MakeTokenToTokenTrade({
       <div>
         <div className="make-tokens-trade-approve-header">
         </div>
-        <button class="border rounded p-1 mb-1" className="make-token-trade-approve-button" onClick={(isPending || isConfirming) ? () => {} : approve}>{isPending ? 'Confirming...' : 'Approve Tokens For Dex'}</button>
+        <button class="border rounded p-1 mb-1" className="make-token-trade-approve-button" onClick={(isPending || isPending2 || isConfirming || isConfirming2) ? () => {} : approve}>{isPending || isPending2 || isConfirming || isConfirming2 ? 'Confirming...' : 'Approve Tokens For Dex'}</button>
       </div>
       <div>
-        <button class="border rounded p-1" onClick={(isPending || isConfirming) ? () => {} : submit}>
-          {isConfirmed ? 'Traded' : (isPending || isConfirming) ? 'Confirming...' : 'Make Trade'}
+        <button class="border rounded p-1" onClick={(isPending || isPending2 || isConfirming || isConfirming2) ? () => {} : submit}>
+          {isConfirmed ? 'Traded' : (isPending || isPending2 || isConfirming || isConfirming2) ? 'Confirming...' : 'Make Trade'}
         </button>
       </div>
       <div>

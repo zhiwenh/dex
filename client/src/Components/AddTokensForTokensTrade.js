@@ -189,17 +189,18 @@ export function AddTokensForTokensTrade({
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
-      hash: hash,
-      onSuccess(data) {
-        console.log('onSuccess here 5');
-        getTrades();
-      }
+      hash: hash
     });
 
   if (isConfirmed) {
     console.log('here 2 in isConfirmed');
     getTrades();
   }
+
+  const { isLoading: isConfirming2, isSuccess: isConfirmed2 } =
+    useWaitForTransactionReceipt({
+      hash: hash2
+    });
 
   // onSuccess(() => {
   //   console.log('here 3 onSuccess');
@@ -250,12 +251,12 @@ export function AddTokensForTokensTrade({
             <div className="add-tokens-for-tokens-trade-approve-header">
             </div>
             <div>
-              <button class="border rounded p-1" onClick={isPending || isConfirming || pressedOnButton ? () => {} : approveTokens} className="add-tokens-for-tokens-approve-button">
-                {isPending || isConfirming ? 'Confirming...' : 'Approve Tokens For Dex'}
+              <button class="border rounded p-1" onClick={isPending || isPending2 || isConfirming || isConfirming2 || pressedOnButton ? () => {} : approveTokens} className="add-tokens-for-tokens-approve-button">
+                {isPending || isPending2 || isConfirming || isConfirming2 ? 'Confirming...' : 'Approve Tokens For Dex'}
               </button>
             </div>
           </div>
-          <button class="border rounded p-1" onClick={isPending || isConfirming || pressedOnButton ? () => {} : submit}>{isPending || isConfirming ? 'Confirming...' : 'Add Trade'} </button>
+          <button class="border rounded p-1" onClick={isPending || isPending2 || isConfirming || isConfirming2 || pressedOnButton ? () => {} : submit}>{isPending || isPending2 || isConfirming || isConfirming2 ? 'Confirming...' : 'Add Trade'} </button>
         </div>
         <div>
         <div>

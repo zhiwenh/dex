@@ -154,16 +154,17 @@ export function AddTokensForEthTrade({
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
-      hash: hash,
-      onSuccess(data) {
-        console.log('onSuccess here 5');
-        getTrades();
-      }
+      hash: hash
     });
 
   if (isConfirmed) {
     getTrades();
   }
+
+  const { isLoading: isConfirming2, isSuccess: isConfirmed2 } =
+    useWaitForTransactionReceipt({
+      hash: hash2
+    });
 
   return (
     <div className="add-tokens-for-eth-trade-wrap">
@@ -190,11 +191,11 @@ export function AddTokensForEthTrade({
           </div>
           <div>
             <button class="border rounded p-1" className="add-tokens-for-eth-approve-button" onClick={approveTokens}>
-              {isPending ? 'Confirming...' : 'Approve Tokens For Dex'}
+              {isPending || isPending || isConfirming || isConfirming2 ? 'Confirming...' : 'Approve Tokens For Dex'}
             </button>
           </div>
         </div>
-          <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : submit}>{isPending || isConfirming ? 'Confirming...' : 'Add Trade'} </button>
+          <button class="border rounded p-1" onClick={isPending || isPending || isConfirming || isConfirming2 ? () => {} : submit}>{isPending || isConfirming ? 'Confirming...' : 'Add Trade'} </button>
         </div>
         <div>
           {errorMessage ? errorMessage : undefined}

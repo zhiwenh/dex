@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useState } from 'react';
 import {
   type BaseError,
   useWaitForTransactionReceipt,
@@ -28,6 +29,7 @@ export function MakeTokenToEthTrade({
   getTrades,
   saveEthToTokenTrades
 }) {
+  const [errorMessage, setErrorMessage] = useState();
 
   const { data: hash, isPending, writeContract, error } = useWriteContract();
   const { data: hash2, isPending: isPending2, writeContract: writeContract2, error: error2 } = useWriteContract();
@@ -40,6 +42,21 @@ export function MakeTokenToEthTrade({
     console.log('here3');
 
     const erc20Instance = new ethers.Contract(tradingForTokenAddress, erc20Abi, provider);
+
+    let tokenBalance;
+
+    try {
+      tokenBalance = await erc20Instance.balanceOf(account.address);
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (tokenBalance < tradingForTokenAmount) {
+      setErrorMessage('Balance of token not enough')
+      return;
+    } else {
+      setErrorMessage(undefined);
+    }
 
     let allowanceForDex;
 
@@ -70,15 +87,39 @@ export function MakeTokenToEthTrade({
   async function submit(e) {
     e.preventDefault()
 
-    console.log('e', e);
+    const erc20Instance = new ethers.Contract(tradingForTokenAddress, erc20Abi, provider);
 
-    const account = getAccount(wagmiConfig);
+    let tokenBalance;
+
+    try {
+      tokenBalance = await erc20Instance.balanceOf(account.address);
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (tokenBalance < tradingForTokenAmount) {
+      setErrorMessage('Balance of token not enough');
+      return;
+    } else {
+      setErrorMessage(undefined);
+    }
+
+    let allowanceForDex;
+
+    try {
+      allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
+    } catch (error) {
+      console.log(error);
+    }
 
     tradingForTokenAmount = Number(tradingForTokenAmount);
 
-    console.log('dexAbi', dexAbi);
-    console.log('sender', sender);
-    console.log('indexOfTradeOfAddress', indexOfTradeOfAddress);
+    if (allowanceForDex < tradingForTokenAmount) {
+      setErrorMessage('Dex allowance not enough');
+      return;
+    } else {
+      setErrorMessage(undefined);
+    }
 
     indexOfTradeOfAddress = Number(indexOfTradeOfAddress);
 
@@ -103,6 +144,11 @@ export function MakeTokenToEthTrade({
     getTrades();
   }
 
+  const { isLoading: isConfirming2, isSuccess: isConfirmed2 } =
+    useWaitForTransactionReceipt({
+      hash: hash2
+    })
+
   console.log('error', error);
   return (
     <div className="make-tokens-for-eth-trade-wrap">
@@ -111,12 +157,15 @@ export function MakeTokenToEthTrade({
       <div>
         <div className="make-tokens-trade-approve-header">
         </div>
-        <button class="border rounded p-1 mb-1" className="make-token-trade-approve-button" onClick={isPending || isConfirming ? () => {} : approve}>{isPending ? 'Confirming...' : 'Approve Tokens For Dex'}</button>
+        <button class="border rounded p-1 mb-1" className="make-token-trade-approve-button" onClick={isPending || isPending2 || isConfirming || isConfirming2 ? () => {} : approve}>{isPending || isPending2 || isConfirming || isConfirming2 ? 'Confirming...' : 'Approve Tokens For Dex'}</button>
       </div>
       <div>
-        <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : submit}>
-          {isConfirmed ? 'Traded' : (isPending || isConfirming ? 'Confirming...' : 'Make Trade')}
+        <button class="border rounded p-1" onClick={isPending || isPending2 || isConfirming || isConfirming2 ? () => {} : submit}>
+          {isConfirmed ? 'Traded' : (isPending || isPending2 || isConfirming || isConfirming2 ? 'Confirming...' : 'Make Trade')}
         </button>
+      </div>
+      <div>
+        {errorMessage ? errorMessage : undefined}
       </div>
       <div className="make-trade-error-transaction">
         {hash && <div>Transaction Hash: {hash}</div>}

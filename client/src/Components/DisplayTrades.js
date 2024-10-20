@@ -93,7 +93,7 @@ export function DisplayTrades({
       return (
         (trade.tradingTokenAddress === searchedForTokenAddressTrading
         || trade.tradingForTokenAddress === searchedForTokenAddressForTrading
-        || trade.recentlyCompleted === true)
+        || (trade.recentlyCompleted === true && (trade.tradingTokenAddress === searchedForTokenAddressTrading || trade.tradingForTokenAddress === searchedForTokenAddressForTrading)))
         && trade.tradingTokenAddress !== undefined
         && trade.tradingForTokenAddress !== undefined
         && trade.sender !== account.address
@@ -236,7 +236,7 @@ export function DisplayTrades({
 
     tradesOfTokensToEth2 = tradesOfTokensToEth.filter((trade) => {
       return ((trade.tradingTokenAddress === searchedForTokenAddressTrading
-        || trade.recentlyCompleted === true)
+        || (trade.recentlyCompleted === true && trade.tradingTokenAddress === searchedForTokenAddressTrading))
         && trade.tradingTokenAddress !== undefined
         && trade.sender !== account.address
         && trade.toRemove !== true
@@ -353,7 +353,8 @@ export function DisplayTrades({
     }
 
     tradesOfEthToTokens2 = tradesOfEthToTokens.filter((trade) => {
-      return (trade.tradingForTokenAddress === searchedForTokenAddressForTrading
+      return ((trade.tradingForTokenAddress === searchedForTokenAddressForTrading
+              || trade.recentlyCompleted === true && trade.tradingForTokenAddress === searchedForTokenAddressForTrading)
               && trade.tradingForTokenAddress !== undefined
               && trade.sender !== account.address
               && trade.toRemove !== true
