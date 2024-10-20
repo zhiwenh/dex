@@ -212,17 +212,36 @@ export function DisplayTrades({
   }
 
   if (tradesOfTokensToEth) {
+    for (let i = 0; i < tradesOfTokensToEth.length; i++) {
+      const trade = tradesOfTokensToEth[i];
+      for (let j = 0; j < savedTokensToEthTrades.length; j++) {
+        const savedTrade = savedTokensToEthTrades[j];
+
+        if (trade.sender === savedTrade.sender
+            && trade.indexOfTradeOfAddress === savedTrade.indexOfTrade) {
+              trade.recentlyCompleted = true;
+              trade.completedBy = savedTrade.completedBy;
+            }
+      }
+    }
+
+    for (let i = 0; i < tradesOfTokensToEth.length; i++) {
+      const trade = tradesOfTokensToEth[i];
+      if (trade.alreadyTraded === true && !trade.recentlyCompleted) {
+        trade.toRemove = true;
+      }
+    }
+
+    console.log('tradesOfTokensToEth here 1', tradesOfTokensToEth);
+
     tradesOfTokensToEth2 = tradesOfTokensToEth.filter((trade) => {
       return ((trade.tradingTokenAddress === searchedForTokenAddressTrading
         || trade.recentlyCompleted === true)
         && trade.tradingTokenAddress !== undefined
         && trade.sender !== account.address
-        && !trade.alreadyTraded
+        && trade.toRemove !== true
       );
     }).map((trade, index) => {
-      if (trade.alreadyTraded === true) {
-        return;
-      }
 
       return (
         <div class="border rounded mb-1" className="trade-of-tokens-for-eth" key={index.toString()}>
@@ -291,7 +310,12 @@ export function DisplayTrades({
             </div>
           </div>
           <div>
-            <MakeEthToTokenTrade
+          {trade.completedBy ? (
+            <div>
+              <div>Trade Completed By</div>
+              <div>{trade.completedBy}</div>
+            </div>)
+              : <MakeEthToTokenTrade
               sender={trade.sender}
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
               tradingForEthAmount={trade.tradingForEthAmount}
@@ -299,7 +323,7 @@ export function DisplayTrades({
               getTrades={getTrades}
               savedTokensToEthTrades={savedTokensToEthTrades}
               saveTokenToEthTrades={saveTokenToEthTrades}
-            />
+            />}
           </div>
         </div>
       )
@@ -307,11 +331,32 @@ export function DisplayTrades({
   }
 
   if (tradesOfEthToTokens) {
+
+    for (let i = 0; i < tradesOfEthToTokens.length; i++) {
+      const trade = tradesOfEthToTokens[i];
+      for (let j = 0; j < savedEthToTokensTrades.length; j++) {
+        const savedTrade = savedEthToTokensTrades[j];
+
+        if (trade.sender === savedTrade.sender
+            && trade.indexOfTradeOfAddress === savedTrade.indexOfTrade) {
+              trade.recentlyCompleted = true;
+              trade.completedBy = savedTrade.completedBy;
+            }
+      }
+    }
+
+    for (let i = 0; i < tradesOfEthToTokens.length; i++) {
+      const trade = tradesOfEthToTokens[i];
+      if (trade.alreadyTraded === true && !trade.recentlyCompleted) {
+        trade.toRemove = true;
+      }
+    }
+
     tradesOfEthToTokens2 = tradesOfEthToTokens.filter((trade) => {
       return (trade.tradingForTokenAddress === searchedForTokenAddressForTrading
               && trade.tradingForTokenAddress !== undefined
               && trade.sender !== account.address
-              && !trade.alreadyTraded
+              && trade.toRemove !== true
             )
     }).map((trade, index) => {
       return (
@@ -381,7 +426,12 @@ export function DisplayTrades({
             </div>
           </div>
           <div>
-            <MakeTokenToEthTrade
+          {trade.completedBy ? (
+            <div>
+              <div>Trade Completed By</div>
+              <div>{trade.completedBy}</div>
+            </div>)
+              :<MakeTokenToEthTrade
               sender={trade.sender}
               indexOfTradeOfAddress={trade.indexOfTradeOfAddress}
               tradingForTokenAddress={trade.tradingForTokenAddress}
@@ -390,7 +440,7 @@ export function DisplayTrades({
               getTrades={getTrades}
               savedEthToTokensTrades={savedEthToTokensTrades}
               saveEthToTokenTrades={saveEthToTokenTrades}
-            />
+            />}
           </div>
         </div>
       )

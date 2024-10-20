@@ -272,6 +272,7 @@ function App() {
 
     savedTokensToEthTrades.push(newObj);
     setSavedTokensToEthTrades(savedTokensToEthTrades);
+    console.log('savedTokensToEthTrades', savedTokensToEthTrades);
   }
 
   function saveEthToTokenTrades(sender, indexOfTrade, completedBy) {
