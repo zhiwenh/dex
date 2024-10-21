@@ -7,6 +7,7 @@ export function ConnectWallet({
   setSavedTokensToTokensTrades,
   setSavedTokensToEthTrades,
   setSavedEthToTokensTrades,
+  close
 }) {
   const { isConnected } = useAccount()
   if (isConnected)
@@ -23,6 +24,7 @@ export function ConnectWallet({
             setSavedEthToTokensTrades={setSavedEthToTokensTrades}
           />
         </div>
+        <button className="connect-wallet-close-button" onClick={() => close()}>Close</button>
       </div>
     )
 
@@ -31,11 +33,12 @@ export function ConnectWallet({
       <div className="wallet-wrap-header">
         Connect Wallet
       </div>
-      <div>
+      <div className="wallet-connectors-wrap">
         <WalletOptions
           getTrades={getTrades}
         />
       </div>
+      <button className="connect-wallet-close-button" onClick={() => close()}>Close</button>
     </div>
   )
 }

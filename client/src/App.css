@@ -15,11 +15,13 @@
   transform: translate(-50%, -50%);
   background-color: white;
   width: 450px;
-  height: 200px;
+  height: 350px;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: solid 1px black;
+  border-radius: 5px;
 }
 
 button {
@@ -158,6 +160,19 @@ select {
   font-weight: bold;
   font-size: 23px;
   margin-bottom: 5px;
+}
+
+.connect-wallet-close-button {
+  margin-top: 40px;
+}
+
+.wallet-connectors-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.wallet-connector {
+  width: 150px;
 }
 
 .account-address {
@@ -677,7 +692,6 @@ select {
     margin-right: 10px;
   }
 }
-
 
 @media (max-width: 700px) {
   .display-user-trades-trades-wrap {

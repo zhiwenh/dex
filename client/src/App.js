@@ -309,7 +309,9 @@ function App() {
         console.log('getTokenAddressesTokensForTokensTrades here 10');
         console.log('tradesOfTokensToTokens', tradesOfTokensToTokens);
         for (let i = 0; i < tradesOfTokensToTokens.length; i++) {
-          if (alreadyInTradesTokenAddresses[tradesOfTokensToTokens[i].tradingTokenAddress] === undefined) {
+          if (alreadyInTradesTokenAddresses[tradesOfTokensToTokens[i].tradingTokenAddress] === undefined
+            && !tradesOfTokensToTokens[i].alreadyTraded
+            && tradesOfTokensToTokens[i].sender !== account.address) {
 
             const name = tradesOfTokensToTokens[i].tradingTokenName;
             const symbol = tradesOfTokensToTokens[i].tradingTokenSymbol;
@@ -322,7 +324,9 @@ function App() {
             alreadyInTradesTokenAddresses[tradesOfTokensToTokens[i].tradingTokenAddress] = true;
           }
 
-          if (alreadyInTradesForTokenAddresses[tradesOfTokensToTokens[i].tradingForTokenAddress] === undefined) {
+          if (alreadyInTradesForTokenAddresses[tradesOfTokensToTokens[i].tradingForTokenAddress] === undefined
+            && !tradesOfTokensToTokens[i].alreadyTraded
+            && tradesOfTokensToTokens[i].sender !== account.address) {
             const name = tradesOfTokensToTokens[i].tradingForTokenName;
             const symbol = tradesOfTokensToTokens[i].tradingForTokenSymbol;
 
@@ -339,7 +343,9 @@ function App() {
     function getTokenAddressesTokensForEthTrades() {
       if (tradesOfTokensToEth){
         for (let i = 0; i < tradesOfTokensToEth.length; i++) {
-          if (alreadyInTradesTokenAddresses[tradesOfTokensToEth[i].tradingTokenAddress] === undefined) {
+          if (alreadyInTradesTokenAddresses[tradesOfTokensToEth[i].tradingTokenAddress] === undefined
+            && !tradesOfTokensToEth[i].alreadyTraded
+            && tradesOfTokensToEth[i].sender !== account.address) {
 
             const name = tradesOfTokensToEth[i].tradingTokenName;
             const symbol = tradesOfTokensToEth[i].tradingTokenSymbol;
@@ -357,7 +363,9 @@ function App() {
     function getTokenAddressesEthForTokensTrades() {
       if (tradesOfEthToTokens) {
         for (let i = 0; i < tradesOfEthToTokens.length; i++) {
-          if (alreadyInTradesForTokenAddresses[tradesOfEthToTokens[i].tradingForTokenAddress] === undefined) {
+          if (alreadyInTradesForTokenAddresses[tradesOfEthToTokens[i].tradingForTokenAddress] === undefined
+            && !tradesOfEthToTokens[i].alreadyTraded
+            && tradesOfEthToTokens[i].sender !== account.address) {
             const name = tradesOfEthToTokens[i].tradingForTokenName;
             const symbol = tradesOfEthToTokens[i].tradingForTokenSymbol;
 
@@ -801,7 +809,12 @@ function App() {
   function TopNavBarWrap() {
     return (
       <div>
-        <TopNavBar getTrades={getTrades}/>
+        <TopNavBar
+          getTrades={getTrades}
+          setSavedTokensToTokensTrades={setSavedTokensToTokensTrades}
+          setSavedTokensToEthTrades={setSavedTokensToEthTrades}
+          setSavedEthToTokensTrades={setSavedEthToTokensTrades}
+        />
       </div>
     );
   }
@@ -996,23 +1009,6 @@ function App() {
     {
       path: "/",
       element: <Home />
-    },
-    {
-      path: "/wallet",
-      element:
-      <div>
-        <div className="top-nav-bar-wrap">
-          <TopNavBarWrap />
-        </div>
-        <div id="wallet-id">
-          <ConnectWallet
-            getTrades={getTrades}
-            setSavedTokensToTokensTrades={setSavedTokensToTokensTrades}
-            setSavedTokensToEthTrades={setSavedTokensToEthTrades}
-            setSavedEthToTokensTrades={setSavedEthToTokensTrades}
-          />
-        </div>
-      </div>
     },
     {
       path: "/search-for-trades",

@@ -5,7 +5,12 @@ import { Link } from 'react-router-dom';
 import Popup from 'reactjs-popup';
 import { ConnectWallet } from './ConnectWallet.js';
 
-export function TopNavBar( { getTrades } ) {
+export function TopNavBar({
+  getTrades,
+  setSavedTokensToTokensTrades,
+  setSavedTokensToEthTrades,
+  setSavedEthToTokensTrades
+}) {
 
   const [navBarDisplayed, setNavBarDisplayed] = useState(window.innerWidth > 700 ? true : false);
   const [over700, setOver700] = useState(window.innerWidth > 700 ? true : false);
@@ -264,10 +269,16 @@ export function TopNavBar( { getTrades } ) {
         <Link to="/contact">Contact</Link>
       </div>
       <div className="top-nav-bar-link" id="top-nav-bar-wallet-id" className="top-nav-bar-wallet">
-        <Popup trigger={<button>{address ? walletConnectedString : connectWalletString}</button>}>
-          <div className="pop-up">
-            <ConnectWallet getTrades={getTrades}/>
-          </div>
+        <Popup trigger={<button>{address ? walletConnectedString : connectWalletString}</button>} modal nested>
+          { close => (<div className="pop-up">
+            <ConnectWallet
+              getTrades={getTrades}
+              close={close}
+              setSavedTokensToTokensTrades={setSavedTokensToTokensTrades}
+              setSavedTokensToEthTrades={setSavedTokensToEthTrades}
+              setSavedEthToTokensTrades={setSavedEthToTokensTrades}
+            />
+          </div>)}
         </Popup>
       </div>
     </div>

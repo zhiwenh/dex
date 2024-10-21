@@ -2,3 +2,6 @@ node_modules/
 .DS_Store
 !contracts/node_modules/
 .env
+env
+config.js
+client/src/config.json
