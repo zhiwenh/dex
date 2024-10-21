@@ -24,11 +24,17 @@ const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
 export function CancelTokensForTokensTrade({ sender, indexOfTradeOfAddress, getTrades }) {
   const { data: hash, isPending, writeContract, error } = useWriteContract();
+  const [errorMessage, setErrorMessage] = useState();
+
+  const account = getAccount(wagmiConfig);
 
   async function cancel(e) {
     e.preventDefault();
 
-    const account = getAccount(wagmiConfig);
+    if (!account.address) {
+      setErrorMessage('Wallet not connected');
+      return;
+    }
 
     console.log('account', account);
 

@@ -31,8 +31,15 @@ export function AddTokensForEthTrade({
 
   const [errorMessage, setErrorMessage] = useState();
 
+  const account = getAccount(wagmiConfig);
+
   async function approveTokens(e) {
     e.preventDefault();
+
+    if (!account.address) {
+      setErrorMessage('Wallet not connected');
+      return;
+    }
 
     const tradingTokenAddress = document.getElementById('trading-token-address-2').value;
     const tradingTokenAmount = document.getElementById('trading-token-amount-2').value;
@@ -46,8 +53,6 @@ export function AddTokensForEthTrade({
       setErrorMessage('Trading token amount not a number');
       return;
     }
-
-    const account = getAccount(wagmiConfig);
 
     console.log('account', account);
 
@@ -132,7 +137,10 @@ export function AddTokensForEthTrade({
   }
 
   async function submit() {
-    const account = getAccount(wagmiConfig);
+    if (!account.address) {
+      setErrorMessage('Wallet not connected');
+      return;
+    }
 
     console.log('account', account);
 

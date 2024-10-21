@@ -42,6 +42,11 @@ export function MakeTokenToTokenTrade({
 
   async function approve() {
 
+    if (!account.address) {
+      setErrorMessage('Wallet not connected');
+      return;
+    }
+
     console.log('account', account);
 
     console.log('here3');
@@ -89,6 +94,11 @@ export function MakeTokenToTokenTrade({
   async function submit(e) {
     e.preventDefault()
 
+    if (!account.address) {
+      setErrorMessage('Wallet not connected');
+      return;
+    }
+    
     console.log('e', e);
 
     const account = getAccount(wagmiConfig);

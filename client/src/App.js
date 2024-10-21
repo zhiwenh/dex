@@ -947,6 +947,9 @@ function App() {
               />
             </div>
           </div>
+          <div className="add-trades-recently-added">
+
+          </div>
       </div>
     </div>
     );

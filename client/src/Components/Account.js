@@ -22,7 +22,7 @@ export function Account({
       </div>
       <button class="border rounded p-1" onClick={() => {
         disconnect();
-        getTrades();
+        // getTrades();
         setSavedTokensToTokensTrades([]);
         setSavedTokensToEthTrades([]);
         setSavedEthToTokensTrades([]);

@@ -35,8 +35,15 @@ export function AddTokensForTokensTrade({
   const [pressedOnButton, setPressedOnButton] = useState(false);
   const inputRef = useRef(null);
 
+  const account = getAccount(wagmiConfig);
+
   async function approveTokens(e) {
     e.preventDefault();
+
+    if (!account.address) {
+      setErrorMessage('Wallet not connected');
+      return;
+    }
 
     const tradingTokenAddress = document.getElementById('trading-token-address-1').value;
     const tradingTokenAmount = document.getElementById('trading-token-amount-1').value;
@@ -50,8 +57,6 @@ export function AddTokensForTokensTrade({
       setErrorMessage('Trading token amount not a number');
       return;
     }
-
-    const account = getAccount(wagmiConfig);
 
     console.log('account', account);
 
@@ -142,6 +147,11 @@ export function AddTokensForTokensTrade({
     const tradingForTokenAddress = document.getElementById('trading-for-token-address-1').value;
     const tradingForTokenAmount = document.getElementById('trading-for-token-amount-1').value;
 
+    if (!account.address) {
+      setErrorMessage('Wallet not connected');
+      return;
+    }
+
     if (!ethers.isAddress(tradingTokenAddress)) {
       setErrorMessage('Not valid trading token address');
       return;
@@ -161,8 +171,6 @@ export function AddTokensForTokensTrade({
       setErrorMessage('Trading for token amount not a number');
       return;
     }
-
-    const account = getAccount(wagmiConfig);
 
     let erc20Instance;
     let balanceOfToken;

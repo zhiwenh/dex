@@ -25,11 +25,17 @@ export function AddEthForTokensTrade({ getTrades }) {
   const { data: hash, isPending, writeContract, error } = useWriteContract();
   const [errorMessage, setErrorMessage] = useState();
 
+  const account = getAccount(wagmiConfig);
+
   async function submit() {
     // e.preventDefault()
 
     // console.log('e', e);
-    const account = getAccount(wagmiConfig);
+
+    if (!account.address) {
+      setErrorMessage('Wallet not connected');
+      return;
+    }
 
     let tradingEthAmount = document.getElementById('trading-eth-amount-3').value;
     const tradingForTokenAddress = document.getElementById('trading-for-token-address-3').value;

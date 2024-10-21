@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useState } from 'react';
 import {
   type BaseError,
   useWaitForTransactionReceipt,
@@ -27,6 +28,7 @@ export function MakeEthToTokenTrade({
   getTrades,
   saveTokenToEthTrades
    }) {
+  const [errorMessage, setErrorMessage] = useState();
 
   const { data: hash, isPending, writeContract, error } = useWriteContract();
 
@@ -34,6 +36,11 @@ export function MakeEthToTokenTrade({
 
   async function submit(e) {
     e.preventDefault()
+
+    if (!account.address) {
+      setErrorMessage('Wallet not connected');
+      return;
+    }
 
     console.log('e', e);
 
@@ -79,6 +86,9 @@ export function MakeEthToTokenTrade({
         <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : submit}>
           {isConfirmed ? 'Traded' : (isPending || isConfirming ? 'Confirming...' : 'Make Trade')}
         </button>
+      </div>
+      <div>
+        {errorMessage ? errorMessage : undefined}
       </div>
       <div className="make-trade-error-transaction">
         {hash && <div>Transaction Hash: {hash}</div>}
