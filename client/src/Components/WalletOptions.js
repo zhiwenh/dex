@@ -8,7 +8,7 @@ export function WalletOptions({ getTrades }) {
   return connectors.map((connector) => (
     <button class="border rounded p-1" className="wallet-connector" key={connector.uid} onClick={() => {
       connect({ connector })
-      // getTrades();
+      getTrades();
     }}>
       {connector.name}
     </button>

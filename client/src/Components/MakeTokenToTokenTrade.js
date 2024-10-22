@@ -98,10 +98,6 @@ export function MakeTokenToTokenTrade({
       setErrorMessage('Wallet not connected');
       return;
     }
-    
-    console.log('e', e);
-
-    const account = getAccount(wagmiConfig);
 
     const erc20Instance = new ethers.Contract(tradingForTokenAddress, erc20Abi, provider);
 

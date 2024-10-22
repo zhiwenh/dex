@@ -31,6 +31,8 @@ import { TopNavBar } from './Components/TopNavBar.js'
 
 import Select from 'react-select';
 
+import ClipLoader from "react-spinners/ClipLoader";
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -131,6 +133,8 @@ function App() {
     try {
      trades = await dexInstance.getAllTrades();
     } catch (error) {
+      setPageLoaded(true);
+      setGetTradeStatus(false);
       return;
       console.log(error);
     }
@@ -141,7 +145,7 @@ function App() {
     let tradesOfTokensToEth2 = trades.tradeTokensForEthForCall;
     let tradesOfEthToTokens2 = trades.tradeEthForTokensForCall;
 
-    tradesOfTokensToTokens2 = await Promise.all(tradesOfTokensToTokens2.map(async(trade) => {
+    tradesOfTokensToTokens2 = tradesOfTokensToTokens2.map((trade) => {
       // const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
       // const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
 
@@ -168,9 +172,9 @@ function App() {
       // newTrade.tradingForTokenSymbol = tradingForErc20Symbol;
 
       return newTrade;
-    }));
+    });
 
-    tradesOfTokensToEth2 = await Promise.all(tradesOfTokensToEth2.map(async(trade) => {
+    tradesOfTokensToEth2 = tradesOfTokensToEth2.map((trade) => {
       // const tradingErc20Instance = new ethers.Contract(trade.tradingTokenAddress, erc20Abi, provider);
       //
       // const tradingErc20Name = await tradingErc20Instance.name();
@@ -189,9 +193,9 @@ function App() {
       // newTrade.tradingTokenSymbol = tradingErc20Symbol;
 
       return newTrade;
-    }));
+    });
 
-    tradesOfEthToTokens2 = await Promise.all(tradesOfEthToTokens2.map(async(trade) => {
+    tradesOfEthToTokens2 = tradesOfEthToTokens2.map((trade) => {
       // const tradingForErc20Instance = new ethers.Contract(trade.tradingForTokenAddress, erc20Abi, provider);
 
       // const tradingForErc20Name = await tradingForErc20Instance.name();
@@ -210,7 +214,7 @@ function App() {
       // newTrade.tradingForTokenSymbol = tradingForErc20Symbol;
 
       return newTrade;
-    }));
+    });
 
     console.log('tradesOfTokensToTokens2', tradesOfTokensToTokens2);
     console.log('tradesOfTokensToEth2', tradesOfTokensToEth2);
@@ -912,7 +916,6 @@ function App() {
             completedTradesOfTokensToTokensEvents={completedTradesOfTokensToTokensEvents}
             completedTradesOfTokensToEthEvents={completedTradesOfTokensToEthEvents}
             completedTradesOfEthToTokensEvents={completedTradesOfEthToTokensEvents}
-            getTrades={getTrades}
           />
         </div>
     </div>
@@ -1024,6 +1027,14 @@ function App() {
       element: <Contact />
     }
   ]);
+
+  if (pageLoaded === false) {
+    return (
+      <div className="App">
+        <ClipLoader className="spinner" />
+      </div>
+    )
+  }
 
   return (
     <div className="App">
