@@ -27,26 +27,58 @@ export function AddTokensForTokensTrade({
   getTrades,
   tradesOfTokensToTokens,
   tradesOfTokensToEth,
-  tradesOfEthToTokens
+  tradesOfEthToTokens,
+  addToRecentlyAddedTokensToTokensTrades
 }) {
   const { data: hash, isPending, writeContract, error, onSuccess } = useWriteContract();
   const { data: hash2, isPending: isPending2, writeContract: writeContract2, error: error2 } = useWriteContract();
   const [errorMessage, setErrorMessage] = useState();
   const [pressedOnButton, setPressedOnButton] = useState(false);
+  const [tradingTokenAddress2, setTradingTokenAddress2] = useState();
+  const [tradingTokenAmount2, setTradingTokenAmount2] = useState();
+  const [tradingForTokenAddress2, setTradingForTokenAddress2] = useState();
+  const [tradingForTokenAmount2, setTradingForTokenAmount2] = useState();
+
   const inputRef = useRef(null);
 
   const account = getAccount(wagmiConfig);
 
+  let isTraded = false;
+
+  let tradingTokenAddressAssigned = false;
+  let tradingTokenAddress;
+  if (!tradingTokenAddress && tradingTokenAddressAssigned === true) {
+    tradingTokenAddress = document.getElementById('trading-token-address-1').value;
+  }
+
+  let tradingTokenAmountAssigned = false;
+  let tradingTokenAmount;
+  if (tradingTokenAmountAssigned === true) {
+    tradingTokenAmount = document.getElementById('trading-token-amount-1').value;
+  }
+
+  let tradingForTokenAddressAssigned = false;
+  let tradingForTokenAddress;
+  if (tradingForTokenAddressAssigned === true) {
+    tradingForTokenAddress = document.getElementById('trading-for-token-address-1').value;
+  }
+
+  let tradingForTokenAmountAssigned = false;
+  let tradingForTokenAmount;
+  if (tradingForTokenAmountAssigned === true) {
+    tradingForTokenAmount = document.getElementById('trading-for-token-amount-1').value;
+  }
+
   async function approveTokens(e) {
     e.preventDefault();
+
+    tradingTokenAddress = document.getElementById('trading-token-address-1').value;
+    tradingTokenAmount = document.getElementById('trading-token-amount-1').value;
 
     if (!account.address) {
       setErrorMessage('Wallet not connected');
       return;
     }
-
-    const tradingTokenAddress = document.getElementById('trading-token-address-1').value;
-    const tradingTokenAmount = document.getElementById('trading-token-amount-1').value;
 
     if (!ethers.isAddress(tradingTokenAddress)) {
       setErrorMessage('Not valid trading token address');
@@ -142,10 +174,10 @@ export function AddTokensForTokensTrade({
   }
 
   async function submit() {
-    const tradingTokenAddress = document.getElementById('trading-token-address-1').value;
-    const tradingTokenAmount = document.getElementById('trading-token-amount-1').value;
-    const tradingForTokenAddress = document.getElementById('trading-for-token-address-1').value;
-    const tradingForTokenAmount = document.getElementById('trading-for-token-amount-1').value;
+    tradingTokenAddress = document.getElementById('trading-token-address-1').value;
+    tradingTokenAmount = document.getElementById('trading-token-amount-1').value;
+    tradingForTokenAddress = document.getElementById('trading-for-token-address-1').value;
+    tradingForTokenAmount = document.getElementById('trading-for-token-amount-1').value;
 
     if (!account.address) {
       setErrorMessage('Wallet not connected');
@@ -257,44 +289,40 @@ export function AddTokensForTokensTrade({
         address: config.dexAddress,
         abi: dexAbi,
         functionName: 'addTokensToDexForTradeWithOtherTokens',
-        args: [tradingTokenAddress, tradingTokenAmount, tradingForTokenAddress, tradingForTokenAmount],
-        onSuccess: () => {
-          console.log('onSuccess here 4');
-          getTrades();
-        }
+        args: [tradingTokenAddress, tradingTokenAmount, tradingForTokenAddress, tradingForTokenAmount]
       });
     } catch (error) {
       return;
     }
-  }
 
-  // function tradingTokenAddressInputOnChange(e) {
-  //   console.log('tradingTokenAddressInputOnChange e', e);
-  //   setTradingTokenAddressInputAddTokenToToken(e.target.value)
-  //   const cursorPosition = e.target.selectionStart;
-  //   inputRef.current.selectionStart = cursorPosition;
-  //   inputRef.current.selectionEnd = cursorPosition;
-  // }
-  //
-  // function tradingTokenAmountInputOnChange(e) {
-  //   setTradingTokenAmountInputAddTokenToToken(e.target.value)
-  // }
-  //
-  // function tradingTokenForAddressInputOnChange(e) {
-  //   setTradingForTokenAddressAddTokenToToken(e.target.value)
-  // }
-  //
-  // function tradingTokenForAmountInputOnChange(e) {
-  //   setTradingForTokenAmountAddTokenToToken(e.target.value)
-  // }
+    tradingTokenAddressAssigned = true;
+    tradingTokenAmountAssigned = true;
+    tradingForTokenAddressAssigned = true;
+    tradingForTokenAmountAssigned = true;
+
+    setTradingTokenAddress2(tradingTokenAddress);
+    setTradingTokenAmount2(tradingTokenAmount)
+    setTradingForTokenAddress2(tradingForTokenAddress);
+    setTradingForTokenAmount2(tradingForTokenAmount);
+  }
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
       hash: hash
     });
 
+  console.log('tradingTokenAddress here 4', tradingTokenAddress);
+
   if (isConfirmed) {
     console.log('here 2 in isConfirmed');
+    console.log('tradingTokenAddress here 2', tradingTokenAddress);
+    // addToRecentlyAddedTokensToTokensTrades(
+    //   tradingTokenAddress,
+    //   tradingTokenAmount,
+    //   tradingForTokenAddress,
+    //   tradingForTokenAmount
+    // );
+    isTraded = true;
     getTrades();
   }
 
@@ -362,6 +390,20 @@ export function AddTokensForTokensTrade({
         <div>
         <div>
           {errorMessage ? errorMessage : undefined}
+        </div>
+        <div>
+          <div>
+            {isTraded ? tradingTokenAddress2 : undefined}
+          </div>
+          <div>
+            {isTraded ? tradingTokenAmount2 : undefined}
+          </div>
+          <div>
+            {isTraded ? tradingForTokenAddress2 : undefined}
+          </div>
+          <div>
+            {isTraded ? tradingForTokenAmount2 : undefined}
+          </div>
         </div>
         <div className="add-trade-transaction-hash-or-error">
           {hash && <div>Transaction Hash: {hash}</div>}

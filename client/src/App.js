@@ -19,9 +19,6 @@ import {
   watchAccount
 }  from '@wagmi/core'
 
-import { AddTokensForTokensTrade } from './Components/AddTokensForTokensTrade.js';
-import { AddTokensForEthTrade } from './Components/AddTokensForEthTrade.js';
-import { AddEthForTokensTrade } from './Components/AddEthToTokensTrade.js';
 import { ConnectWallet } from './Components/ConnectWallet.js';
 import { MakeTokenToTokenTrade } from './Components/MakeTokenToTokenTrade.js';
 import { MakeTokenToEthTrade } from './Components/MakeTokenToEthTrade.js';
@@ -29,6 +26,7 @@ import { MakeEthToTokenTrade } from './Components/MakeEthToTokenTrade.js';
 import { DisplayTrades } from './Components/DisplayTrades.js';
 import { DisplayUserTrades } from './Components/DisplayUserTrades.js';
 import { DisplayYourCompletedTrades } from './Components/DisplayYourCompletedTrades';
+import { MakeTradesComponent } from './Components/MakeTradesComponent.js';
 import { TopNavBar } from './Components/TopNavBar.js'
 
 import Select from 'react-select';
@@ -905,52 +903,18 @@ function App() {
         <div className="top-nav-bar-wrap">
           <TopNavBarWrap />
         </div>
-        <div id="make-trade-offers-id">
-          <div className="trade-header-make-trade-offers">
-            Make Offers
-          </div>
-          <div className="make-trade-offers-description">
-            When you list a trade, other people can view them when searching for the token address.
-            To make a token trade you first have to approve your tokens to be used by the dex.
-            For ether trades it sends ether to the smart contract so that someone else can complete your order.
-            To get your ether back you just have to cancel your order.
-          </div>
-          <div className="add-trades-wrap-inner">
-            <div>
-              <AddTokensForTokensTrade
-                getTrades={getTrades}
-                setSetTokenTrades={setSetTokenTrades}
-                setRerender={setRerender}
-                tradesOfTokensToTokens={tradesOfTokensToTokens}
-                tradesOfTokensToEth={tradesOfTokensToEth}
-                tradesOfEthToTokens={tradesOfEthToTokens}
-                tradingTokenAddressInputAddTokenToToken={tradingTokenAddressInputAddTokenToToken}
-                setTradingTokenAddressInputAddTokenToToken={setTradingTokenAddressInputAddTokenToToken}
-                tradingTokenAmountInputAddTokenToToken={tradingTokenAmountInputAddTokenToToken}
-                setTradingTokenAmountInputAddTokenToToken={setTradingTokenAmountInputAddTokenToToken}
-                tradingForTokenAddressAddTokenToToken={tradingForTokenAddressAddTokenToToken}
-                setTradingForTokenAddressAddTokenToToken={setTradingForTokenAddressAddTokenToToken}
-                tradingForTokenAmountAddTokenToToken={tradingForTokenAmountAddTokenToToken}
-                setTradingForTokenAmountAddTokenToToken={setTradingForTokenAmountAddTokenToToken}
-              />
-            </div>
-            <div>
-              <AddTokensForEthTrade
-                tradesOfTokensToTokens={tradesOfTokensToTokens}
-                tradesOfTokensToEth={tradesOfTokensToEth}
-                getTrades={getTrades}
-              />
-            </div>
-            <div>
-              <AddEthForTokensTrade
-                getTrades={getTrades}
-              />
-            </div>
-          </div>
-          <div className="add-trades-recently-added">
-
-          </div>
-      </div>
+        <div>
+          <MakeTradesComponent
+            getTrades={getTrades}
+            tradesOfTokensToTokens={tradesOfTokensToTokens}
+            tradesOfTokensToEth={tradesOfTokensToEth}
+            tradesOfEthToTokens={tradesOfEthToTokens}
+            completedTradesOfTokensToTokensEvents={completedTradesOfTokensToTokensEvents}
+            completedTradesOfTokensToEthEvents={completedTradesOfTokensToEthEvents}
+            completedTradesOfEthToTokensEvents={completedTradesOfEthToTokensEvents}
+            getTrades={getTrades}
+          />
+        </div>
     </div>
     );
   }

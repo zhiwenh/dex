@@ -254,13 +254,10 @@ export function TopNavBar({
         <Link to="/">Home</Link>
       </div>
       <div className="top-nav-bar-link">
-        <Link to="/make-trades">Make Offers</Link>
+        <Link to="/make-trades">Make Offers And Display Trades</Link>
       </div>
       <div className="top-nav-bar-link">
         <Link to="/search-for-trades">Search</Link>
-      </div>
-      <div className="top-nav-bar-link">
-        <Link to="/your-trades">Your Trades</Link>
       </div>
       <div className="top-nav-bar-link">
         <Link to="/completed-trades">Completed Trades</Link>
