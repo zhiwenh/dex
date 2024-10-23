@@ -448,39 +448,49 @@ export function DisplayTrades({
     });
   }
 
-
   return (
     <div id="trades-id" className="trades-wrap">
       <div className="trades-header">
         Trades
       </div>
       <div className="trades">
-        <div className="trades-of-tokens-for-tokens-wrap">
-          <div className="trades-of-tokens-for-tokens-header">
-            Trades of Tokens For Tokens
-          </div>
-          <div className="trades-of-tokens-for-tokens">
-            {tradesOfTokensToTokens2}
-          </div>
-        </div>
-        <div className="trades-of-tokens-for-eth-wrap">
-          <div className="trades-of-tokens-for-eth-header">
-            Trades of Tokens for Eth
-          </div>
-          <div className="trades-of-tokens-for-eth">
-            {tradesOfTokensToEth2}
-          </div>
-        </div>
-        <div className="trades-of-eth-for-tokens-wrap">
-          <div className="trades-of-eth-for-tokens-header">
-            Trades of Eth for Tokens
-          </div>
-          <div className="trades-of-eth-for-tokens">
-            {tradesOfEthToTokens2}
-          </div>
-        </div>
+      {tradesOfTokensToTokens2}{tradesOfTokensToEth2}{tradesOfEthToTokens2}
       </div>
     </div>
   )
+
+  // return (
+  //   <div id="trades-id" className="trades-wrap">
+  //     <div className="trades-header">
+  //       Trades
+  //     </div>
+  //     <div className="trades">
+  //       <div className="trades-of-tokens-for-tokens-wrap">
+  //         <div className="trades-of-tokens-for-tokens-header">
+  //           Trades of Tokens For Tokens
+  //         </div>
+  //         <div className="trades-of-tokens-for-tokens">
+  //           {tradesOfTokensToTokens2}
+  //         </div>
+  //       </div>
+  //       <div className="trades-of-tokens-for-eth-wrap">
+  //         <div className="trades-of-tokens-for-eth-header">
+  //           Trades of Tokens for Eth
+  //         </div>
+  //         <div className="trades-of-tokens-for-eth">
+  //           {tradesOfTokensToEth2}
+  //         </div>
+  //       </div>
+  //       <div className="trades-of-eth-for-tokens-wrap">
+  //         <div className="trades-of-eth-for-tokens-header">
+  //           Trades of Eth for Tokens
+  //         </div>
+  //         <div className="trades-of-eth-for-tokens">
+  //           {tradesOfEthToTokens2}
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // )
 
 }

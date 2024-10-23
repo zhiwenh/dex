@@ -51,11 +51,23 @@ export function MakeTokenToTokenTrade({
 
     console.log('here3');
 
-    const erc20Instance = new ethers.Contract(tradingForTokenAddress, erc20Abi, provider);
+    let erc20Instance;
+
+    try {
+      erc20Instance = new ethers.Contract(tradingForTokenAddress, erc20Abi, provider);
+    } catch (error) {
+      console.log(error);
+    }
 
     console.log('here3');
 
-    let balanceOfToken = await erc20Instance.balanceOf(account.address);
+    let balanceOfToken
+
+    try {
+      balanceOfToken = await erc20Instance.balanceOf(account.address);
+    } catch (error) {
+      console.log(error);
+    }
     balanceOfToken = Number(balanceOfToken);
 
     if (balanceOfToken < tradingForTokenAmount) {
@@ -88,6 +100,8 @@ export function MakeTokenToTokenTrade({
       } catch (error) {
         console.log(error);
       }
+    } else {
+      setErrorMessage('Dex allowance enough already');
     }
   }
 

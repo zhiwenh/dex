@@ -52,6 +52,18 @@ export function MakeEthToTokenTrade({
 
     console.log('indexOfTradeOfAddress', indexOfTradeOfAddress);
 
+    let balanceOfAccount;
+
+    try {
+      balanceOfAccount = await provider.getBalance(account.address);
+    } catch (error) {
+      console.log(error);
+    }
+
+    if (balanceOfAccount < tradingForEthAmount) {
+      setErrorMessage('Balance of Ether not enough');
+    }
+
     try {
       await writeContract({
           address: config.dexAddress,

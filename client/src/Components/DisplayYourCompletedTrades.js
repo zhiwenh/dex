@@ -285,33 +285,47 @@ export function DisplayYourCompletedTrades({
       <div className="display-completed-trades-description">
         These are the orders you traded for and completed.
       </div>
-      <div className="display-completed-trades-trades-wrap">
-        <div className="display-completed-trades-tokens-for-tokens-wrap">
-          <div className="display-completed-trades-trade-header">
-            Tokens For Tokens Trades
-          </div>
-          <div>
-            {completedTradesOfTokensToTokensEvents}
-          </div>
-        </div>
-        <div className="display-completed-trades-tokens-for-eth-wrap">
-          <div className="display-completed-trades-trade-header">
-            Tokens For Eth Trades
-          </div>
-          <div>
-            {completedTradesOfTokensToEthEvents}
-          </div>
-        </div>
-        <div className="display-completed-trades-eth-for-tokens-wrap">
-          <div className="display-completed-trades-trade-header">
-            Eth For Tokens Trades
-          </div>
-          <div>
-            {completedTradesOfEthToTokensEvents}
-          </div>
-        </div>
+      <div className="display-completed-trades-wrap-inner">
+        {completedTradesOfTokensToTokensEvents}{completedTradesOfTokensToEthEvents}{completedTradesOfEthToTokensEvents}
       </div>
     </div>
   )
+
+  // return (
+  //   <div className="display-completed-trades-wrap">
+  //     <div className="display-user-trades-your-trades-header">
+  //       Completed Trades
+  //     </div>
+  //     <div className="display-completed-trades-description">
+  //       These are the orders you traded for and completed.
+  //     </div>
+  //     <div className="display-completed-trades-trades-wrap">
+  //       <div className="display-completed-trades-tokens-for-tokens-wrap">
+  //         <div className="display-completed-trades-trade-header">
+  //           Tokens For Tokens Trades
+  //         </div>
+  //         <div>
+  //           {completedTradesOfTokensToTokensEvents}
+  //         </div>
+  //       </div>
+  //       <div className="display-completed-trades-tokens-for-eth-wrap">
+  //         <div className="display-completed-trades-trade-header">
+  //           Tokens For Eth Trades
+  //         </div>
+  //         <div>
+  //           {completedTradesOfTokensToEthEvents}
+  //         </div>
+  //       </div>
+  //       <div className="display-completed-trades-eth-for-tokens-wrap">
+  //         <div className="display-completed-trades-trade-header">
+  //           Eth For Tokens Trades
+  //         </div>
+  //         <div>
+  //           {completedTradesOfEthToTokensEvents}
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // )
 
 }

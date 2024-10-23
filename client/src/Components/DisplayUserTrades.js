@@ -403,6 +403,23 @@ export function DisplayUserTrades({
   console.log('tradesOfTokensToEth', tradesOfTokensToEth);
   console.log('tradesOfEthToTokens', tradesOfEthToTokens);
 
+
+  return (
+    <div className="display-user-trades-wrap">
+      <div className="display-user-trades-your-trades-header">
+        Your Trades
+      </div>
+      <div className="display-user-trades-description">
+        These are the trades you listed on the dex. You also view completed and
+        canceled orders. You can cancel these orders at anytime. When you cancel
+        an order you get the ether you put in the smart contract back.
+      </div>
+      <div className="display-user-trades-wrap-inner">
+        {tradesOfTokensToTokens}{tradesOfTokensToEth}{tradesOfEthToTokens}
+      </div>
+    </div>
+  )
+
   return (
     <div className="display-user-trades-wrap">
       <div className="display-user-trades-your-trades-header">

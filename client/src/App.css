@@ -208,6 +208,15 @@ select {
   margin-top: 10px;
 }
 
+.display-user-trades-wrap-inner {
+  display: flex;
+  flex-direction: row;
+  /* flex-flow: row wrap; */
+  flex-wrap: wrap;
+  justify-content: center;
+  word-wrap: break-word;
+}
+
 .display-user-trades-your-trades-header {
   font-weight: bold;
   font-size: 23px;
@@ -251,6 +260,8 @@ select {
   padding: 2px;
   border-color: #808B96;
   background-color: #EDF5F2;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .display-user-trades-tokens-for-eth-wrap {
@@ -267,6 +278,8 @@ select {
   padding: 2px;
   border-color: #808B96;
   background-color: #EDF5F2;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .display-user-trades-eth-for-tokens-wrap {
@@ -281,6 +294,8 @@ select {
   padding: 2px;
   border-color: #808B96;
   background-color: #EDF5F2;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .display-user-trades-already-traded-or-canceled-wrap {
@@ -289,6 +304,15 @@ select {
 
 .display-completed-trades-wrap {
   margin-top: 12px;
+}
+
+.display-completed-trades-wrap-inner {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: center;
+  word-wrap: break-word;
 }
 
 .display-completed-trades-trades-wrap {
@@ -541,8 +565,12 @@ select {
 
 .trades {
   display: flex;
-  justify-content: center;
   min-height: 250px;
+  flex-direction: row;
+  flex-flow: row wrap;
+  flex-wrap: wrap;
+  justify-content: center;
+  word-wrap: break-word;
 }
 
 .trade-address-overflow {
@@ -631,6 +659,9 @@ select {
   padding: 2px;
   border-color: #808B96;
   background-color: #EDF5F2;
+  width: 300px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .trade-of-tokens-for-tokens-sender-wrap {
@@ -649,6 +680,9 @@ select {
   padding: 2px;
   border-color: #808B96;
   background-color: #EDF5F2;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 300px;
 }
 
 .trades-of-eth-for-tokens {
@@ -663,6 +697,9 @@ select {
   padding: 2px;
   border-color: #808B96;
   background-color: #EDF5F2;
+  width: 300px;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .trade-of-tokens-for-eth-sender-wrap {
