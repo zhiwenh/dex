@@ -38,6 +38,7 @@ export function AddTokensForTokensTrade({
   const [tradingTokenAmount2, setTradingTokenAmount2] = useState();
   const [tradingForTokenAddress2, setTradingForTokenAddress2] = useState();
   const [tradingForTokenAmount2, setTradingForTokenAmount2] = useState();
+  const [isConfirmed2Check, setIsConfirmed2Check] = useState();
 
   const inputRef = useRef(null);
 
@@ -90,22 +91,16 @@ export function AddTokensForTokensTrade({
       return;
     }
 
-    console.log('account', account);
-
     let erc20Instance;
     let balanceOfToken;
 
     try {
        erc20Instance = new ethers.Contract(tradingTokenAddress, erc20Abi, provider);
-       console.log('here3');
        balanceOfToken = await erc20Instance.balanceOf(account.address);
-       console.log('here4');
        balanceOfToken = Number(balanceOfToken);
     } catch (error) {
       console.log(error);
     }
-
-    console.log('here3');
 
     if (balanceOfToken < tradingTokenAmount) {
       setErrorMessage('Balance of token not enough');
@@ -154,8 +149,6 @@ export function AddTokensForTokensTrade({
       }
     }
 
-    console.log('allowanceForDex', allowanceForDex);
-    console.log('totalAllowanceRequired', totalAllowanceRequired);
     if (allowanceForDex < totalAllowanceRequired) {
       try {
         await writeContract2({
@@ -209,16 +202,12 @@ export function AddTokensForTokensTrade({
 
     try {
        erc20Instance = new ethers.Contract(tradingTokenAddress, erc20Abi, provider);
-       console.log('here3');
        balanceOfToken = await erc20Instance.balanceOf(account.address);
-       console.log('here4');
        balanceOfToken = Number(balanceOfToken);
 
     } catch (error) {
       console.log(error);
     }
-
-    console.log('here3');
 
     if (balanceOfToken < tradingTokenAmount) {
       setErrorMessage('Balance of token not enough');
@@ -266,23 +255,12 @@ export function AddTokensForTokensTrade({
       }
     }
 
-    console.log('allowanceForDex', allowanceForDex);
-    console.log('totalAllowanceRequired', totalAllowanceRequired);
     if (allowanceForDex < totalAllowanceRequired) {
       setErrorMessage('Dex allowance not enough');
       return;
     } else {
       setErrorMessage(undefined);
     }
-
-    console.log('account', account);
-
-    console.log('tradingTokenAddress', tradingTokenAddress);
-    console.log('tradingTokenAmount', tradingTokenAmount);
-    console.log('tradingForTokenAddress', tradingForTokenAddress);
-    console.log('tradingForTokenAmount', tradingForTokenAmount);
-
-    console.log('writeContract', writeContract);
 
     try {
       await writeContract({
@@ -311,11 +289,7 @@ export function AddTokensForTokensTrade({
       hash: hash
     });
 
-  console.log('tradingTokenAddress here 4', tradingTokenAddress);
-
   if (isConfirmed) {
-    console.log('here 2 in isConfirmed');
-    console.log('tradingTokenAddress here 2', tradingTokenAddress);
     // addToRecentlyAddedTokensToTokensTrades(
     //   tradingTokenAddress,
     //   tradingTokenAmount,
@@ -330,6 +304,12 @@ export function AddTokensForTokensTrade({
     useWaitForTransactionReceipt({
       hash: hash2
     });
+
+  if (isConfirming2) {
+    if (isConfirmed2Check === undefined) {
+      setIsConfirmed2Check(true);
+    }
+  }
 
   // onSuccess(() => {
   //   console.log('here 3 onSuccess');
@@ -388,6 +368,9 @@ export function AddTokensForTokensTrade({
           <button class="border rounded p-1" onClick={isPending || isPending2 || isConfirming || isConfirming2 ? () => {} : submit}>{isPending || isPending2 || isConfirming || isConfirming2 ? 'Confirming...' : 'Add Trade'} </button>
         </div>
         <div>
+        <div>
+          {isConfirmed2Check ? "Tokens have been approved" : undefined}
+        </div>
         <div>
           {errorMessage ? errorMessage : undefined}
         </div>

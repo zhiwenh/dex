@@ -50,8 +50,6 @@ export function TopNavBar({
         walletItem[0].style.width = "auto";
         walletItem[0].style.marginBottom = "0px";
 
-
-        console.log('mobileTabsOn in window resize', mobileTabsOn);
         if (mobileTabsOn === true) {
           mobileTabsOn = false;
         }
@@ -103,7 +101,6 @@ export function TopNavBar({
 
         if (overWidthAlready === true) {
           overWidthAlready = false;
-          console.log('here 20');
           mobileTabsOn = false;
         }
 
@@ -117,7 +114,6 @@ export function TopNavBar({
   window.addEventListener('resize', handleResize);
 
   function onMobileButtonClick() {
-    console.log('mobileTabsOn', mobileTabsOn);
     if (mobileTabsOn === false) {
       const navBar = document.querySelectorAll('.top-nav-bar');
       navBar[0].style.display = 'flex';

@@ -5,3 +5,5 @@ node_modules/
 env
 config.js
 client/src/config.json
+server/config.json
+contracts/config.json

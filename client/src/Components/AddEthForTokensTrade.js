@@ -57,8 +57,6 @@ export function AddEthForTokensTrade({ getTrades }) {
       console.log(error);
     }
 
-    console.log('here 10');
-
     let balanceOfAccount;
 
     try {
@@ -67,15 +65,9 @@ export function AddEthForTokensTrade({ getTrades }) {
       console.log(error);
     }
 
-    console.log('here 11 balanceOfAccount', balanceOfAccount);
-
     balanceOfAccount = Number(balanceOfAccount);
 
     // balanceOfAccount = ethers.parseUnits(balanceOfAccount, 'ether');
-
-    console.log('here 14');
-
-    console.log('here 12');
 
     if (balanceOfAccount < tradingEthAmount) {
       setErrorMessage('Eth balance not enough')
@@ -83,14 +75,6 @@ export function AddEthForTokensTrade({ getTrades }) {
     } else {
       setErrorMessage(undefined)
     }
-
-    console.log('here 13');
-
-    console.log('tradingEthAmount', tradingEthAmount);
-    console.log('tradingForTokenAddress', tradingForTokenAddress);
-    console.log('tradingForTokenAmount', tradingForTokenAmount);
-
-    console.log('dexAbi', dexAbi);
 
     try {
       writeContract({

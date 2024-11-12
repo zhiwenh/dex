@@ -91,8 +91,6 @@ export function MakeTradesComponent({
         </div>
       );
     });
-
-    console.log('recentlyAddedTokensToTokensTrades2', recentlyAddedTokensToTokensTrades2);
   }
 
   function addToRecentlyAddedTokensToTokensTrades(
@@ -108,10 +106,8 @@ export function MakeTradesComponent({
     newObj.tradingForTokenAddress = tradingForTokenAddress;
     newObj.tradingForTokenAmount = tradingForTokenAmount;
 
-    console.log('newObj', newObj);
     recentlyAddedTokensToTokensTrades.push(newObj);
     setRecentlyAddedTokensToTokensTrades(recentlyAddedTokensToTokensTrades);
-    console.log('recentlyAddedTokensToTokensTrades', recentlyAddedTokensToTokensTrades);
     getRecentlyAddedTokensToTokensTradesJsx();
   }
 
@@ -148,7 +144,6 @@ export function MakeTradesComponent({
   }
 
   const recentlyAddedEthToTokensTrades2 = recentlyAddedEthToTokensTrades.map((trade, index) => {
-    console.log('here1 trade', trade);
     return (
       <div class="border rounded mb-1" className="recently-completed-trade-of-tokens-for-tokens" key={index.toString()}>
         <div className="trade-inner-wrap">
@@ -195,7 +190,6 @@ export function MakeTradesComponent({
     );
   });
 
-  console.log('recentlyAddedTokensToTokensTrades2', recentlyAddedTokensToTokensTrades2);
   return (
     <div>
       <div id="make-trade-offers-id">

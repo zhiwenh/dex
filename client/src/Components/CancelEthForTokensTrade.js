@@ -36,10 +36,6 @@ export function CancelEthForTokensTrade({ sender, indexOfTradeOfAddress, getTrad
       return;
     }
 
-    console.log('account', account);
-
-    console.log('here3');
-
     await writeContract({
       address: config.dexAddress,
       abi: dexAbi,
@@ -54,7 +50,6 @@ export function CancelEthForTokensTrade({ sender, indexOfTradeOfAddress, getTrad
     });
 
   if (isConfirmed) {
-    console.log('here 2 in isConfirmed');
     getTrades();
   }
 

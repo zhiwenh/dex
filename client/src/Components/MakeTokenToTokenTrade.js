@@ -21,6 +21,8 @@ const erc20Abi = erc20Json.abi;
 const provider = new ethers.JsonRpcProvider('http://localhost:8545');
 const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
+let isConfirmed2Check = false;
+
 export function MakeTokenToTokenTrade({
   sender,
   indexOfTradeOfAddress,
@@ -41,15 +43,10 @@ export function MakeTokenToTokenTrade({
   const account = getAccount(wagmiConfig);
 
   async function approve() {
-
     if (!account.address) {
       setErrorMessage('Wallet not connected');
       return;
     }
-
-    console.log('account', account);
-
-    console.log('here3');
 
     let erc20Instance;
 
@@ -59,9 +56,7 @@ export function MakeTokenToTokenTrade({
       console.log(error);
     }
 
-    console.log('here3');
-
-    let balanceOfToken
+    let balanceOfToken;
 
     try {
       balanceOfToken = await erc20Instance.balanceOf(account.address);
@@ -87,8 +82,6 @@ export function MakeTokenToTokenTrade({
 
     tradingForTokenAmount = Number(tradingForTokenAmount);
 
-    console.log('allowanceForDex', allowanceForDex);
-    console.log('tradingForTokenAmount', tradingForTokenAmount);
     if (Number(allowanceForDex) < tradingForTokenAmount) {
       try {
         await writeContract2({
@@ -147,13 +140,7 @@ export function MakeTokenToTokenTrade({
 
     tradingForTokenAmount = Number(tradingForTokenAmount);
 
-    console.log('dexAbi', dexAbi);
-    console.log('sender', sender);
-    console.log('indexOfTradeOfAddress', indexOfTradeOfAddress);
-
     indexOfTradeOfAddress = Number(indexOfTradeOfAddress);
-
-    console.log('indexOfTradeOfAddress', indexOfTradeOfAddress);
 
     try {
       await writeContract({
@@ -174,7 +161,6 @@ export function MakeTokenToTokenTrade({
     })
 
   if (isConfirmed) {
-    console.log('here 2 in isConfirmed');
     saveTokenToTokenTrades(sender, indexOfTradeOfAddress, account.address);
     getTrades();
   }
@@ -184,7 +170,10 @@ export function MakeTokenToTokenTrade({
       hash: hash2
     });
 
-  console.log('error', error);
+  if (isConfirming2) {
+    isConfirmed2Check = true;
+  }
+
   return (
     <div className="make-tokens-for-tokens-trade-wrap">
       <div>
@@ -201,6 +190,9 @@ export function MakeTokenToTokenTrade({
       </div>
       <div>
         {errorMessage ? errorMessage : undefined}
+      </div>
+      <div>
+        {isConfirmed2Check ? "Tokens have been approved" : undefined}
       </div>
       <div className="make-trade-error-transaction">
         {hash ? <div>Transaction Hash: {hash}</div> : undefined}

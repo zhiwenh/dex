@@ -30,8 +30,6 @@ export function DisplayYourCompletedTrades({
 
   const account = getAccount(wagmiConfig);
 
-  console.log('in display trades completedTradesOfTokensToTokensEvents', completedTradesOfTokensToTokensEvents);
-
   if (completedTradesOfTokensToTokensEvents) {
     completedTradesOfTokensToTokensEvents = completedTradesOfTokensToTokensEvents.filter(event => {
       return event.orderCompletedBy === account.address;
@@ -272,10 +270,6 @@ export function DisplayYourCompletedTrades({
       )
     })
   }
-
-  console.log('completedTradesOfTokensToTokensEvents filtered', completedTradesOfTokensToTokensEvents);
-  console.log('completedTradesOfTokensToEthEvents', completedTradesOfTokensToEthEvents);
-  console.log('completedTradesOfEthToTokensEvents', completedTradesOfEthToTokensEvents);
 
   return (
     <div className="display-completed-trades-wrap">

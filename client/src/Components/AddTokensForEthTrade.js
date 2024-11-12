@@ -30,6 +30,7 @@ export function AddTokensForEthTrade({
   const { data: hash2, isPending: isPending2, writeContract: writeContract2, error: error2 } = useWriteContract();
 
   const [errorMessage, setErrorMessage] = useState();
+  const [isConfirmed2Check, setIsConfirmed2Check] = useState();
 
   const account = getAccount(wagmiConfig);
 
@@ -54,14 +55,11 @@ export function AddTokensForEthTrade({
       return;
     }
 
-    console.log('account', account);
-
     let erc20Instance;
     let balanceOfToken;
 
     try {
       erc20Instance = new ethers.Contract(tradingTokenAddress, erc20Abi, provider);
-      console.log('here3');
 
       balanceOfToken = await erc20Instance.balanceOf(account.address);
       balanceOfToken = Number(balanceOfToken);
@@ -83,13 +81,11 @@ export function AddTokensForEthTrade({
       allowanceForDex = await erc20Instance.allowance(account.address, config.dexAddress);
       allowanceForDex = Number(allowanceForDex);
     } catch (error) {
-      console.log('error here 5',error);
+      console.log(error);
       // setErrorMessage(error.error);
     }
 
     let totalAllowanceRequired = tradingTokenAmount;
-
-    console.log('here4');
 
     let allTrades;
 
@@ -118,8 +114,6 @@ export function AddTokensForEthTrade({
       }
     }
 
-    console.log('allowanceForDex', allowanceForDex);
-    console.log('totalAllowanceRequired', totalAllowanceRequired);
     if (allowanceForDex < totalAllowanceRequired) {
       try {
         await writeContract2({
@@ -142,10 +136,6 @@ export function AddTokensForEthTrade({
       return;
     }
 
-    console.log('account', account);
-
-    console.log('here3');
-
     const tradingTokenAddress = document.getElementById('trading-token-address-2').value;
     const tradingTokenAmount = document.getElementById('trading-token-amount-2').value;
     const tradingForEthAmount = document.getElementById('trading-for-eth-amount-2').value;
@@ -166,14 +156,6 @@ export function AddTokensForEthTrade({
     } catch (error) {
       console.log(error);
     }
-
-    console.log('tradingForEthAmountFormatted', tradingForEthAmountFormatted);
-
-    console.log('tradingTokenAddress', tradingTokenAddress);
-    console.log('tradingTokenAmount', tradingTokenAmount);
-    console.log('tradingForEthAmount', tradingForEthAmount);
-
-    console.log('dexAbi', dexAbi);
 
     try {
       await writeContract({
@@ -200,6 +182,12 @@ export function AddTokensForEthTrade({
     useWaitForTransactionReceipt({
       hash: hash2
     });
+
+  if (isConfirming2) {
+    if (isConfirmed2Check === undefined) {
+      setIsConfirmed2Check(true);
+    }
+  }
 
   return (
     <div className="add-tokens-for-eth-trade-wrap">
@@ -231,6 +219,9 @@ export function AddTokensForEthTrade({
           </div>
         </div>
           <button class="border rounded p-1" onClick={isPending || isPending || isConfirming || isConfirming2 ? () => {} : submit}>{isPending || isConfirming ? 'Confirming...' : 'Add Trade'} </button>
+        </div>
+        <div>
+          {isConfirmed2Check ? "Tokens have been approved" : undefined}
         </div>
         <div>
           {errorMessage ? errorMessage : undefined}

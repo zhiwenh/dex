@@ -42,9 +42,6 @@ export function DisplayTrades({
 }) {
 
   function recentlyCompletedAdderTokensToTokensTrades(index, completedBy) {
-    console.log('tradesOfTokensToTokens', tradesOfTokensToTokens);
-    console.log('index', index);
-    console.log('tradesOfTokensToTokens[index]', tradesOfTokensToTokens[index]);
     tradesOfTokensToTokens[index].recentlyCompleted = true;
     tradesOfTokensToTokens[index].completedBy = completedBy;
   }
@@ -59,7 +56,6 @@ export function DisplayTrades({
     tradesOfTokensToTokens[index].completedBy = completedBy;
   }
 
-  console.log('here 5 in display trades');
   const account = getAccount(wagmiConfig);
 
   let tradesOfTokensToTokens2;
@@ -67,8 +63,6 @@ export function DisplayTrades({
   let tradesOfEthToTokens2;
 
   if (tradesOfTokensToTokens) {
-    console.log('here 6 in display trades');
-
     for (let i = 0; i < tradesOfTokensToTokens.length; i++) {
       const trade = tradesOfTokensToTokens[i];
       for (let j = 0; j < savedTokensToTokensTrades.length; j++) {
@@ -231,8 +225,6 @@ export function DisplayTrades({
         trade.toRemove = true;
       }
     }
-
-    console.log('tradesOfTokensToEth here 1', tradesOfTokensToEth);
 
     tradesOfTokensToEth2 = tradesOfTokensToEth.filter((trade) => {
       return ((trade.tradingTokenAddress === searchedForTokenAddressTrading

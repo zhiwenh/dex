@@ -497,4 +497,8 @@ contract Dex {
     TradeTokensForEthForCall[] tradeTokensForEthForCall;
     TradeEthForTokensForCall[] tradeEthForTokensForCall;
   }
+
+  fallback() external payable {
+
+  }
 }

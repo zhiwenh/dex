@@ -36,10 +36,6 @@ export function CancelTokensForTokensTrade({ sender, indexOfTradeOfAddress, getT
       return;
     }
 
-    console.log('account', account);
-
-    console.log('here3');
-
     await writeContract({
       address: config.dexAddress,
       abi: dexAbi,
@@ -54,11 +50,9 @@ export function CancelTokensForTokensTrade({ sender, indexOfTradeOfAddress, getT
     });
 
   if (isConfirmed) {
-    console.log('here 2 in isConfirmed');
     getTrades();
   }
 
-  console.log('error', error);
   return (
     <div>
       <button class="border rounded p-1" onClick={isPending || isConfirming ? () => {} : cancel}>Cancel Trade</button>

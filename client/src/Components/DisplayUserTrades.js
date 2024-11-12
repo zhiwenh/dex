@@ -39,8 +39,6 @@ export function DisplayUserTrades({
 
   const account = getAccount(wagmiConfig);
 
-  console.log('tradesOfTokensToTokens', tradesOfTokensToTokens);
-
   if (tradesOfTokensToTokens) {
     tradesOfTokensToTokens = tradesOfTokensToTokens.filter(trade => {
       return trade.sender === account.address;
@@ -55,15 +53,8 @@ export function DisplayUserTrades({
         for (let i = 0; i < completedTradesOfTokensToTokensEvents.length; i++) {
           const event = completedTradesOfTokensToTokensEvents[i];
 
-          console.log('event here sender 7', event.sender);
-          console.log('trade here sender', trade.sender);
-
-          console.log('event here indexOfTrade 7', event.indexOfTrade);
-          console.log('trade here indexOfTrade 7', trade.indexOfTradeOfAddress);
-
           if ((event.sender === trade.sender) && (Number(event.indexOfTrade) === Number(trade.indexOfTradeOfAddress))) {
             orderCompletedBy = event.orderCompletedBy;
-            console.log('orderCompletedBy here6', orderCompletedBy);
             break;
           }
         }
@@ -189,15 +180,8 @@ export function DisplayUserTrades({
         for (let i = 0; i < completedTradesOfTokensToEthEvents.length; i++) {
           const event = completedTradesOfTokensToEthEvents[i];
 
-          console.log('event here sender 7', event.sender);
-          console.log('trade here sender', trade.sender);
-
-          console.log('event here indexOfTrade 7', event.indexOfTrade);
-          console.log('trade here indexOfTrade 7', trade.indexOfTradeOfAddress);
-
           if ((event.sender === trade.sender) && (Number(event.indexOfTrade) === Number(trade.indexOfTradeOfAddress))) {
             orderCompletedBy = event.orderCompletedBy;
-            console.log('orderCompletedBy here6', orderCompletedBy);
             break;
           }
         }
@@ -301,15 +285,8 @@ export function DisplayUserTrades({
         for (let i = 0; i < completedTradesOfEthToTokensEvents.length; i++) {
           const event = completedTradesOfEthToTokensEvents[i];
 
-          console.log('event here sender 7', event.sender);
-          console.log('trade here sender', trade.sender);
-
-          console.log('event here indexOfTrade 7', event.indexOfTrade);
-          console.log('trade here indexOfTrade 7', trade.indexOfTradeOfAddress);
-
           if ((event.sender === trade.sender) && (Number(event.indexOfTrade) === Number(trade.indexOfTradeOfAddress))) {
             orderCompletedBy = event.orderCompletedBy;
-            console.log('orderCompletedBy here6', orderCompletedBy);
             break;
           }
         }
@@ -399,11 +376,6 @@ export function DisplayUserTrades({
     })
   }
 
-  console.log('tradesOfTokensToTokens filtered', tradesOfTokensToTokens);
-  console.log('tradesOfTokensToEth', tradesOfTokensToEth);
-  console.log('tradesOfEthToTokens', tradesOfEthToTokens);
-
-
   return (
     <div className="display-user-trades-wrap">
       <div className="display-user-trades-your-trades-header">
@@ -458,5 +430,4 @@ export function DisplayUserTrades({
       </div>
     </div>
   )
-
 }

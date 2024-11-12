@@ -42,15 +42,7 @@ export function MakeEthToTokenTrade({
       return;
     }
 
-    console.log('e', e);
-
-    console.log('dexAbi', dexAbi);
-    console.log('sender', sender);
-    console.log('indexOfTradeOfAddress', indexOfTradeOfAddress);
-
     indexOfTradeOfAddress = Number(indexOfTradeOfAddress);
-
-    console.log('indexOfTradeOfAddress', indexOfTradeOfAddress);
 
     let balanceOfAccount;
 
@@ -84,12 +76,10 @@ export function MakeEthToTokenTrade({
     })
 
   if (isConfirmed) {
-    console.log('here 2 in isConfirmed');
     saveTokenToEthTrades(sender, indexOfTradeOfAddress, account.address);
     getTrades();
   }
 
-  console.log('error', error);
   return (
     <div className="make-tokens-for-eth-trade-wrap">
       <div>

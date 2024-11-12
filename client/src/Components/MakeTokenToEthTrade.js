@@ -21,6 +21,8 @@ const erc20Abi = erc20Json.abi;
 const provider = new ethers.JsonRpcProvider('http://localhost:8545');
 const dexInstance = new ethers.Contract(config.dexAddress, dexAbi, provider);
 
+let isConfirmed2Check = false;
+
 export function MakeTokenToEthTrade({
   sender,
   indexOfTradeOfAddress,
@@ -42,12 +44,8 @@ export function MakeTokenToEthTrade({
       return;
     }
 
-    console.log('account', account);
-
-    console.log('here3');
-
     let erc20Instance;
-    
+
     try {
       erc20Instance = new ethers.Contract(tradingForTokenAddress, erc20Abi, provider);
     } catch (error) {
@@ -79,8 +77,6 @@ export function MakeTokenToEthTrade({
 
     tradingForTokenAmount = Number(tradingForTokenAmount);
 
-    console.log('allowanceForDex', allowanceForDex);
-    console.log('tradingForTokenAmount', tradingForTokenAmount);
     if (Number(allowanceForDex) < tradingForTokenAmount) {
       try {
         await writeContract2({
@@ -141,8 +137,6 @@ export function MakeTokenToEthTrade({
 
     indexOfTradeOfAddress = Number(indexOfTradeOfAddress);
 
-    console.log('indexOfTradeOfAddress', indexOfTradeOfAddress);
-
     await writeContract({
         address: config.dexAddress,
         abi: dexAbi,
@@ -157,7 +151,6 @@ export function MakeTokenToEthTrade({
     })
 
   if (isConfirmed) {
-    console.log('here 2 in isConfirmed');
     saveEthToTokenTrades(sender, indexOfTradeOfAddress, account.address);
     getTrades();
   }
@@ -165,7 +158,11 @@ export function MakeTokenToEthTrade({
   const { isLoading: isConfirming2, isSuccess: isConfirmed2 } =
     useWaitForTransactionReceipt({
       hash: hash2
-    })
+    });
+
+  if (isConfirming2) {
+    isConfirmed2Check = true;
+  }
 
   console.log('error', error);
   return (
@@ -184,6 +181,9 @@ export function MakeTokenToEthTrade({
       </div>
       <div>
         {errorMessage ? errorMessage : undefined}
+      </div>
+      <div>
+        {isConfirmed2Check ? "Tokens have been approved" : undefined}
       </div>
       <div className="make-trade-error-transaction">
         {hash && <div>Transaction Hash: {hash}</div>}
